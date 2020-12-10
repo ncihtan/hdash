@@ -1,0 +1,3 @@
+hdash.egg-info/
+*.pyc
+cache/*.csv
