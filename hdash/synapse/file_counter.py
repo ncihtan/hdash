@@ -23,8 +23,6 @@ class FileCounter:
         self._walk_files()
 
     def _walk_files(self):
-
-        # TODO:  Count the metada files
         for file in self.file_list:
             path = Path(file)
             if file == "synapse_storage_manifest.csv":

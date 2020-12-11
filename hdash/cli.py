@@ -60,7 +60,7 @@ def create(use_cache):
             "OTHER": counter[FileCounter.OTHER],
             "METADATA": counter[FileCounter.METADATA],
             "LIAISON": row["liaison"],
-            "NOTES": row["notes"]
+            "NOTES": row["notes"],
         }
         results_df.loc[row["id"]] = result_row
     _write_to_excel(results_df)
