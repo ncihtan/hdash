@@ -11,6 +11,6 @@ class SynapseCredentials:
 
     def __init__(self):
         """Construct Synapse Credentials."""
-        self.user = os.getenv('SYNAPSE_USER')
-        self.password = os.getenv('SYNAPSE_PASSWORD')
+        self.user = os.getenv("SYNAPSE_USER")
+        self.password = os.getenv("SYNAPSE_PASSWORD")
         logging.info("Using Synapse ID:  %s." % self.user)

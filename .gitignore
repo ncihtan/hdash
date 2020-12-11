@@ -1,3 +1,5 @@
 hdash.egg-info/
 *.pyc
 cache/*.csv
+htan_dashboard.xlsx
+.vscode/
