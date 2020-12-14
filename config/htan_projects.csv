@@ -1,13 +1,13 @@
 ﻿id,name,liaison,notes
-syn20834712,PILOT - HTAPP,Vesteinn,Vesteinn actively coordinating with Ellen and Judit @ Broad.
-syn23511984,PILOT - PCAPP,Ethan,"Ethan has been in touch with PCAPP, and our current understanding is that PCAPP will not be included in first data release."
+syn20834712,PILOT - HTAPP,Vesteinn,"Vesteinn and Clarisse coordinating with Ellen, Judit @ Broad and CODEX,MIBI,ExSeq,H&E,scRNAseq contributors."
+syn23511984,PILOT - PCAPP,Ethan,"Ethan has been in touch with Olivier, who has indicated that PCAPP data will be distributed via MCL, and not HTAN DCC."
 syn22124336,HTAN BU,Ethan,Ethan is actively coordinating with Sarah and Josh @ BU.
 syn22776798,HTAN CHOP,Niki,Niki is actively coordinating with Changya Chen @CHOP.
 syn23511954,HTAN DFCI,Ethan,Ethan has reached out to Bruce and Gaddy and our understanding is that HTAPP data will be transferred first.
 syn23511961,HTAN Duke,Niki,Niki and Ino are actively coordinating with Cody Straub and Tyler Risom @ Duke.
-syn22123910,HTAN HMS,Milen,
+syn22123910,HTAN HMS,Milen,"Milen is actively coordinating with Alyce Chen, Jeremy Muhlich, Madison Tyler @ HMS."
 syn23448901,HTAN MSK,Niki,Niki and Ino are actively coordinating with Joseph Chan @ MSK.
-syn22093319,HTAN OHSU,Milen,
-syn23511964,HTAN Stanford,Milen,
-syn21050481,HTAN Vanderbilt,Vesteinn,
-syn22255320,HTAN WUSTL,Vesteinn,
+syn22093319,HTAN OHSU,Milen,Milen is actively coordinating with Allie Creason @ OHSU.
+syn23511964,HTAN Stanford,Milen,"Milen is actively coordinating with Daniel Cotter, Tuhin Guha, and Aaron Horning"
+syn21050481,HTAN Vanderbilt,Vesteinn,"Vesteinn and Clarisse coordinating with Lynne,Martha,Ken @Vanderbilt."
+syn22255320,HTAN WUSTL,Vesteinn,Vesteinn and Clarisse coordinating with Matthew Wyczalkowski @ WashU.
