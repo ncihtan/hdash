@@ -53,11 +53,14 @@ class FileCounter:
         fm[".bcf"] = FileCounter.OTHER
         fm[".bzcfg"] = FileCounter.OTHER
         fm[".log"] = FileCounter.OTHER
+        fm[".mzML"] = FileCounter.OTHER
         self.file_type_map = fm
 
     def _init_exclude_list(self):
         el = []
         el.append(".DS_Store")
+        el.append(".vimrc")
+        el.append(".Rhistory")
         self.exclude_file_list = el
 
     def get_file_type_counter(self):
