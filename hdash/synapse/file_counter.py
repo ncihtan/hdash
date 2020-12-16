@@ -42,6 +42,8 @@ class FileCounter:
         fm[".bam"] = FileCounter.BAM
         fm[".fastq"] = FileCounter.FASTQ
         fm[".fastq.gz"] = FileCounter.FASTQ
+        fm[".fq.gz"] = FileCounter.FASTQ
+        fm[".fq"] = FileCounter.FASTQ        
         fm[".tif"] = FileCounter.IMAGE
         fm[".csv"] = FileCounter.MATRIX
         fm[".mtx"] = FileCounter.MATRIX
@@ -54,6 +56,7 @@ class FileCounter:
         fm[".bzcfg"] = FileCounter.OTHER
         fm[".log"] = FileCounter.OTHER
         fm[".mzML"] = FileCounter.OTHER
+        fm[".zstd"] = FileCounter.OTHER
         self.file_type_map = fm
 
     def _init_exclude_list(self):
