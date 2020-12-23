@@ -50,15 +50,14 @@ def create(use_cache):
         target_df = df[(df.projectId == row.id) & (df.type == "file")]
         file_list = target_df.name.to_list()
         file_counter = FileCounter(file_list)
-        counter = file_counter.get_file_type_counter()
         result_row = {
             "ATLAS": row["name"],
-            "FASTQ": counter[FileCounter.BAM],
-            "BAM": counter[FileCounter.FASTQ],
-            "IMAGE": counter[FileCounter.IMAGE],
-            "MATRIX": counter[FileCounter.MATRIX],
-            "OTHER": counter[FileCounter.OTHER],
-            "METADATA": counter[FileCounter.METADATA],
+            "FASTQ": file_counter.get_num_files(FileCounter.BAM),
+            "BAM": file_counter.get_num_files(FileCounter.FASTQ),
+            "IMAGE": file_counter.get_num_files(FileCounter.IMAGE),
+            "MATRIX": file_counter.get_num_files(FileCounter.MATRIX),
+            "OTHER": file_counter.get_num_files(FileCounter.OTHER),
+            "METADATA": file_counter.get_num_files(FileCounter.METADATA),
             "LIAISON": row["liaison"],
             "NOTES": row["notes"],
         }

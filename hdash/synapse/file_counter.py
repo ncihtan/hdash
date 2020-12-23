@@ -22,6 +22,10 @@ class FileCounter:
         self.file_type_list = []
         self._walk_files()
 
+    def get_num_files(self, file_type):
+        """Get the File Type Counter."""
+        return self.counter[file_type]
+
     def _walk_files(self):
         for file in self.file_list:
             path = Path(file)
@@ -66,6 +70,3 @@ class FileCounter:
         el.append(".Rhistory")
         self.exclude_file_list = el
 
-    def get_file_type_counter(self):
-        """Get the File Type Counter."""
-        return self.counter
