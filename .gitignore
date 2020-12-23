@@ -3,3 +3,5 @@ hdash.egg-info/
 cache/*.csv
 htan_dashboard.xlsx
 .vscode/
+.venv/
+build

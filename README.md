@@ -1,16 +1,46 @@
-# htan
+# hdash
 
-CLI for generating bare bones HTAN Dashboard.
+Command Line Interface (CLI) for generating a bare bones HTAN Dashboard.
 
-## To build
+## Installation
 
-To build the project with all dependencies, run:
+To install ```hdash```, make sure you are running Python 3.6 or above:
 
 ```
-make
+python --version
 ```
 
-## To run
+Next, it is recommended that you create a virtual environment:
+
+```
+cd hdash
+python -m venv .venv
+```
+
+To activate the virtual environment, run:
+
+```
+source .venv/bin/activate
+```
+
+You are now ready to install the package:
+
+```
+pip install -e .
+```
+
+## Set your Synapse Credentials
+
+To generate the HTAN dashboard, you must set your Synapse credentials as
+environment variables.  For example, I added the following to 
+my ```.bash_profile```:
+
+```
+export SYNAPSE_USER="XXXXX"
+export SYNAPSE_PASSWORD="YYYY"
+```
+
+## To run hdash
 
 To run the tool, run:
 

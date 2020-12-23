@@ -1,10 +1,7 @@
 certifi==2020.12.5
 chardet==3.0.4
 click==7.1.2
-Deprecated==1.2.10
 entrypoints==0.3
--e git+https://github.com/ncihtan/hdash.git@a587e6f6fca25d54353d2c649ddafdf6f0ca7691#egg=hdash
-idna==2.10
 keyring==12.0.2
 numpy==1.19.4
 pandas==1.1.4
