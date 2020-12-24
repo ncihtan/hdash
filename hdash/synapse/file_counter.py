@@ -69,4 +69,3 @@ class FileCounter:
         el.append(".vimrc")
         el.append(".Rhistory")
         self.exclude_file_list = el
-
