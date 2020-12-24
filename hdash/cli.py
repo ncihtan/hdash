@@ -28,49 +28,6 @@ def cli(verbose):
 @cli.command()
 @click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
 def create(use_cache):
-    """Create HTAN Dashboard."""
-
-    if not use_cache or not os.path.exists(MASTER_HTAN_TABLE):
-        _get_master_htan_table()
-
-    project_df = _get_project_table()
-    df = pd.read_csv(MASTER_HTAN_TABLE)
-
-    cols = [
-        "ATLAS",
-        "FASTQ",
-        "BAM",
-        "IMAGE",
-        "MATRIX",
-        "OTHER",
-        "METADATA",
-        "LIAISON",
-        "NOTES",
-    ]
-    results_df = pd.DataFrame(columns=cols)
-
-    for index, row in project_df.iterrows():
-        target_df = df[(df.projectId == row.id) & (df.type == "file")]
-        file_list = target_df.name.to_list()
-        file_counter = FileCounter(file_list)
-        result_row = {
-            "ATLAS": row["name"],
-            "FASTQ": file_counter.get_num_files(FileCounter.BAM),
-            "BAM": file_counter.get_num_files(FileCounter.FASTQ),
-            "IMAGE": file_counter.get_num_files(FileCounter.IMAGE),
-            "MATRIX": file_counter.get_num_files(FileCounter.MATRIX),
-            "OTHER": file_counter.get_num_files(FileCounter.OTHER),
-            "METADATA": file_counter.get_num_files(FileCounter.METADATA),
-            "LIAISON": row["liaison"],
-            "NOTES": row["notes"],
-        }
-        results_df.loc[row["id"]] = result_row
-    _write_to_excel(results_df)
-
-
-@cli.command()
-@click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
-def create_html(use_cache):
     """Create HTML HTAN Dashboard."""
 
     env = Environment(
@@ -113,22 +70,6 @@ def create_html(use_cache):
     fd = open("deploy/index.html", "w")
     fd.write(html)
     fd.close()
-
-
-def _write_to_excel(results_df):
-    writer = pd.ExcelWriter(DASHBOARD_FILE, engine="xlsxwriter")
-    results_df.to_excel(writer, sheet_name="Sheet1")
-
-    workbook = writer.book
-    worksheet = writer.sheets["Sheet1"]
-
-    cell_format = workbook.add_format({"text_wrap": True})
-    worksheet.set_column("A:B", 20)
-    worksheet.set_column("C:H", 10)
-    worksheet.set_column("J:J", 50, cell_format)
-
-    writer.save()
-    print("HTAN Dashboard written to:  %s." % DASHBOARD_FILE)
 
 
 def _get_master_htan_table():
