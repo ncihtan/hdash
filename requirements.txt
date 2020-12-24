@@ -16,3 +16,4 @@ XlsxWriter==1.3.7
 pytest==6.2.1
 Jinja2==2.11.2
 coverage==5.3.1
+pytest-cov==2.10.1
