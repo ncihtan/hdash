@@ -9,7 +9,9 @@ Clean up:
   ✔ Add virtualenv to the README @done(20-12-23 14:17)
   ✔ Update the README.md to reflect setup.py @done(20-12-23 14:17)
   ✔ Update README to include instructions on Synapse credentials @done(20-12-23 14:17)
-  ☐ Create unit test for FileCounter
+  ✔ Create unit test for FileCounter @done(20-12-23 15:00)
+  ☐ Create new MasterTableReader class
+  ☐ Create unit test for the MasterTableReader
 
 New Features:
   ☐ Read in the metadata files and extract category and num items

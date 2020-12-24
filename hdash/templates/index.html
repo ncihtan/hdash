@@ -1,0 +1,51 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin-left: 20px;
+    }
+    .timestamp {
+      padding-top:10px;
+      padding-bottom:20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>HTAN Dashboard</h1>
+  <div class="timestamp">Automatically generated:  {{ timestamp }}</div>
+
+  <table class="pure-table pure-table-horizontal">
+    <thead>
+        <tr>
+            <th>Project</th>
+            <th>FASTQ</th>
+            <th>BAM</th>
+            <th>Image</th>
+            <th>Matrix</th>
+            <th>Other</th>
+            <th>Metadata</th>
+            <th>Liaison</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for id in project_list %}
+        <tr>
+          <td><a href="https://www.synapse.org/#!Synapse:{{ id }}/files/">{{ record_map[id]["ATLAS"] }}</a></td>
+          <td>{{ record_map[id]["FASTQ"] }}</td>
+          <td>{{ record_map[id]["BAM"] }}</td>
+          <td>{{ record_map[id]["IMAGE"] }}</td>
+          <td>{{ record_map[id]["MATRIX"] }}</td>
+          <td>{{ record_map[id]["OTHER"] }}</td>
+          <td>{{ record_map[id]["METADATA"] }}</td>
+          <td>{{ record_map[id]["LIAISON"] }}</td>
+          <td>{{ record_map[id]["NOTES"] }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>  
+</body>
+
+</html>

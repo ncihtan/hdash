@@ -4,6 +4,8 @@ import logging
 import click
 import os.path
 import pandas as pd
+from datetime import datetime
+from jinja2 import Environment, PackageLoader, select_autoescape
 import synapseclient
 from hdash.synapse.credentials import SynapseCredentials
 
@@ -27,6 +29,7 @@ def cli(verbose):
 @click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
 def create(use_cache):
     """Create HTAN Dashboard."""
+
     if not use_cache or not os.path.exists(MASTER_HTAN_TABLE):
         _get_master_htan_table()
 
@@ -63,6 +66,53 @@ def create(use_cache):
         }
         results_df.loc[row["id"]] = result_row
     _write_to_excel(results_df)
+
+
+@cli.command()
+@click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
+def create_html(use_cache):
+    """Create HTML HTAN Dashboard."""
+
+    env = Environment(
+        loader=PackageLoader("hdash", "templates"),
+        autoescape=select_autoescape(["html", "xml"]),
+    )
+
+    if not use_cache or not os.path.exists(MASTER_HTAN_TABLE):
+        _get_master_htan_table()
+
+    project_df = _get_project_table()
+    df = pd.read_csv(MASTER_HTAN_TABLE)
+
+    record_map = {}
+    project_list = []
+    for index, row in project_df.iterrows():
+        target_df = df[(df.projectId == row.id) & (df.type == "file")]
+        file_list = target_df.name.to_list()
+        file_counter = FileCounter(file_list)
+        record = {
+            "ATLAS": row["name"],
+            "FASTQ": file_counter.get_num_files(FileCounter.BAM),
+            "BAM": file_counter.get_num_files(FileCounter.FASTQ),
+            "IMAGE": file_counter.get_num_files(FileCounter.IMAGE),
+            "MATRIX": file_counter.get_num_files(FileCounter.MATRIX),
+            "OTHER": file_counter.get_num_files(FileCounter.OTHER),
+            "METADATA": file_counter.get_num_files(FileCounter.METADATA),
+            "LIAISON": row["liaison"],
+            "NOTES": row["notes"],
+        }
+        record_map[row["id"]] = record
+        project_list.append(row["id"])
+
+    now = datetime.now()
+    dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
+    template = env.get_template("index.html")
+    html = template.render(
+        timestamp=dt_string, project_list=project_list, record_map=record_map
+    )
+    fd = open("deploy/index.html", "w")
+    fd.write(html)
+    fd.close()
 
 
 def _write_to_excel(results_df):
