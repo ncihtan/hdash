@@ -1,7 +1,7 @@
 """File Counter."""
 from collections import Counter
 from pathlib import Path
-
+import logging
 
 class FileCounter:
     """File Counter."""
@@ -36,9 +36,14 @@ class FileCounter:
                     file_extension = "".join(path.suffixes[0:2])
                 else:
                     file_extension = path.suffix
-                file_type = self.file_type_map[file_extension]
-                self.file_extension_list.append(file_extension)
-                self.file_type_list.append(file_type)
+                try:
+                    file_type = self.file_type_map[file_extension]
+                except KeyError:
+                    logging.warning("Unrecognized: %s" % file_extension)
+                    file_type = FileCounter.OTHER
+                finally:
+                    self.file_extension_list.append(file_extension)
+                    self.file_type_list.append(file_type)
         self.counter = Counter(self.file_type_list)
 
     def _init_file_types(self):
