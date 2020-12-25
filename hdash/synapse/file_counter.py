@@ -1,7 +1,9 @@
 """File Counter."""
 from collections import Counter
+from hdash.synapse.htan_project import MetaFile
 from pathlib import Path
 import logging
+
 
 class FileCounter:
     """File Counter."""
@@ -29,7 +31,7 @@ class FileCounter:
     def _walk_files(self):
         for file in self.file_list:
             path = Path(file)
-            if file == "synapse_storage_manifest.csv":
+            if file == MetaFile.META_FILE_NAME:
                 self.file_type_list.append(FileCounter.METADATA)
             elif file not in self.exclude_file_list:
                 if path.suffix == ".gz":
