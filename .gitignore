@@ -5,3 +5,5 @@ htan_dashboard.xlsx
 .vscode/
 .venv/
 build
+.coverage
+deploy
