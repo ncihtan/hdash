@@ -1,18 +1,15 @@
 """Command Line Interface (CLI) for generating HTAN Dashboard."""
-from hdash.synapse.file_counter import FileCounter
+from hdash.util.report_writer import ReportWriter
+from hdash.synapse.table_util import TableUtil
 import logging
 import click
 import os.path
-import pandas as pd
-from datetime import datetime
-from jinja2 import Environment, PackageLoader, select_autoescape
 import synapseclient
 from hdash.synapse.credentials import SynapseCredentials
 
 MASTER_HTAN_ID = "syn20446927"
 MASTER_PROJECT_TABLE = "config/htan_projects.csv"
 MASTER_HTAN_TABLE = "cache/master_htan.csv"
-DASHBOARD_FILE = "htan_dashboard.xlsx"
 
 
 @click.group()
@@ -30,46 +27,13 @@ def cli(verbose):
 def create(use_cache):
     """Create HTML HTAN Dashboard."""
 
-    env = Environment(
-        loader=PackageLoader("hdash", "templates"),
-        autoescape=select_autoescape(["html", "xml"]),
-    )
-
     if not use_cache or not os.path.exists(MASTER_HTAN_TABLE):
         _get_master_htan_table()
 
-    project_df = _get_project_table()
-    df = pd.read_csv(MASTER_HTAN_TABLE)
-
-    record_map = {}
-    project_list = []
-    for index, row in project_df.iterrows():
-        target_df = df[(df.projectId == row.id) & (df.type == "file")]
-        file_list = target_df.name.to_list()
-        file_counter = FileCounter(file_list)
-        record = {
-            "ATLAS": row["name"],
-            "FASTQ": file_counter.get_num_files(FileCounter.BAM),
-            "BAM": file_counter.get_num_files(FileCounter.FASTQ),
-            "IMAGE": file_counter.get_num_files(FileCounter.IMAGE),
-            "MATRIX": file_counter.get_num_files(FileCounter.MATRIX),
-            "OTHER": file_counter.get_num_files(FileCounter.OTHER),
-            "METADATA": file_counter.get_num_files(FileCounter.METADATA),
-            "LIAISON": row["liaison"],
-            "NOTES": row["notes"],
-        }
-        record_map[row["id"]] = record
-        project_list.append(row["id"])
-
-    now = datetime.now()
-    dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
-    template = env.get_template("index.html")
-    html = template.render(
-        timestamp=dt_string, project_list=project_list, record_map=record_map
-    )
-    fd = open("deploy/index.html", "w")
-    fd.write(html)
-    fd.close()
+    table_util = TableUtil()
+    project_list = table_util.get_project_list(MASTER_PROJECT_TABLE)
+    table_util.annotate_project_list(project_list, MASTER_HTAN_TABLE)
+    _write_html(project_list)
 
 
 def _get_master_htan_table():
@@ -81,5 +45,12 @@ def _get_master_htan_table():
     df.to_csv(MASTER_HTAN_TABLE)
 
 
-def _get_project_table():
-    return pd.read_csv(MASTER_PROJECT_TABLE)
+def _write_html(project_list):
+    if not os.path.exists("deploy"):
+        os.makedirs("deploy")
+    out_name = "deploy/index.html"
+    print("Writing to:  %s." % out_name)
+    report_writer = ReportWriter(project_list)
+    fd = open(out_name, "w")
+    fd.write(report_writer.get_html())
+    fd.close()

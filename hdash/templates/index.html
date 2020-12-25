@@ -31,17 +31,17 @@
         </tr>
     </thead>
     <tbody>
-      {% for id in project_list %}
+      {% for project in project_list %}
         <tr>
-          <td><a href="https://www.synapse.org/#!Synapse:{{ id }}/files/">{{ record_map[id]["ATLAS"] }}</a></td>
-          <td>{{ record_map[id]["FASTQ"] }}</td>
-          <td>{{ record_map[id]["BAM"] }}</td>
-          <td>{{ record_map[id]["IMAGE"] }}</td>
-          <td>{{ record_map[id]["MATRIX"] }}</td>
-          <td>{{ record_map[id]["OTHER"] }}</td>
-          <td>{{ record_map[id]["METADATA"] }}</td>
-          <td>{{ record_map[id]["LIAISON"] }}</td>
-          <td>{{ record_map[id]["NOTES"] }}</td>
+          <td><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</a></td>
+          <td>{{ project.num_fastq }}</td>
+          <td>{{ project.num_bam }}</td>
+          <td>{{ project.num_image }}</td>
+          <td>{{ project.num_matrix }}</td>
+          <td>{{ project.num_other }}</td>
+          <td>{{ project.num_meta }}</td>
+          <td>{{ project.liaison }}</td>
+          <td>{{ project.notes }}</td>
         </tr>
       {% endfor %}
     </tbody>
