@@ -31,6 +31,7 @@ class MetaFile:
     def __init__(self):
         """Construct new Metadata File."""
         self.id = None
+        self.path = None
         self.category = None
         self.num_items = 0
 
