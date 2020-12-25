@@ -7,3 +7,4 @@ htan_dashboard.xlsx
 build
 .coverage
 deploy
+htmlcov
