@@ -25,9 +25,9 @@ def cli(verbose):
 
 
 @cli.command()
-@click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
-@click.option("--repeat", is_flag=True, help="Repeat every N hours")
-@click.option("--surge", is_flag=True, help="Deploy HTML with surge")
+@click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache.")
+@click.option("--repeat", is_flag=True, help="Repeat every N hours.")
+@click.option("--surge", is_flag=True, help="Deploy HTML with surge.")
 def create(use_cache, repeat, surge):
     """Create HTML HTAN Dashboard."""
     if repeat:
