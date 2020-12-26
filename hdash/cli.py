@@ -3,12 +3,14 @@ import logging
 import emoji
 import click
 import os.path
+import time
+from datetime import datetime
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.util.report_writer import ReportWriter
 from hdash.synapse.table_util import TableUtil
 
 MASTER_PROJECT_TABLE = "config/htan_projects.csv"
-
+SLEEP_INTERVAL = 7200 # 2 hours
 
 @click.group()
 @click.option("--verbose", is_flag=True, help="Enable verbose mode")
@@ -22,9 +24,20 @@ def cli(verbose):
 
 @cli.command()
 @click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
-def create(use_cache):
+@click.option("--repeat", is_flag=True, help="Repeat every N hours")
+def create(use_cache, repeat):
     """Create HTML HTAN Dashboard."""
-    output_header("Creating HTAN Dashboard.")
+    if repeat:
+        while(True):
+            _create_dashboard(use_cache)
+            time.sleep(SLEEP_INTERVAL)
+    else:
+        _create_dashboard(use_cache)
+
+def _create_dashboard(use_cache):
+    now = datetime.now()
+    dt = now.strftime("%m/%d/%Y %H:%M:%S")
+    output_header("Creating HTAN Dashboard:  %s" % dt)
     synapse_util = SynapseUtil()
     if not use_cache or not os.path.exists(SynapseUtil.MASTER_HTAN_TABLE):
         synapse_util.retrieve_master_htan_table()
