@@ -1,5 +1,5 @@
-from hdash.synapse.credentials import SynapseCredentials
 import synapseclient
+from hdash.synapse.credentials import SynapseCredentials
 
 
 class SynapseUtil:
@@ -8,8 +8,8 @@ class SynapseUtil:
 
     def __init__(self):
         self.syn = synapseclient.Synapse()
-        self.credentials = SynapseCredentials()
-        self.syn.login(self.credentials.user, self.credentials.password)
+        self.cred = SynapseCredentials()
+        self.syn.login(self.cred.user, self.cred.password, silent=True)
 
     def retrieve_master_htan_table(self):
         master_htan_table = self.syn.tableQuery(

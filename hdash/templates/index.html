@@ -14,7 +14,7 @@
 </head>
 <body>
   <h1>HTAN Dashboard</h1>
-  <div class="timestamp">Automatically generated:  {{ timestamp }}</div>
+  <div class="timestamp">Automatically generated:  {{ now }}</div>
 
   <table class="pure-table pure-table-horizontal">
     <thead>
@@ -31,7 +31,7 @@
         </tr>
     </thead>
     <tbody>
-      {% for project in project_list %}
+      {% for project in p_list %}
         <tr>
           <td><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</a></td>
           <td>{{ project.num_fastq }}</td>
@@ -39,7 +39,13 @@
           <td>{{ project.num_image }}</td>
           <td>{{ project.num_matrix }}</td>
           <td>{{ project.num_other }}</td>
-          <td>{{ project.num_meta }}</td>
+          <td>
+            {% if project.num_meta > 0 %}
+              <a href="{{ project.id }}.html">Yes</a>
+            {% else %}
+              No
+            {% endif %}
+          </td>
           <td>{{ project.liaison }}</td>
           <td>{{ project.notes }}</td>
         </tr>

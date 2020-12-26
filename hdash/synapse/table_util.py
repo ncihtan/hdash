@@ -27,6 +27,13 @@ class TableUtil:
             self._count_files(df, project)
             self._extract_meta(df, project)
 
+    def annotate_meta_file(self, meta_file):
+        """Annotate the specified meta_file with additional details."""
+        df = pd.read_csv(meta_file.path)
+        component_list = df.Component.dropna().unique()
+        meta_file.category = component_list[0]
+        meta_file.num_items = len(df.index)
+
     def _count_files(self, df, project):
         target_df = df[(df.projectId == project.id) & (df.type == "file")]
         file_list = target_df.name.to_list()

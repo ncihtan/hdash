@@ -1,4 +1,5 @@
 """Test Table Utilities."""
+from hdash.synapse.htan_project import MetaFile
 from hdash.synapse.table_util import TableUtil
 
 
@@ -33,3 +34,13 @@ def test_project_annotation():
 
     assert project2.meta_list[0].id == "syn23636452"
     assert project2.meta_list[1].id == "syn23636563"
+
+
+def test_meta_file_annotation():
+    """Test Meta File Annotation."""
+    table_util = TableUtil()
+    meta_file = MetaFile()
+    meta_file.path = "tests/data/manifest.csv"
+    table_util.annotate_meta_file(meta_file)
+    assert meta_file.category == "Demographics"
+    assert meta_file.num_items == 3
