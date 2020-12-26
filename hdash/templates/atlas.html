@@ -1,0 +1,40 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin-left: 20px;
+    }
+    .timestamp {
+      padding-top:10px;
+      padding-bottom:20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>{{ project.name }}</h1>
+  <div class="timestamp">Automatically generated:  {{ now }}</div>
+
+  <h2>Metadata Files Detected:</h2>
+  <table class="pure-table pure-table-horizontal">
+    <thead>
+        <tr>
+            <th>Synapse ID</th>
+            <th>Category</th>
+            <th>Num Items</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for meta_file in project.meta_list %}
+        <tr>
+          <td><a href="https://www.synapse.org/#!Synapse:{{ meta_file.id }}/files/">{{ meta_file.id }}</a></td>
+          <td>{{ meta_file.category }}</td>
+          <td>{{ meta_file.num_items }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>  
+</body>
+
+</html>

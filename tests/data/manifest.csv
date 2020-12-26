@@ -1,0 +1,4 @@
+Filename,entityId,Component,HTAN Patient ID,Ethnicity,Gender,Race,Vital Status,Days to Birth,Year of Death,Age at Index,Age Is Obfuscated,Year Of Birth,Cause of Death,Cause of Death Source,Days to Death,Occupation Duration Years,Premature At Birth,Weeks Gestation at Birth
+placeholder.txt,syn22677416,,,,,,,,,,,,,,,,,
+,syn22723228,Demographics,HTA3_50021,not hispanic or latino,female,white,Alive,20687.0,Not Applicable,,,,Unknown,,,,,
+,syn22723229,Demographics,HTA3_50033,not hispanic or latino,female,white,Alive,20582.0,Not Applicable,,,,Unknown,,,,,
