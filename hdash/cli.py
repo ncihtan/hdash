@@ -4,13 +4,15 @@ import emoji
 import click
 import os.path
 import time
+import subprocess
 from datetime import datetime
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.util.report_writer import ReportWriter
 from hdash.synapse.table_util import TableUtil
 
 MASTER_PROJECT_TABLE = "config/htan_projects.csv"
-SLEEP_INTERVAL = 7200 # 2 hours
+SLEEP_INTERVAL = 7200  # 2 hours
+
 
 @click.group()
 @click.option("--verbose", is_flag=True, help="Enable verbose mode")
@@ -25,16 +27,18 @@ def cli(verbose):
 @cli.command()
 @click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache")
 @click.option("--repeat", is_flag=True, help="Repeat every N hours")
-def create(use_cache, repeat):
+@click.option("--surge", is_flag=True, help="Deploy HTML with surge")
+def create(use_cache, repeat, surge):
     """Create HTML HTAN Dashboard."""
     if repeat:
-        while(True):
-            _create_dashboard(use_cache)
+        while True:
+            _create_dashboard(use_cache, surge)
             time.sleep(SLEEP_INTERVAL)
     else:
-        _create_dashboard(use_cache)
+        _create_dashboard(use_cache, surge)
 
-def _create_dashboard(use_cache):
+
+def _create_dashboard(use_cache, surge):
     now = datetime.now()
     dt = now.strftime("%m/%d/%Y %H:%M:%S")
     output_header("Creating HTAN Dashboard:  %s" % dt)
@@ -52,6 +56,10 @@ def _create_dashboard(use_cache):
             table_util.annotate_meta_file(meta_file)
 
     _write_html(p_list)
+
+    if surge:
+        _deploy_with_surge()
+
     output_header(emoji.emojize("Done! :beer:", use_aliases=True))
 
 
@@ -86,3 +94,7 @@ def _write_atlas_html(report_writer):
 def output_header(msg):
     """Output header with emphasis."""
     click.echo(click.style(msg, fg="green"))
+
+
+def _deploy_with_surge():
+    subprocess.run(["surge", "deploy", "http://htan_dashboard.surge.sh/"])
