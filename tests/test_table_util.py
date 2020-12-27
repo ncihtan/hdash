@@ -15,10 +15,10 @@ def test_project_list():
     assert project0.notes.startswith("Niki and Ino are")
 
 
-def test_project_annotation():
+def test_project_annotation(init_project_list):
     """Test Project Annotation."""
     table_util = TableUtil()
-    project_list = table_util.get_project_list("tests/data/projects.csv")
+    project_list = init_project_list
     table_util.annotate_project_list(project_list, "tests/data/files.csv")
 
     project0 = project_list[1]
