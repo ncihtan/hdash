@@ -7,12 +7,12 @@ from datetime import datetime
 class GoogleSheetUtil:
     HDASH_SPREADSHEET_KEY = "1XuHG_2WsODBEKcxDRbwV7qR2avdzaln8FWINKAJSumg"
     HEADER_LIST = [
-        "NUM_FASTQ",
-        "NUM_BAM",
-        "NUM_IMAGE",
-        "NUM_MATRIX",
-        "NUM_OTHER",
-        "NUM_META",
+        "FASTQ",
+        "BAM",
+        "IMAGE",
+        "MATRIX",
+        "OTHER",
+        "META",
     ]
 
     def __init__(self):
@@ -50,12 +50,14 @@ class GoogleSheetUtil:
             for header in GoogleSheetUtil.HEADER_LIST:
                 label = project_name + "_" + header
                 header_list.append(label)
+        header_list.append("TOTAL_NUM_FILES")
         logging.info("Setting headers")
         self.wks.update_row(index=3, values=header_list)
 
         # Output Data
         value_list = []
         value_list.append(datetime.now())
+        total_num_files = 0
         for project in p_list:
             value_list.append(project.num_fastq)
             value_list.append(project.num_bam)
@@ -63,6 +65,14 @@ class GoogleSheetUtil:
             value_list.append(project.num_matrix)
             value_list.append(project.num_other)
             value_list.append(project.num_meta)
+            total_num_files += project.num_fastq
+            total_num_files += project.num_bam
+            total_num_files += project.num_image
+            total_num_files += project.num_matrix
+            total_num_files += project.num_other
+            total_num_files += project.num_other
+            total_num_files += project.num_meta
+        value_list.append(total_num_files)
         self.wks.append_table(value_list)
 
     def _get_service_account_path(self):
