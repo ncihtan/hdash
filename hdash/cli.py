@@ -1,5 +1,4 @@
 """Command Line Interface (CLI) for generating HTAN Dashboard."""
-from hdash.google.gsheet_util import GoogleSheetUtil
 import logging
 import emoji
 import click
