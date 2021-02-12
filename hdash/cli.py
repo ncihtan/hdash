@@ -1,4 +1,5 @@
 """Command Line Interface (CLI) for generating HTAN Dashboard."""
+from hdash.google.gsheet_util import GoogleSheetUtil
 import logging
 import emoji
 import click
@@ -7,6 +8,7 @@ import time
 import subprocess
 from datetime import datetime
 from hdash.synapse.synapse_util import SynapseUtil
+from hdash.google.gsheet_util import GoogleSheetUtil
 from hdash.util.report_writer import ReportWriter
 from hdash.synapse.table_util import TableUtil
 
@@ -28,17 +30,18 @@ def cli(verbose):
 @click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache.")
 @click.option("--repeat", is_flag=True, help="Repeat every N hours.")
 @click.option("--surge", is_flag=True, help="Deploy HTML with surge.")
-def create(use_cache, repeat, surge):
+@click.option("--sheet", is_flag=True, help="Applend data to Google Sheet.")
+def create(use_cache, repeat, surge, sheet):
     """Create HTML HTAN Dashboard."""
     if repeat:
         while True:
-            _create_dashboard(use_cache, surge)
+            _create_dashboard(use_cache, surge, sheet)
             time.sleep(SLEEP_INTERVAL)
     else:
-        _create_dashboard(use_cache, surge)
+        _create_dashboard(use_cache, surge, sheet)
 
 
-def _create_dashboard(use_cache, surge):
+def _create_dashboard(use_cache, surge, sheet):
     now = datetime.now()
     dt = now.strftime("%m/%d/%Y %H:%M:%S")
     output_header("Creating HTAN Dashboard:  %s" % dt)
@@ -59,6 +62,10 @@ def _create_dashboard(use_cache, surge):
 
     if surge:
         _deploy_with_surge()
+
+    if sheet:
+        gsheet_util = GoogleSheetUtil()
+        gsheet_util.write(p_list)
 
     output_header(emoji.emojize("Done! :beer:", use_aliases=True))
 
