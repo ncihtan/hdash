@@ -57,6 +57,8 @@ class FileCounter:
         fm[".fq"] = FileCounter.FASTQ
         fm[".tif"] = FileCounter.IMAGE
         fm[".tiff"] = FileCounter.IMAGE
+        fm[".svs"] = FileCounter.IMAGE
+        fm[".vsi"] = FileCounter.IMAGE
         fm[".csv"] = FileCounter.MATRIX
         fm[".csv.gz"] = FileCounter.MATRIX
         fm[".tsv"] = FileCounter.MATRIX
