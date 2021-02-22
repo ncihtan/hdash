@@ -23,7 +23,8 @@ class GoogleSheetUtil:
         logging.info("Success authenticating with Google")
 
         sh = client.open_by_key(GoogleSheetUtil.HDASH_SPREADSHEET_KEY)
-        self.wks = sh.sheet1
+        self.wks1 = sh.worksheet_by_title("File Count")
+        self.wks2 = sh.worksheet_by_title("File Size")
         logging.info("Opening HDash Sheet")
 
     def write(self, p_list):
@@ -34,14 +35,16 @@ class GoogleSheetUtil:
             project_name = self._truncate_project_name(project.name)
             for header in GoogleSheetUtil.HEADER_LIST:
                 header_list.append(project_name)
-        self.wks.update_row(index=1, values=header_list)
+        self.wks1.update_row(index=1, values=header_list)
+        self.wks2.update_row(index=1, values=header_list)
 
         header_list = []
         header_list.append("CATEGORY")
         for project in p_list:
             for header in GoogleSheetUtil.HEADER_LIST:
                 header_list.append(header)
-        self.wks.update_row(index=2, values=header_list)
+        self.wks1.update_row(index=2, values=header_list)
+        self.wks2.update_row(index=1, values=header_list)
 
         header_list = []
         header_list.append("TIMESTAMP")
@@ -50,11 +53,12 @@ class GoogleSheetUtil:
             for header in GoogleSheetUtil.HEADER_LIST:
                 label = project_name + "_" + header
                 header_list.append(label)
-        header_list.append("TOTAL_NUM_FILES")
+        header_list.append("TOTAL")
         logging.info("Setting headers")
-        self.wks.update_row(index=3, values=header_list)
+        self.wks1.update_row(index=3, values=header_list)
+        self.wks2.update_row(index=1, values=header_list)
 
-        # Output Data
+        # Output File Count Data
         value_list = []
         value_list.append(datetime.now())
         total_num_files = 0
@@ -73,7 +77,22 @@ class GoogleSheetUtil:
             total_num_files += project.num_other
             total_num_files += project.num_meta
         value_list.append(total_num_files)
-        self.wks.append_table(value_list)
+        self.wks1.append_table(value_list)
+
+        # Output File Size Data
+        value_list = []
+        value_list.append(datetime.now())
+        total_size = 0
+        for project in p_list:
+            value_list.append(project.size_fastq)
+            value_list.append(project.size_bam)
+            value_list.append(project.size_image)
+            value_list.append(project.size_matrix)
+            value_list.append(project.size_other)
+            value_list.append(0)
+            total_size += project.get_total_file_size()
+        value_list.append(total_size)
+        self.wks2.append_table(value_list)
 
     def _get_service_account_path(self):
         service_account_path = os.getenv("HDASH_SERVICE_ACCOUNT")

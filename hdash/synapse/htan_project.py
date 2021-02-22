@@ -1,4 +1,5 @@
 """HTAN Project."""
+import humanize
 
 
 class HTANProject:
@@ -16,7 +17,25 @@ class HTANProject:
         self.num_matrix = 0
         self.num_other = 0
         self.num_meta = 0
+        self.size_fastq = 0
+        self.size_bam = 0
+        self.size_image = 0
+        self.size_matrix = 0
+        self.size_other = 0
         self.meta_list = []
+
+    def get_total_file_size(self):
+        return (
+            self.size_fastq
+            + self.size_bam
+            + self.size_image
+            + self.size_matrix
+            + self.size_other
+        )
+
+    def get_total_fize_size_human_readable(self):
+        total_file_size = self.get_total_file_size()
+        return humanize.naturalsize(total_file_size)
 
     def __repr__(self):
         """Return summary of object."""

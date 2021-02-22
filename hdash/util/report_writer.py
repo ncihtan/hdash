@@ -1,5 +1,6 @@
 """Report Writer."""
 from datetime import datetime
+import humanize
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 
@@ -9,6 +10,11 @@ class ReportWriter:
     def __init__(self, project_list):
         """Create new Report Writer."""
         self.p_list = project_list
+
+        self.total_storage = 0
+        for project in self.p_list:
+            self.total_storage += project.get_total_file_size()
+
         self.env = self._get_template_env()
         self.now = datetime.now()
         self.dt = self.now.strftime("%m/%d/%Y %H:%M:%S")
@@ -25,7 +31,10 @@ class ReportWriter:
 
     def _generate_index_html(self):
         template = self.env.get_template("index.html")
-        self.index_html = template.render(now=self.dt, p_list=self.p_list)
+        storage_human = humanize.naturalsize(self.total_storage)
+        self.index_html = template.render(
+            now=self.dt, p_list=self.p_list, storage_human=storage_human
+        )
 
     def _generate_atlas_pages(self):
         self.atlas_html_map = {}

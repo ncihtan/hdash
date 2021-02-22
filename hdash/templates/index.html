@@ -6,20 +6,30 @@
     body {
       margin-left: 20px;
     }
-    .timestamp {
-      padding-top:10px;
-      padding-bottom:20px;
-    }
   </style>
 </head>
 <body>
   <h1>HTAN Dashboard</h1>
-  <div class="timestamp">Automatically generated:  {{ now }}</div>
-
+  <table class="pure-table pure-table-horizontal">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Total File Storage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ now }}</td>
+        <td>{{ storage_human }}</td>
+      </tr>
+    </tbody>
+  </table>  
+  <br/>
   <table class="pure-table pure-table-horizontal">
     <thead>
         <tr>
             <th>Project</th>
+            <th>Total File Size</th>
             <th>FASTQ</th>
             <th>BAM</th>
             <th>Image</th>
@@ -34,6 +44,7 @@
       {% for project in p_list %}
         <tr>
           <td><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</a></td>
+          <td>{{ project.get_total_fize_size_human_readable() }}</td>
           <td>{{ project.num_fastq }}</td>
           <td>{{ project.num_bam }}</td>
           <td>{{ project.num_image }}</td>

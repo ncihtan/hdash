@@ -36,14 +36,19 @@ class TableUtil:
 
     def _count_files(self, df, project):
         target_df = df[(df.projectId == project.id) & (df.type == "file")]
-        file_list = target_df.name.to_list()
-        counter = FileCounter(file_list)
+        counter = FileCounter(target_df)
         project.num_fastq = counter.get_num_files(FileCounter.FASTQ)
         project.num_bam = counter.get_num_files(FileCounter.BAM)
         project.num_image = counter.get_num_files(FileCounter.IMAGE)
         project.num_matrix = counter.get_num_files(FileCounter.MATRIX)
         project.num_other = counter.get_num_files(FileCounter.OTHER)
         project.num_meta = counter.get_num_files(FileCounter.METADATA)
+
+        project.size_fastq = counter.get_total_file_size(FileCounter.FASTQ)
+        project.size_bam = counter.get_total_file_size(FileCounter.BAM)
+        project.size_image = counter.get_total_file_size(FileCounter.IMAGE)
+        project.size_matrix = counter.get_total_file_size(FileCounter.MATRIX)
+        project.size_other = counter.get_total_file_size(FileCounter.OTHER)
 
     def _extract_meta(self, df, project):
         target_df = df[

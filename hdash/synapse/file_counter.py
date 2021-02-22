@@ -1,5 +1,4 @@
 """File Counter."""
-from collections import Counter
 from hdash.synapse.htan_project import MetaFile
 from pathlib import Path
 import logging
@@ -14,26 +13,30 @@ class FileCounter:
     MATRIX = "MATRIX"
     METADATA = "METADATA"
     OTHER = "OTHER"
+    EXCLUDE = "EXCLUDE"
 
-    def __init__(self, file_list):
+    def __init__(self, file_df):
         """Construct new File Counter."""
+        self._file_df = file_df
         self._init_file_types()
-        self._init_exclude_list()
-        self.file_list = file_list
-        self.file_extension_list = []
-        self.file_type_list = []
         self._walk_files()
 
     def get_num_files(self, file_type):
         """Get the File Type Counter."""
-        return self.counter[file_type]
+        return self.file_type_counter.get(file_type, 0)
+
+    def get_total_file_size(self, file_type):
+        """Get the Total File Size for the Specified File Type."""
+        return self.file_size_counter.get(file_type, 0)
 
     def _walk_files(self):
-        for file in self.file_list:
-            path = Path(file)
-            if file == MetaFile.META_FILE_NAME:
-                self.file_type_list.append(FileCounter.METADATA)
-            elif file not in self.exclude_file_list:
+        file_type_list = []
+        for index, row in self._file_df.iterrows():
+            name = row["name"]
+            path = Path(name)
+            if name == MetaFile.META_FILE_NAME:
+                file_type = FileCounter.METADATA
+            else:
                 if path.suffix == ".gz":
                     file_extension = "".join(path.suffixes[0:2])
                 else:
@@ -43,10 +46,14 @@ class FileCounter:
                 except KeyError:
                     logging.warning("Unrecognized: %s" % file_extension)
                     file_type = FileCounter.OTHER
-                finally:
-                    self.file_extension_list.append(file_extension)
-                    self.file_type_list.append(file_type)
-        self.counter = Counter(self.file_type_list)
+            file_type_list.append(file_type)
+
+        # Aggregate counts by file type
+        self._file_df.insert(0, "file_type", file_type_list)
+        groups = self._file_df.groupby("file_type")["file_type"].count()
+        self.file_type_counter = groups.to_dict()
+        groups = self._file_df.groupby("file_type")["dataFileSizeBytes"].sum()
+        self.file_size_counter = groups.to_dict()
 
     def _init_file_types(self):
         fm = {}
@@ -75,11 +82,8 @@ class FileCounter:
         fm[".log"] = FileCounter.OTHER
         fm[".mzML"] = FileCounter.OTHER
         fm[".zstd"] = FileCounter.OTHER
-        self.file_type_map = fm
 
-    def _init_exclude_list(self):
-        el = []
-        el.append(".DS_Store")
-        el.append(".vimrc")
-        el.append(".Rhistory")
-        self.exclude_file_list = el
+        fm[".DS_Store"] = FileCounter.EXCLUDE
+        fm[".vimrc"] = FileCounter.EXCLUDE
+        fm[".Rhistory"] = FileCounter.EXCLUDE
+        self.file_type_map = fm
