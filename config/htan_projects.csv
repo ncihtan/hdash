@@ -1,7 +1,7 @@
 ﻿id,name,liaison,notes
-syn20834712,PILOT - HTAPP,Vesteinn,"Vesteinn, Clarisse, Sheila coordinating with Judit @ Broad and CODEX, MIBI, ExSeq, H&E, scRNAseq contributor."
-syn23511984,PILOT - PCAPP,Ethan,"Ethan has been in touch with Olivier, who has indicated that PCAPP data will be initially distributed via MCL."
-syn22124336,HTAN BU,Ethan,Ethan is actively coordinating with Sarah and Josh @ BU.
+syn20834712,PILOT - HTAPP,Vesteinn,"Vesteinn, Clarisse, Sheila coordinating with Judit @ Broad and CODEX, MIBI, ExSeq, H&E, scRNAseq contributors."
+syn23511984,PILOT - PCAPP,Ethan,"Ethan has been in touch with Olivier, who has indicated that PCAPP data will be initially distributed via MCL, and PCAPP data will not be included in the first HTAN data release."
+syn22124336,HTAN BU,Ethan,Ethan is actively coordinating with Sarah and Josh @ BU.  We are close to a complete data set and now just awaiting biospecimen data.
 syn22776798,HTAN CHOP,Ino,"scRNASeq Level 1 received, Biospecimen and clinical metadata missing."
 syn23511954,HTAN DFCI,Ethan,Ethan has reached out to Bruce and Gaddy and our understanding is that HTAPP data will be transferred first.
 syn23511961,HTAN Duke,Ino,"Imaging and fastqs received, but no metadata yet."
@@ -10,4 +10,4 @@ syn23448901,HTAN MSK,Ino,Only Biospecimen metadata and imaging left.
 syn22093319,HTAN OHSU,Milen,Milen is actively coordinating with Allie Creason @ OHSU.
 syn23511964,HTAN Stanford,Milen,"Milen is actively coordinating with Daniel Cotter, Tuhin Guha, and Aaron Horning."
 syn21050481,HTAN Vanderbilt,Vesteinn,"Vesteinn and Clarisse coordinating with Lynne, Martha, Ken @Vanderbilt."
-syn22255320,HTAN WUSTL,Vesteinn,Vesteinn and Clarisse coordinating with Matthew Wyczalkowski @ WashU.
+syn22255320,HTAN WUSTL,Vesteinn,Awaiting first transfers of data and metadata. Vesteinn and Clarisse working with Matt and Erik @ WashU.

@@ -6,6 +6,9 @@
     body {
       margin-left: 20px;
     }
+    footer {
+      margin: 10px;
+    }
   </style>
 </head>
 <body>
@@ -43,7 +46,7 @@
     <tbody>
       {% for project in p_list %}
         <tr>
-          <td><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</a></td>
+          <td><nobr><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</nobr></a></td>
           <td>{{ project.get_total_fize_size_human_readable() }}</td>
           <td>{{ project.num_fastq }}</td>
           <td>{{ project.num_bam }}</td>
@@ -62,7 +65,9 @@
         </tr>
       {% endfor %}
     </tbody>
-  </table>  
+  </table>
+  <div class='footer'>HTAN Data Coordinating Center (DCC).</div>
+  <br/>
 </body>
 
 </html>
