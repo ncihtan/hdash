@@ -67,7 +67,7 @@ def _create_dashboard(use_cache, surge):
     _write_html(p_list)
 
     if surge:
-        output_header("Deploying to Surge..." % dt)
+        output_header("Deploying to Surge...")
         _deploy_with_surge()
 
     output_header("Appending to Google Sheet...")
