@@ -1,4 +1,5 @@
 """Test Table Utilities."""
+import pandas as pd
 from hdash.synapse.htan_project import MetaFile
 from hdash.synapse.table_util import TableUtil
 
@@ -6,7 +7,8 @@ from hdash.synapse.table_util import TableUtil
 def test_project_list():
     """Test Project List."""
     table_util = TableUtil()
-    project_list = table_util.get_project_list("tests/data/projects.csv")
+    project_df = pd.read_csv("tests/data/projects.csv")
+    project_list = table_util.get_project_list(project_df)
     assert len(project_list) == 4
     project0 = project_list[0]
     assert project0.id == "syn23448901"

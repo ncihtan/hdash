@@ -5,6 +5,7 @@ from datetime import datetime
 
 
 class GoogleSheetUtil:
+    PROJECT_SPREADSHEET_KEY = "1yoNxJ8sXDac3RRLpe3qTj7_ZQtVZzWgAUq_D3k4Ppj8"
     HDASH_SPREADSHEET_KEY = "1XuHG_2WsODBEKcxDRbwV7qR2avdzaln8FWINKAJSumg"
     HEADER_LIST = [
         "FASTQ",
@@ -21,6 +22,10 @@ class GoogleSheetUtil:
         logging.info("Using service account:  %s" % service_account_path)
         client = pygsheets.authorize(service_file=service_account_path)
         logging.info("Success authenticating with Google")
+
+        sh = client.open_by_key(GoogleSheetUtil.PROJECT_SPREADSHEET_KEY)
+        project_sheet = sh.sheet1
+        self.project_df = project_sheet.get_as_df()
 
         sh = client.open_by_key(GoogleSheetUtil.HDASH_SPREADSHEET_KEY)
         self.wks1 = sh.worksheet_by_title("File Count")

@@ -7,11 +7,10 @@ import pandas as pd
 class TableUtil:
     """Table Utilities."""
 
-    def get_project_list(self, project_file):
+    def get_project_list(self, project_df):
         """Get the Project List from the specified project file."""
-        df = pd.read_csv(project_file)
         project_list = []
-        for row in df.itertuples():
+        for row in project_df.itertuples():
             project = HTANProject()
             project.id = row.id
             project.name = row.name
