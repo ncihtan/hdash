@@ -107,6 +107,7 @@ def output_header(msg):
     """Output header with emphasis."""
     click.echo(click.style(msg, fg="green"))
 
+
 def output_message(msg):
     """Output message to console."""
     click.echo(msg)
