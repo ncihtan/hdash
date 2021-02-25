@@ -5,6 +5,7 @@ import click
 import os.path
 import time
 import subprocess
+import pandas as pd
 from datetime import datetime
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.google.gsheet_util import GoogleSheetUtil
@@ -30,29 +31,35 @@ def cli(verbose):
 @click.option("--use_cache", is_flag=True, help="Use Local Synapse Cache.")
 @click.option("--repeat", is_flag=True, help="Repeat every N hours.")
 @click.option("--surge", is_flag=True, help="Deploy HTML with surge.")
-def create(use_cache, repeat, surge):
+@click.option("--google", is_flag=True, help="Read/write to Google sheets.")
+def create(use_cache, repeat, surge, google):
     """Create HTML HTAN Dashboard."""
     if repeat:
         while True:
-            _create_dashboard(use_cache, surge)
+            _create_dashboard(use_cache, surge, google)
             time.sleep(SLEEP_INTERVAL)
     else:
-        _create_dashboard(use_cache, surge)
+        _create_dashboard(use_cache, surge, google)
 
 
-def _create_dashboard(use_cache, surge):
+def _create_dashboard(use_cache, surge, google):
     now = datetime.now()
     dt = now.strftime("%m/%d/%Y %H:%M:%S")
     output_header("Creating HTAN Dashboard:  %s" % dt)
     output_message("Connecting to Synapse...")
     synapse_util = SynapseUtil()
-    output_message("Connecting to Google...")
-    gsheet_util = GoogleSheetUtil()
+    if google:
+        output_message("Connecting to Google...")
+        gsheet_util = GoogleSheetUtil()
+
     if not use_cache or not os.path.exists(SynapseUtil.MASTER_HTAN_TABLE):
         synapse_util.retrieve_master_htan_table()
 
     table_util = TableUtil()
-    p_list = table_util.get_project_list(gsheet_util.project_df)
+    project_df = pd.read_csv(MASTER_PROJECT_TABLE)
+    if google:
+        project_df = gsheet_util.project_df
+    p_list = table_util.get_project_list(project_df)
     table_util.annotate_project_list(p_list, SynapseUtil.MASTER_HTAN_TABLE)
 
     for project in p_list:
@@ -70,8 +77,10 @@ def _create_dashboard(use_cache, surge):
         output_header("Deploying to Surge...")
         _deploy_with_surge()
 
-    output_header("Appending to Google Sheet...")
-    gsheet_util.write(p_list)
+    if google:
+        output_header("Appending to Google Sheet...")
+        gsheet_util.write(p_list)
+
     output_header(emoji.emojize("Done! :beer:", use_aliases=True))
 
 
