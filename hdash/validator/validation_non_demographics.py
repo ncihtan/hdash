@@ -14,7 +14,7 @@ class ValidationNonDemographics(ValidationRule):
     def __init__(self, atlas_id, meta_map):
         super().__init__(
             "H_NON_DEM",
-            "Non-Demographic Clinical Files Use Same IDs as the Demographics"
+            "Non-Demographic Clinical Files Use Same IDs as Demographics File"
         )
         df = meta_map["Demographics"]
         error_list = []
