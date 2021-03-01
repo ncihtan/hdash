@@ -3,7 +3,7 @@ from hdash.validator.validation_demographics import ValidationDemographics
 from hdash.validator.validation_biospecimens import ValidationBiospecimens
 from hdash.validator.validation_demographics_ids import ValidationDemographicsIds
 from hdash.validator.validation_biospecimens_ids import ValidationBiospecimenIds
-
+from hdash.validator.validation_non_demographics import ValidationNonDemographics
 
 class HtanValidator:
     def __init__(self, atlas_id, meta_data_file_list):
@@ -30,6 +30,9 @@ class HtanValidator:
         if h1.validation_passed:
             h2 = ValidationDemographicsIds(self.atlas_id, self.meta_map)
             self.validation_list.append(h2)
+
+            h5 = ValidationNonDemographics(self.atlas_id, self.meta_map)
+            self.validation_list.append(h5)
 
         h3 = ValidationBiospecimens(self.meta_map)
         self.validation_list.append(h3)
