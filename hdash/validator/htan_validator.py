@@ -1,7 +1,8 @@
 import pandas as pd
-from hdash.validator.validation_h1 import ValidationH1
-from hdash.validator.validation_h2 import ValidationH2
-from hdash.validator.validation_h3 import ValidationH3
+from hdash.validator.validation_demographics import ValidationDemographics
+from hdash.validator.validation_biospecimens import ValidationBiospecimens
+from hdash.validator.validation_demographics_ids import ValidationDemographicsIds
+from hdash.validator.validation_biospecimens_ids import ValidationBiospecimenIds
 
 
 class HtanValidator:
@@ -17,19 +18,22 @@ class HtanValidator:
             component_list = current_df["Component"].to_list()
             component = component_list[0]
             self.meta_map[component] = current_df
-            print (atlas_id, component)
         self.__validate()
 
     def get_validation_list(self):
         return self.validation_list
 
     def __validate(self):
-        h1 = ValidationH1(self.meta_map)
+        h1 = ValidationDemographics(self.meta_map)
         self.validation_list.append(h1)
 
         if h1.validation_passed:
-            h2 = ValidationH2(self.atlas_id, self.meta_map)
+            h2 = ValidationDemographicsIds(self.atlas_id, self.meta_map)
             self.validation_list.append(h2)
 
-        h3 = ValidationH3(self.meta_map)
+        h3 = ValidationBiospecimens(self.meta_map)
         self.validation_list.append(h3)
+
+        if h3.validation_passed:
+            h4 = ValidationBiospecimenIds(self.atlas_id, self.meta_map)
+            self.validation_list.append(h4)

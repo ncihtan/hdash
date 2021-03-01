@@ -59,11 +59,11 @@
         {% if (validation.validation_passed) %}
           {% set passed = "Passed" %}
         {% endif %}
-        <tr>
+        <tr valign= "top">
           <td>{{ validation.validation_code }}</td>
           <td>{{ validation.validation_text }}</td>
           <td class={{trClass}}>{{ passed }}</td>
-          <td>
+          <td width=60%>
             {% for error in validation.error_list %}
               - {{ error }}<br/>
             {% endfor %}

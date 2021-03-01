@@ -10,3 +10,7 @@ class ValidationRule:
 
     def set_error_list(self, error_list):
         self.error_list = error_list
+        if len(error_list) == 0:
+            self.set_status(True)
+        else:
+            self.set_status(False)
