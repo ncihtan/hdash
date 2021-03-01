@@ -10,6 +10,12 @@
       padding-top:10px;
       padding-bottom:20px;
     }
+    .validation_True {
+      background-color: lightgreen !important;
+    }
+    .validation_False {
+      background-color: pink I !important;
+    }
   </style>
 </head>
 <body>
@@ -34,7 +40,30 @@
         </tr>
       {% endfor %}
     </tbody>
-  </table>  
+  </table>
+
+  <h2>Metadata Validation:</h2>  
+  <table class="pure-table pure-table-horizontal">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Text</th>
+            <th>Passed/Failed</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for validation in project.validation_list %}
+        {% set trClass = "validation_%s" % validation.validation_passed %}
+        <tr>
+          <td>{{ validation.validation_code }}</td>
+          <td>{{ validation.validation_text }}</td>
+          <td class={{trClass}}>{{ validation.validation_passed }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
 </body>
 
 </html>

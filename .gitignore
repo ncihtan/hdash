@@ -8,3 +8,4 @@ build
 .coverage
 deploy
 htmlcov
+.DS_Store

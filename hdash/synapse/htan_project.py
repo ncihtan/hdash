@@ -8,6 +8,7 @@ class HTANProject:
     def __init__(self):
         """Construct new HTAN Project."""
         self.id = None
+        self.atlas_id = None
         self.name = None
         self.liaison = None
         self.notes = None
@@ -23,6 +24,7 @@ class HTANProject:
         self.size_matrix = 0
         self.size_other = 0
         self.meta_list = []
+        self.validation_list = []
 
     def get_total_file_size(self):
         return (

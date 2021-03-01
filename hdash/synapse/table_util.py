@@ -1,6 +1,7 @@
 """Table Utilities."""
 from hdash.synapse.htan_project import HTANProject, MetaFile
 from hdash.synapse.file_counter import FileCounter
+from hdash.synapse.synapse_util import SynapseUtil
 import pandas as pd
 
 
@@ -13,6 +14,7 @@ class TableUtil:
         for row in project_df.itertuples():
             project = HTANProject()
             project.id = row.id
+            project.atlas_id = row.atlas_id
             project.name = row.name
             project.liaison = row.liaison
             project.notes = row.notes
@@ -56,4 +58,5 @@ class TableUtil:
         for row in target_df.itertuples():
             meta_file = MetaFile()
             meta_file.id = row.id
+            meta_file.path = SynapseUtil.CACHE + "/" + row.id + ".csv"
             project.meta_list.append(meta_file)

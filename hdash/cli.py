@@ -11,6 +11,7 @@ from hdash.synapse.synapse_util import SynapseUtil
 from hdash.google.gsheet_util import GoogleSheetUtil
 from hdash.util.report_writer import ReportWriter
 from hdash.synapse.table_util import TableUtil
+from hdash.validator.htan_validator import HtanValidator
 from synapseclient.core.exceptions import SynapseHTTPError
 
 MASTER_PROJECT_TABLE = "config/htan_projects.csv"
@@ -46,8 +47,9 @@ def _create_dashboard(use_cache, surge, google):
     now = datetime.now()
     dt = now.strftime("%m/%d/%Y %H:%M:%S")
     output_header("Creating HTAN Dashboard:  %s" % dt)
-    output_message("Connecting to Synapse...")
-    synapse_util = SynapseUtil()
+    if not use_cache:
+        output_message("Connecting to Synapse...")
+        synapse_util = SynapseUtil(use_cache)
     if google:
         output_message("Connecting to Google...")
         gsheet_util = GoogleSheetUtil()
@@ -62,14 +64,22 @@ def _create_dashboard(use_cache, surge, google):
     p_list = table_util.get_project_list(project_df)
     table_util.annotate_project_list(p_list, SynapseUtil.MASTER_HTAN_TABLE)
 
+    if not use_cache:
+        for project in p_list:
+            for meta_file in project.meta_list:
+                try:
+                    output_message("Downloading file:  %s" % meta_file.id)
+                    meta_file.path = synapse_util.retrieve_file(meta_file.id)
+                except SynapseHTTPError:
+                    output_message("Could not retrieve:  %s" % meta_file.id)
+
+    meta_file_list = []
     for project in p_list:
         for meta_file in project.meta_list:
-            try:
-                output_message("Downloading file:  %s" % meta_file.id)
-                meta_file.path = synapse_util.retrieve_file(meta_file.id)
-                table_util.annotate_meta_file(meta_file)
-            except SynapseHTTPError:
-                output_message("Could not retrieve file:  %s" % meta_file.id)
+            meta_file_list.append(meta_file.path)
+            table_util.annotate_meta_file(meta_file)
+        validator = HtanValidator(project.atlas_id, meta_file_list)
+        project.validation_list = validator.get_validation_list()
 
     _write_html(p_list)
 

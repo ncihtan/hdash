@@ -1,13 +1,13 @@
-﻿id,name,liaison,notes
-syn20834712,PILOT - HTAPP,Vesteinn,Notes
-syn23511984,PILOT - PCAPP,Ethan,Notes
-syn22124336,HTAN BU,Ethan,Notes
-syn22776798,HTAN CHOP,Ino,Notes
-syn23511954,HTAN DFCI,Ethan,Notes
-syn23511961,HTAN Duke,Ino,Notes
-syn22123910,HTAN HMS,Milen,Notes
-syn23448901,HTAN MSK,Ino,Notes
-syn22093319,HTAN OHSU,Milen,Notes
-syn23511964,HTAN Stanford,Milen,Notes
-syn21050481,HTAN Vanderbilt,Vesteinn,Notes
-syn22255320,HTAN WUSTL,Vesteinn,Notes
+﻿id,atlas_id,name,liaison,notes
+syn20834712,HTA1,PILOT - HTAPP,Vesteinn,Notes
+syn23511984,HTA2,PILOT - PCAPP,Ethan,Notes
+syn22124336,HTA3,HTAN BU,Ethan,Notes
+syn22776798,HTA4,HTAN CHOP,Ino,Notes
+syn23511954,HTA5,HTAN DFCI,Ethan,Notes
+syn23511961,HTA6,HTAN Duke,Ino,Notes
+syn22123910,HTA7,HTAN HMS,Milen,Notes
+syn23448901,HTA8,HTAN MSK,Ino,Notes
+syn22093319,HTA9,HTAN OHSU,Milen,Notes
+syn23511964,HTA10,HTAN Stanford,Milen,Notes
+syn21050481,HTA11,HTAN Vanderbilt,Vesteinn,Notes
+syn22255320,HTA12,HTAN WUSTL,Vesteinn,Notes
