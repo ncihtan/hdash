@@ -73,8 +73,8 @@ def _create_dashboard(use_cache, surge, google):
                 except SynapseHTTPError:
                     output_message("Could not retrieve:  %s" % meta_file.id)
 
-    meta_file_list = []
     for project in p_list:
+        meta_file_list = []
         for meta_file in project.meta_list:
             meta_file_list.append(meta_file.path)
             table_util.annotate_meta_file(meta_file)

@@ -1,6 +1,7 @@
 import pandas as pd
 from hdash.validator.validation_h1 import ValidationH1
 from hdash.validator.validation_h2 import ValidationH2
+from hdash.validator.validation_h3 import ValidationH3
 
 
 class HtanValidator:
@@ -16,6 +17,7 @@ class HtanValidator:
             component_list = current_df["Component"].to_list()
             component = component_list[0]
             self.meta_map[component] = current_df
+            print (atlas_id, component)
         self.__validate()
 
     def get_validation_list(self):
@@ -28,3 +30,6 @@ class HtanValidator:
         if h1.validation_passed:
             h2 = ValidationH2(self.atlas_id, self.meta_map)
             self.validation_list.append(h2)
+
+        h3 = ValidationH3(self.meta_map)
+        self.validation_list.append(h3)
