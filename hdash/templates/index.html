@@ -32,6 +32,7 @@
     <thead>
         <tr>
             <th>Project</th>
+            <th>Atlas ID</th>
             <th>Total File Size</th>
             <th>FASTQ</th>
             <th>BAM</th>
@@ -47,7 +48,8 @@
       {% for project in p_list %}
         <tr>
           <td><nobr><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</nobr></a></td>
-          <td>{{ project.get_total_fize_size_human_readable() }}</td>
+          <td>{{ project.atlas_id }} </td>
+          <td><nobr>{{ project.get_total_fize_size_human_readable() }}</nobr></td>
           <td>{{ project.num_fastq }}</td>
           <td>{{ project.num_bam }}</td>
           <td>{{ project.num_image }}</td>

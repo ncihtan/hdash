@@ -14,12 +14,12 @@
       background-color: lightgreen !important;
     }
     .validation_False {
-      background-color: pink I !important;
+      background-color: pink !important;
     }
   </style>
 </head>
 <body>
-  <h1>{{ project.name }}</h1>
+  <h1>{{ project.atlas_id }}:  {{ project.name }}</h1>
   <div class="timestamp">Automatically generated:  {{ now }}</div>
 
   <h2>Metadata Files Detected:</h2>
@@ -49,15 +49,25 @@
             <th>Code</th>
             <th>Text</th>
             <th>Passed/Failed</th>
+            <th>Notes</th>
         </tr>
     </thead>
     <tbody>
       {% for validation in project.validation_list %}
         {% set trClass = "validation_%s" % validation.validation_passed %}
+        {% set passed = "Failed" %}
+        {% if (validation.validation_passed) %}
+          {% set passed = "Passed" %}
+        {% endif %}
         <tr>
           <td>{{ validation.validation_code }}</td>
           <td>{{ validation.validation_text }}</td>
-          <td class={{trClass}}>{{ validation.validation_passed }}</td>
+          <td class={{trClass}}>{{ passed }}</td>
+          <td>
+            {% for error in validation.error_list %}
+              - {{ error }}<br/>
+            {% endfor %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>
