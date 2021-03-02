@@ -5,8 +5,8 @@ class ValidationDemographicsIds(ValidationRule):
     def __init__(self, atlas_id, meta_file_map):
         super().__init__(
             "H_DEM_IDS",
-            "Demographics File Uses Correct "
-            + " Atlas ID and adheres to the HTAN ID Spec",
+            "Demographics file uses correct "
+            + " atlas ID and adheres to the HTAN ID Spec",
         )
         df = meta_file_map["Demographics"]
         participant_id_list = df["HTAN Participant ID"].to_list()
