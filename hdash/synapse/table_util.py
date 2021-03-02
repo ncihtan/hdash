@@ -32,7 +32,10 @@ class TableUtil:
         """Annotate the specified meta_file with additional details."""
         df = pd.read_csv(meta_file.path)
         component_list = df.Component.dropna().unique()
-        meta_file.category = component_list[0]
+        try:
+            meta_file.category = component_list[0]
+        except IndexError:
+            meta_file.category = "Empty"
         meta_file.num_items = len(df.index)
 
     def _count_files(self, df, project):

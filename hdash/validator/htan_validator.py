@@ -16,7 +16,10 @@ class HtanValidator:
         for path in meta_data_file_list:
             current_df = pd.read_csv(path)
             component_list = current_df["Component"].to_list()
-            component = component_list[0]
+            try:
+                component = component_list[0]
+            except IndexError:
+                component = "Empty"
             self.meta_map[component] = current_df
         self.__validate()
 
