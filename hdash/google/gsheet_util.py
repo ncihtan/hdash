@@ -1,3 +1,4 @@
+"""Google Spreadsheet I/O."""
 import os
 import logging
 import pygsheets
@@ -5,6 +6,8 @@ from datetime import datetime
 
 
 class GoogleSheetUtil:
+    """Google Sheet Utility Class."""
+
     PROJECT_SPREADSHEET_KEY = "1yoNxJ8sXDac3RRLpe3qTj7_ZQtVZzWgAUq_D3k4Ppj8"
     HDASH_SPREADSHEET_KEY = "1XuHG_2WsODBEKcxDRbwV7qR2avdzaln8FWINKAJSumg"
     HEADER_LIST = [
@@ -17,6 +20,7 @@ class GoogleSheetUtil:
     ]
 
     def __init__(self):
+        """Construct new Google Sheet Utility."""
         service_account_path = self._get_service_account_path()
         logging.info("Authenticating with Google")
         logging.info("Using service account:  %s" % service_account_path)
@@ -33,6 +37,7 @@ class GoogleSheetUtil:
         logging.info("Opening HDash Sheet")
 
     def write(self, p_list):
+        """Write new data to Google Sheet."""
         # Output headers
         header_list = []
         header_list.append("ATLAS")

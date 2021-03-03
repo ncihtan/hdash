@@ -27,6 +27,7 @@ class HTANProject:
         self.validation_list = []
 
     def get_total_file_size(self):
+        """Get total file size."""
         return (
             self.size_fastq
             + self.size_bam
@@ -36,6 +37,7 @@ class HTANProject:
         )
 
     def get_total_fize_size_human_readable(self):
+        """Get total file size in human readable format, e.g. MB, TB."""
         total_file_size = self.get_total_file_size()
         return humanize.naturalsize(total_file_size)
 

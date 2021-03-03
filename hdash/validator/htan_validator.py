@@ -1,15 +1,23 @@
+"""Core HTAN Validator."""
+
 import pandas as pd
-from hdash.validator.validation_demographics import ValidationDemographics
-from hdash.validator.validation_biospecimens import ValidationBiospecimens
-from hdash.validator.validation_demographics_ids import ValidationDemographicsIds
-from hdash.validator.validation_biospecimens_ids import ValidationBiospecimenIds
-from hdash.validator.validation_non_demographics import ValidationNonDemographics
+
+from hdash.validator.validate_demographics import ValidateDemographics
+from hdash.validator.validate_biospecimens import ValidateBiospecimens
+from hdash.validator.validate_demographics_ids import ValidateDemographicsIds
+from hdash.validator.validate_biospecimens_ids import ValidateBiospecimenIds
+from hdash.validator.validate_non_demographics import ValidateNonDemographics
+from hdash.validator.validate_links import ValidateLinks
+
 
 class HtanValidator:
-    def __init__(self, atlas_id, meta_data_file_list):
+    """Core HTAN Validator."""
 
+    def __init__(self, atlas_id, meta_data_file_list):
+        """Construct a new HTAN Validator for one atlas."""
         self.atlas_id = atlas_id
         self.validation_list = []
+        self.node_map = {}
 
         # First step is to read in all the metadata files and caterogize them
         self.meta_map = {}
@@ -21,25 +29,35 @@ class HtanValidator:
             except IndexError:
                 component = "Empty"
             self.meta_map[component] = current_df
+
+        # Then validate
         self.__validate()
 
     def get_validation_list(self):
+        """Get the list of validation rules applied."""
         return self.validation_list
 
     def __validate(self):
-        h1 = ValidationDemographics(self.meta_map)
-        self.validation_list.append(h1)
 
-        if h1.validation_passed:
-            h2 = ValidationDemographicsIds(self.atlas_id, self.meta_map)
-            self.validation_list.append(h2)
+        # Clinical Validation
+        c1 = ValidateDemographics(self.meta_map)
+        self.validation_list.append(c1)
 
-            h5 = ValidationNonDemographics(self.atlas_id, self.meta_map)
-            self.validation_list.append(h5)
+        if c1.validation_passed:
+            c2 = ValidateDemographicsIds(self.atlas_id, self.meta_map)
+            self.validation_list.append(c2)
 
-        h3 = ValidationBiospecimens(self.meta_map)
-        self.validation_list.append(h3)
+            c3 = ValidateNonDemographics(self.meta_map)
+            self.validation_list.append(c3)
 
-        if h3.validation_passed:
-            h4 = ValidationBiospecimenIds(self.atlas_id, self.meta_map)
-            self.validation_list.append(h4)
+        # Biospecimen Validation
+        b1 = ValidateBiospecimens(self.meta_map)
+        self.validation_list.append(b1)
+
+        if b1.validation_passed:
+            b2 = ValidateBiospecimenIds(self.atlas_id, self.meta_map)
+            self.validation_list.append(b2)
+
+        # Link Integrity
+        links1 = ValidateLinks(self.meta_map)
+        self.validation_list.append(links1)
