@@ -1,14 +1,17 @@
+"""PyTest Fixtures."""
 import pytest
 from hdash.synapse.htan_project import HTANProject, MetaFile
 
 
 @pytest.fixture
 def init_project_list():
+    """Init project list."""
     return _init_project_list()
 
 
 @pytest.fixture
 def init_annotated_project_list():
+    """Init annotated project list."""
     project_list = _init_project_list()
     project = project_list[2]
     project.num_meta = 1

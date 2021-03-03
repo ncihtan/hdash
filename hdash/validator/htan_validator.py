@@ -4,8 +4,7 @@ import pandas as pd
 
 from hdash.validator.validate_demographics import ValidateDemographics
 from hdash.validator.validate_biospecimens import ValidateBiospecimens
-from hdash.validator.validate_demographics_ids import ValidateDemographicsIds
-from hdash.validator.validate_biospecimens_ids import ValidateBiospecimenIds
+from hdash.validator.validate_primary_ids import ValidatePrimaryIds
 from hdash.validator.validate_non_demographics import ValidateNonDemographics
 from hdash.validator.validate_links import ValidateLinks
 
@@ -44,19 +43,16 @@ class HtanValidator:
         self.validation_list.append(c1)
 
         if c1.validation_passed:
-            c2 = ValidateDemographicsIds(self.atlas_id, self.meta_map)
+            c2 = ValidateNonDemographics(self.meta_map)
             self.validation_list.append(c2)
-
-            c3 = ValidateNonDemographics(self.meta_map)
-            self.validation_list.append(c3)
 
         # Biospecimen Validation
         b1 = ValidateBiospecimens(self.meta_map)
         self.validation_list.append(b1)
 
-        if b1.validation_passed:
-            b2 = ValidateBiospecimenIds(self.atlas_id, self.meta_map)
-            self.validation_list.append(b2)
+        # ID Checks
+        id1 = ValidatePrimaryIds(self.atlas_id, self.meta_map)
+        self.validation_list.append(id1)
 
         # Link Integrity
         links1 = ValidateLinks(self.meta_map)

@@ -1,3 +1,4 @@
+"""Synapse Tests."""
 import pytest
 from hdash.synapse.credentials import SynapseCredentials
 from pytest import MonkeyPatch

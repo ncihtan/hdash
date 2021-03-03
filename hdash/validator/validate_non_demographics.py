@@ -1,6 +1,8 @@
 """Validation Rule."""
 
+from hdash.validator.categories import Categories
 from hdash.validator.validation_rule import ValidationRule
+from hdash.validator.id_util import IdUtil
 
 
 class ValidateNonDemographics(ValidationRule):
@@ -23,12 +25,12 @@ class ValidateNonDemographics(ValidationRule):
             "H_NON_DEM",
             "Non-Demographic clinical data use same IDs as demographics file.",
         )
-        df = meta_map["Demographics"]
+        df = meta_map[Categories.DEMOGRAPHICS]
         err_list = []
         if df is None:
             err_list.append("Cannot assess.  No Demographics File.")
         else:
-            demog_id_list = df["HTAN Participant ID"].to_list()
+            demog_id_list = df[IdUtil.HTAN_PARTICIPANT_ID].to_list()
             for category in self.clinical_list:
                 self.__check_file(category, meta_map, demog_id_list, err_list)
 
@@ -37,7 +39,7 @@ class ValidateNonDemographics(ValidationRule):
     def __check_file(self, category, meta_map, demog_id_list, err_list):
         if category in meta_map:
             df = meta_map[category]
-            participant_id_list = df["HTAN Participant ID"].to_list()
+            participant_id_list = df[IdUtil.HTAN_PARTICIPANT_ID].to_list()
             for id in participant_id_list:
                 if id not in demog_id_list:
                     err_list.append(

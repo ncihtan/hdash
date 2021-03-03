@@ -4,6 +4,7 @@ from hdash.synapse.file_counter import FileCounter
 
 
 def test_file_counter_1():
+    """Round 1 of file counter tests."""
     file_names = ["hta1.bam", "hta1.fq", "hta.tif", "hta2.bam"]
     file_sizes = [100, 100, 100, 100]
     cols = ["name", "dataFileSizeBytes"]
@@ -21,6 +22,7 @@ def test_file_counter_1():
 
 
 def test_file_counter_2():
+    """Round 2 of file counter tests."""
     file_names = ["hta1.bam", "hta1.fq", "hta.tif", "hta2.uidd"]
     file_sizes = [100, 100, 100, 100]
     cols = ["name", "dataFileSizeBytes"]
