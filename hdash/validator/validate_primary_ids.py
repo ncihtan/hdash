@@ -23,38 +23,40 @@ class ValidatePrimaryIds(ValidationRule):
             self.__validate_ids(atlas_id, category, error_list)
         self.set_error_list(error_list)
 
-    def __validate_ids(self, atlas_id, category, error_list):
+    def __validate_ids(self, atlas_id, category, e_list):
         if category in self.meta_file_map:
             df = self.meta_file_map[category]
             primary_id_col = self.id_util.get_primary_id_column(category)
             id_list = df[primary_id_col].to_list()
             for id in id_list:
                 if primary_id_col == IdUtil.HTAN_PARTICIPANT_ID:
-                    self.__validate_participant_id(id, atlas_id, error_list)
+                    self.__check_participant_id(category, id, atlas_id, e_list)
                 else:
-                    self.__validate_primary_id(id, atlas_id, error_list)
+                    self.__check_primary_id(category, id, atlas_id, e_list)
 
-    def __validate_participant_id(self, id, atlas_id, error_list):
+    def __check_participant_id(self, category, id, atlas_id, error_list):
         parts = id.split("_")
+        label = category + ": " + id
         if parts[0] != atlas_id:
-            error_list.append(id + " does not match atlas ID: " + atlas_id)
+            error_list.append(label + " does not match atlas ID: " + atlas_id)
         if len(parts) != 2:
-            error_list.append(id + " does not match HTAN spec.")
+            error_list.append(label + " does not match HTAN spec.")
         else:
             try:
                 int(parts[1])
             except ValueError:
-                error_list.append(id + " does not match HTAN spec.")
+                error_list.append(label + " does not match HTAN spec.")
 
-    def __validate_primary_id(self, id, atlas_id, error_list):
+    def __check_primary_id(self, category, id, atlas_id, error_list):
         parts = id.split("_")
+        label = category + ": " + id
         if parts[0] != atlas_id:
-            error_list.append(id + " does not match atlas ID: " + atlas_id)
+            error_list.append(label + " does not match atlas ID: " + atlas_id)
         if len(parts) != 3:
-            error_list.append(id + " does not match HTAN spec.")
+            error_list.append(label + " does not match HTAN spec.")
         else:
             try:
                 int(parts[1])
                 int(parts[2])
             except ValueError:
-                error_list.append(id + " does not match HTAN spec.")
+                error_list.append(label + " does not match HTAN spec.")
