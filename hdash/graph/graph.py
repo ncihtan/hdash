@@ -16,10 +16,9 @@ class Node:
 class Edge:
     """Edge in Graph."""
 
-    source: str
-    target: str
-    category: str
+    source_id: str
+    target_id: str
 
     def __repr__(self):
         """Get edge summary."""
-        return "Edge: %s: %s: %s" % (self.source, self.target, self.category)
+        return "Edge: %s --> %s" % (self.source_id, self.target_id)

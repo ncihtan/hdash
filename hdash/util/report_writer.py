@@ -20,6 +20,7 @@ class ReportWriter:
         self.dt = self.now.strftime("%m/%d/%Y %H:%M:%S")
         self._generate_index_html()
         self._generate_atlas_pages()
+        self._generate_atlas_cytoscape_pages()
 
     def get_index_html(self):
         """Get Index HTML."""
@@ -28,6 +29,10 @@ class ReportWriter:
     def get_atlas_html_map(self):
         """Get HTML for Atlases."""
         return self.atlas_html_map
+
+    def get_atlas_cytoscape_html_map(self):
+        """Get Cytoscape HTML for Atlases."""
+        return self.atlas_cytoscape_html_map
 
     def _generate_index_html(self):
         template = self.env.get_template("index.html")
@@ -43,6 +48,14 @@ class ReportWriter:
                 template = self.env.get_template("atlas.html")
                 html = template.render(now=self.dt, project=project)
                 self.atlas_html_map[project.id] = html
+
+    def _generate_atlas_cytoscape_pages(self):
+        self.atlas_cytoscape_html_map = {}
+        for project in self.p_list:
+            if len(project.meta_list) > 0:
+                template = self.env.get_template("atlas_cytoscape.html")
+                html = template.render(now=self.dt, project=project)
+                self.atlas_cytoscape_html_map[project.id] = html
 
     def _get_template_env(self):
         return Environment(

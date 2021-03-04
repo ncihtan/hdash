@@ -1,11 +1,14 @@
 """Command Line Interface (CLI) for generating HTAN Dashboard."""
+from hdash.graph.graph_util import GraphUtil
 import logging
 import emoji
 import click
 import os.path
 import time
+import json
 import subprocess
 import pandas as pd
+from shutil import copyfile
 from datetime import datetime
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.google.gsheet_util import GoogleSheetUtil
@@ -80,6 +83,10 @@ def _create_dashboard(use_cache, surge, google):
             table_util.annotate_meta_file(meta_file)
         validator = HtanValidator(project.atlas_id, meta_file_list)
         project.validation_list = validator.get_validation_list()
+        node_map = validator.get_node_map()
+        edge_list = validator.get_edge_list()
+        graph_util = GraphUtil(node_map, edge_list)
+        project.data_list = graph_util.data_list
 
     _write_html(p_list)
 
@@ -100,6 +107,8 @@ def _write_html(project_list):
     report_writer = ReportWriter(project_list)
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
+    _write_atlas_cytoscape_html(report_writer)
+    _write_atlas_cytoscape_json(project_list)
 
 
 def _write_index_html(report_writer):
@@ -119,6 +128,28 @@ def _write_atlas_html(report_writer):
         output_message("Writing to:  %s." % out_name)
         fd = open(out_name, "w")
         fd.write(html)
+        fd.close()
+
+
+def _write_atlas_cytoscape_html(report_writer):
+    copyfile("static/cy-style.json", "deploy/cy-style.json")
+    atlas_html_map = report_writer.get_atlas_cytoscape_html_map()
+    for id in atlas_html_map:
+        html = atlas_html_map[id]
+        out_name = "deploy/%s_cytoscape.html" % id
+        output_message("Writing to:  %s." % out_name)
+        fd = open(out_name, "w")
+        fd.write(html)
+        fd.close()
+
+
+def _write_atlas_cytoscape_json(project_list):
+    for project in project_list:
+        out_name = "deploy/%s_data.json" % project.id
+        output_message("Writing to:  %s." % out_name)
+        json_dump_str = json.dumps(project.data_list, indent=4)
+        fd = open(out_name, "w")
+        fd.write(json_dump_str)
         fd.close()
 
 

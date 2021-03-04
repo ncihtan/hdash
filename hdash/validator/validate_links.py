@@ -1,7 +1,7 @@
 """Validation Rule."""
 
 from hdash.validator.validation_rule import ValidationRule
-from hdash.graph.graph import Node
+from hdash.graph.graph import Node, Edge
 from hdash.validator.id_util import IdUtil
 from hdash.validator.categories import Categories
 
@@ -67,3 +67,8 @@ class ValidateLinks(ValidationRule):
                     parent_id,
                 )
                 error_list.append(m)
+            else:
+                edge = Edge()
+                edge.source_id = parent_id
+                edge.target_id = id
+                self.edge_list.append(edge)

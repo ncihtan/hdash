@@ -36,6 +36,14 @@ class HtanValidator:
         """Get the list of validation rules applied."""
         return self.validation_list
 
+    def get_node_map(self):
+        """Get the graph map of all nodes."""
+        return self.links1.node_map
+
+    def get_edge_list(self):
+        """Get the list of all edges."""
+        return self.links1.edge_list
+
     def __validate(self):
 
         # Clinical Validation
@@ -55,5 +63,5 @@ class HtanValidator:
         self.validation_list.append(id1)
 
         # Link Integrity
-        links1 = ValidateLinks(self.meta_map)
-        self.validation_list.append(links1)
+        self.links1 = ValidateLinks(self.meta_map)
+        self.validation_list.append(self.links1)

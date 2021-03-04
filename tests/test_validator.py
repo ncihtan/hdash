@@ -28,4 +28,8 @@ def test_graph():
     file_list.append("tests/data/single_cell_level2.csv")
     file_list.append("tests/data/single_cell_level3.csv")
     file_list.append("tests/data/single_cell_level4.csv")
-    htan_validator.HtanValidator("HTA3", file_list)
+    validator = htan_validator.HtanValidator("HTA3", file_list)
+    node_map = validator.get_node_map()
+    edge_list = validator.get_edge_list()
+    assert len(node_map) == 213
+    assert len(edge_list) == 170

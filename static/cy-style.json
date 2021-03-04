@@ -1,0 +1,109 @@
+[
+	{
+		"selector": "core",
+		"style": {
+			"selection-box-color": "#AAD8FF",
+			"selection-box-border-color": "#8BB0D0",
+			"selection-box-opacity": "0.5"
+		}
+	},
+	{
+		"selector": "node",
+		"style": {
+			"width": "30",
+			"height": "30",
+			"content": "data(label)",
+			"font-size": "10px",
+			"text-valign": "center",
+			"text-halign": "center",
+			"background-color": "#E6E5E8",
+			"text-outline-color": "#555",
+			"text-outline-width": "0px",
+			"color": "black",
+			"overlay-padding": "6px",
+			"z-index": "10"
+		}
+	},
+	{
+		"selector": "node:selected",
+		"style": {
+			"border-width": "6px",
+			"border-color": "#AAD8FF",
+			"border-opacity": "0.5",
+			"background-color": "#77828C",
+			"text-outline-color": "#77828C"
+		}
+	},
+	{
+		"selector": "edge",
+		"style": {
+			"curve-style": "haystack",
+			"line-color": "#bbb",
+			"width": "2"
+		}
+	},
+	{
+		"selector": "node.unhighlighted",
+		"style": {
+			"opacity": "0.2"
+		}
+	},
+	{
+		"selector": "edge.unhighlighted",
+		"style": {
+			"opacity": "1.0"
+		}
+	},
+	{
+		"selector": ".highlighted",
+		"style": {
+			"z-index": "999999"
+		}
+	},
+	{
+		"selector": "node.highlighted",
+		"style": {
+			"border-width": "6px",
+			"border-color": "#AAD8FF",
+			"border-opacity": "0.5",
+			"background-color": "#394855",
+			"text-outline-color": "#394855"
+		}
+	},
+	{
+		"selector": "node[category=\"Demographics\"]",
+		"style": {
+			"background-color": "#33FFD7"
+		}
+	},
+	{
+		"selector": "node[category=\"Biospecimen\"]",
+		"style": {
+			"background-color": "#A333FF"
+		}
+	},
+	{
+		"selector": "node[category=\"ScRNA-seqLevel1\"]",
+		"style": {
+			"background-color": "#FDD0D0"
+		}
+	},
+	{
+		"selector": "node[category=\"ScRNA-seqLevel2\"]",
+		"style": {
+			"background-color": "#FD9F9F"
+		}
+	},
+	{
+		"selector": "node[category=\"ScRNA-seqLevel3\"]",
+		"style": {
+			"background-color": "#FD3C3C"
+		}
+	},
+	{
+		"selector": "node[category=\"ScRNA-seqLevel4\"]",
+		"style": {
+			"background-color": "#FE0303"
+		}
+	}	
+]
