@@ -29,6 +29,7 @@ class ValidatePrimaryIds(ValidationRule):
             primary_id_col = self.id_util.get_primary_id_column(category)
             id_list = df[primary_id_col].to_list()
             for id in id_list:
+                id = str(id)
                 if primary_id_col == IdUtil.HTAN_PARTICIPANT_ID:
                     self.__check_participant_id(category, id, atlas_id, e_list)
                 else:

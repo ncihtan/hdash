@@ -33,6 +33,7 @@ class ValidateLinks(ValidationRule):
             primary_id = self.id_util.get_primary_id_column(category)
             id_list = df[primary_id].to_list()
             for id in id_list:
+                id = str(id)
                 node = Node()
                 node.id = id
                 node.label = id
@@ -50,8 +51,8 @@ class ValidateLinks(ValidationRule):
             parent_id_col = self.id_util.get_parent_id_column(category)
             if parent_id_col is not None:
                 for index, row in df.iterrows():
-                    chunk = row[parent_id_col]
-                    id = row[primary_id_col]
+                    chunk = str(row[parent_id_col])
+                    id = str(row[primary_id_col])
                     self.__check_parents(id, chunk, category, error_list)
 
     def __check_parents(self, id, parent_id_chunk, category, error_list):
