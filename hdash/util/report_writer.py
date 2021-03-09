@@ -43,7 +43,9 @@ class ReportWriter:
         template = self.env.get_template("index.html")
         storage_human = humanize.naturalsize(self.total_storage)
         self.index_html = template.render(
-            now=self.dt, p_list=self.p_list, storage_human=storage_human,
+            now=self.dt,
+            p_list=self.p_list,
+            storage_human=storage_human,
         )
 
     def _generate_atlas_pages(self):

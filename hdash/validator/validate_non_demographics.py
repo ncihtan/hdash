@@ -18,6 +18,7 @@ class ValidateNonDemographics(ValidationRule):
     clinical_list.append("MolecularTest")
     clinical_list.append("ClinicalDataTier2")
     clinical_list.append("LungCancerTier3")
+    clinical_list.append("BreastCancerTier3")
 
     def __init__(self, meta_map):
         """Construct new Validation Rule."""

@@ -24,5 +24,11 @@ class IdUtil:
             return None
         elif category == Categories.SC_RNA_SEQ_LEVEL_1:
             return "HTAN Parent Biospecimen ID"
+        elif category == Categories.BULK_WES_LEVEL_1:
+            return "HTAN Parent Biospecimen ID"
+        elif category == Categories.BULK_RNA_SEQ_LEVEL_1:
+            return "HTAN Parent Biospecimen ID"
+        elif category == Categories.IMAGING_LEVEL_2:
+            return "HTAN Parent Biospecimen ID"
         else:
             return "HTAN Parent Data File ID"

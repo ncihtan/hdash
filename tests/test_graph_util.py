@@ -1,6 +1,5 @@
 """Test Graph Util class."""
 from hdash.validator import htan_validator
-import json
 from hdash.graph.graph_util import GraphUtil
 from hdash.graph.graph import Node, Edge
 
@@ -29,7 +28,7 @@ def test_graph_util():
 
     graph_util = GraphUtil(node_map, edge_list)
     data_list = graph_util.data_list
-    assert len(data_list) == 4
+    assert len(data_list) == 3
 
 
 def test_real_graph():
@@ -44,4 +43,8 @@ def test_real_graph():
     validator = htan_validator.HtanValidator("HTA3", file_list)
     graph_util = GraphUtil(validator.get_node_map(), validator.get_edge_list())
     data_list = graph_util.data_list
-    assert len(data_list) == 553
+    assert len(data_list) == 383
+
+    sif_list = graph_util.sif_list
+    assert sif_list[0][0] == "D_HTA3_8001"
+    assert sif_list[0][1] == "B_HTA3_8001_1001"

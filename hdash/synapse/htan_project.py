@@ -27,6 +27,8 @@ class HTANProject:
         self.validation_list = []
         self.num_errors = 0
         self.data_list = []
+        self.node_map = []
+        self.sif_list = []
 
     def get_total_file_size(self):
         """Get total file size."""

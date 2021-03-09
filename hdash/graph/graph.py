@@ -5,6 +5,7 @@ class Node:
     """Node in Graph."""
 
     id: str
+    sif_id: str
     label: str
     category: str
 
