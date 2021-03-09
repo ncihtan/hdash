@@ -13,7 +13,12 @@ class ReportWriter:
 
         self.total_storage = 0
         for project in self.p_list:
+            num_errors = 0
             self.total_storage += project.get_total_file_size()
+            validation_list = project.validation_list
+            for validation in validation_list:
+                num_errors += len(validation.error_list)
+            project.num_errors = num_errors
 
         self.env = self._get_template_env()
         self.now = datetime.now()
@@ -38,7 +43,7 @@ class ReportWriter:
         template = self.env.get_template("index.html")
         storage_human = humanize.naturalsize(self.total_storage)
         self.index_html = template.render(
-            now=self.dt, p_list=self.p_list, storage_human=storage_human
+            now=self.dt, p_list=self.p_list, storage_human=storage_human,
         )
 
     def _generate_atlas_pages(self):

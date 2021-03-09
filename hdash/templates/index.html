@@ -40,6 +40,7 @@
             <th>Matrix</th>
             <th>Other</th>
             <th>Metadata</th>
+            <th>Num Errors</th>
             <th>Liaison</th>
             <th>Notes</th>
         </tr>
@@ -62,6 +63,7 @@
               No
             {% endif %}
           </td>
+          <td>{{ project.num_errors }}</td>
           <td>{{ project.liaison }}</td>
           <td>{{ project.notes }}</td>
         </tr>
