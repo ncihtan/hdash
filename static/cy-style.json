@@ -39,7 +39,8 @@
 		"style": {
 			"curve-style": "haystack",
 			"line-color": "#bbb",
-			"width": "2"
+			"width": "2",
+			"mid-target-arrow-shape": "triangle"
 		}
 	},
 	{
