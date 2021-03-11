@@ -57,7 +57,8 @@ class ValidatePrimaryIds(ValidationRule):
             error_list.append(label + " does not match HTAN spec.")
         else:
             try:
-                int(parts[1])
+                if parts[1] != "xxxx":
+                    int(parts[1])
                 int(parts[2])
             except ValueError:
                 error_list.append(label + " does not match HTAN spec.")
