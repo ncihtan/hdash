@@ -32,3 +32,10 @@ class IdUtil:
             return "HTAN Parent Biospecimen ID"
         else:
             return "HTAN Parent Data File ID"
+
+    def get_adjacent_id_column(self, category):
+        """Get Adjacent ID Column, if available."""
+        if category == Categories.BIOSPECIMEN:
+            return "Adjacent Biospecimen IDs"
+        else:
+            return None

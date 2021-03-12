@@ -49,11 +49,17 @@ class ValidateLinks(ValidationRule):
         if df is not None:
             primary_id_col = self.id_util.get_primary_id_column(category)
             parent_id_col = self.id_util.get_parent_id_column(category)
+            adjacent_id_col = self.id_util.get_adjacent_id_column(category)
             if parent_id_col is not None:
                 for index, row in df.iterrows():
                     chunk = str(row[parent_id_col])
                     id = str(row[primary_id_col])
                     self.__check_parents(id, chunk, category, error_list)
+            if adjacent_id_col is not None:
+                for index, row in df.iterrows():
+                    chunk = str(row[adjacent_id_col])
+                    id = str(row[primary_id_col])
+                    self.__check_adjacents(id, chunk, category, error_list)
 
     def __check_parents(self, id, parent_id_chunk, category, error_list):
         # We can have multiple parents!
@@ -63,7 +69,7 @@ class ValidateLinks(ValidationRule):
             parent_id = part.strip()
             parent_exists = parent_id in self.node_map
             if not parent_exists:
-                m = "%s references parent ID:  %s, but no such ID exists." % (
+                m = "%s references parent ID: %s, but no such ID exists." % (
                     category,
                     parent_id,
                 )
@@ -73,3 +79,17 @@ class ValidateLinks(ValidationRule):
                 edge.source_id = parent_id
                 edge.target_id = id
                 self.edge_list.append(edge)
+
+    def __check_adjacents(self, id, adj_id_chunk, category, error_list):
+        # We can have multiple adjacents!
+        adj_id_chunk = adj_id_chunk.replace(";", " ").replace(",", " ")
+        parts = adj_id_chunk.split()
+        for part in parts:
+            adjacent_id = part.strip()
+            adjacent_exists = adjacent_id in self.node_map
+            if not adjacent_exists:
+                m = "%s references adjacent ID: %s, but no such ID exists." % (
+                    category,
+                    adjacent_id,
+                )
+                error_list.append(m)
