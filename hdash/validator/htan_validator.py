@@ -5,6 +5,7 @@ import pandas as pd
 from hdash.validator.validate_demographics import ValidateDemographics
 from hdash.validator.validate_biospecimens import ValidateBiospecimens
 from hdash.validator.validate_primary_ids import ValidatePrimaryIds
+from hdash.validator.validate_entity_ids import ValidateEntityIds
 from hdash.validator.validate_non_demographics import ValidateNonDemographics
 from hdash.validator.validate_links import ValidateLinks
 
@@ -65,3 +66,7 @@ class HtanValidator:
         # Link Integrity
         self.links1 = ValidateLinks(self.meta_map)
         self.validation_list.append(self.links1)
+
+        # Synapse IDs
+        self.synapseIds1 = ValidateEntityIds(self.meta_map)
+        self.validation_list.append(self.synapseIds1)

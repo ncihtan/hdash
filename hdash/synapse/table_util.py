@@ -39,7 +39,7 @@ class TableUtil:
         meta_file.num_items = len(df.index)
 
     def _count_files(self, df, project):
-        target_df = df[(df.projectId == project.id) & (df.type == "file")]
+        target_df = df[(df.projectId == project.id)]
         counter = FileCounter(target_df)
         project.num_fastq = counter.get_num_files(FileCounter.FASTQ)
         project.num_bam = counter.get_num_files(FileCounter.BAM)

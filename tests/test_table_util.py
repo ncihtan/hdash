@@ -31,7 +31,7 @@ def test_project_annotation(init_project_list):
     assert project2.num_bam == 0
     assert project2.num_image == 0
     assert project2.num_other == 0
-    assert project2.num_matrix == 24
+    assert project2.num_matrix == 23
     assert project2.num_meta == 6
     assert len(project2.meta_list) == 6
 
@@ -39,7 +39,7 @@ def test_project_annotation(init_project_list):
     assert project2.size_bam == 0
     assert project2.size_image == 0
     assert project2.size_other == 0
-    assert project2.size_matrix == 2400
+    assert project2.size_matrix == 2300
 
     assert project2.meta_list[0].id == "syn23636452"
     assert project2.meta_list[1].id == "syn23636563"

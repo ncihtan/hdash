@@ -9,7 +9,7 @@ def test_validator():
     file_list.append("tests/data/biospecimens.csv")
     validator = htan_validator.HtanValidator("HTA3", file_list)
     validation_list = validator.get_validation_list()
-    assert len(validation_list) == 5
+    assert len(validation_list) == 6
     assert validation_list[0].validation_passed is True
     assert validation_list[1].validation_passed is True
     assert validation_list[2].validation_passed is True
@@ -17,6 +17,9 @@ def test_validator():
     assert validation_list[4].validation_passed is False
     error_list = validation_list[4].error_list
     assert error_list[0].startswith("Biospecimen references adjacent ID: ")
+    assert validation_list[5].validation_passed is False
+    error_list = validation_list[5].error_list
+    assert error_list[0].startswith("Biospecimen has invalid Synapse ID: ")
 
 
 def test_graph():

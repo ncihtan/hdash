@@ -44,22 +44,26 @@ class ValidateLinks(ValidationRule):
         for category in self.category_list:
             self.__gather_edges_by_category(category, error_list)
 
-    def __gather_edges_by_category(self, category, error_list):
+    def __gather_edges_by_category(self, category, e_list):
         df = self.meta_map.get(category)
         if df is not None:
             primary_id_col = self.id_util.get_primary_id_column(category)
             parent_id_col = self.id_util.get_parent_id_column(category)
-            adjacent_id_col = self.id_util.get_adjacent_id_column(category)
+            adj_id_col = self.id_util.get_adjacent_id_column(category)
             if parent_id_col is not None:
                 for index, row in df.iterrows():
                     chunk = str(row[parent_id_col])
                     id = str(row[primary_id_col])
-                    self.__check_parents(id, chunk, category, error_list)
-            if adjacent_id_col is not None:
-                for index, row in df.iterrows():
-                    chunk = str(row[adjacent_id_col])
-                    id = str(row[primary_id_col])
-                    self.__check_adjacents(id, chunk, category, error_list)
+                    self.__check_parents(id, chunk, category, e_list)
+            if adj_id_col is not None:
+                if adj_id_col in df.columns:
+                    for index, row in df.iterrows():
+                        chunk = str(row[adj_id_col])
+                        id = str(row[primary_id_col])
+                        self.__check_adjacents(id, chunk, category, e_list)
+                else:
+                    msg = "%s is missing column:  %s" % (category, adj_id_col)
+                    e_list.append(msg)
 
     def __check_parents(self, id, parent_id_chunk, category, error_list):
         # We can have multiple parents!
@@ -82,6 +86,8 @@ class ValidateLinks(ValidationRule):
 
     def __check_adjacents(self, id, adj_id_chunk, category, error_list):
         # We can have multiple adjacents!
+        if adj_id_chunk == "nan":
+            return
         adj_id_chunk = adj_id_chunk.replace(";", " ").replace(",", " ")
         parts = adj_id_chunk.split()
         for part in parts:

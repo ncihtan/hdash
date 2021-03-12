@@ -15,10 +15,12 @@ class FileCounter:
     OTHER = "OTHER"
     EXCLUDE = "EXCLUDE"
 
-    def __init__(self, file_df):
+    def __init__(self, synapse_df):
         """Construct new File Counter."""
-        self._file_df = file_df
+        self._file_df = synapse_df[synapse_df.type == "file"]
+        self._folder_df = synapse_df[synapse_df.type == "folder"]
         self._init_file_types()
+        self._identify_archive_folders()
         self._walk_files()
 
     def get_num_files(self, file_type):
@@ -29,12 +31,23 @@ class FileCounter:
         """Get the Total File Size for the Specified File Type."""
         return self.file_size_counter.get(file_type, 0)
 
+    def _identify_archive_folders(self):
+        self.archive_folder_set = set()
+        for index, row in self._folder_df.iterrows():
+            name = row["name"]
+            id = row["id"]
+            if name.lower() == "archive":
+                self.archive_folder_set.add(id)
+
     def _walk_files(self):
         file_type_list = []
         for index, row in self._file_df.iterrows():
             name = row["name"]
+            parent_id = row["parentId"]
             path = Path(name)
-            if name == MetaFile.META_FILE_NAME:
+            if parent_id in self.archive_folder_set:
+                file_type = FileCounter.EXCLUDE
+            elif name == MetaFile.META_FILE_NAME:
                 file_type = FileCounter.METADATA
             else:
                 if path.suffix == ".gz":
