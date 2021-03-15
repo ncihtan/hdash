@@ -1,10 +1,17 @@
 <html>
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       margin-left: 20px;
+      margin-right:10px;
+      margin-top:10px;
+      margin-bottom:10px;
+    }
+    .footer {
+      margin: 10px;
     }
     .timestamp {
       padding-top:10px;
@@ -19,11 +26,27 @@
   </style>
 </head>
 <body>
-  <h1>{{ project.atlas_id }}:  {{ project.name }}</h1>
-  <div class="timestamp">Automatically generated:  {{ now }}</div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">HTAN Dashboard</span>
+    </div>
+  </nav> 
+  <br/>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ project.atlas_id }}:  {{ project.name }}</li>
+    </ol>
+  </nav>
+  <div class="alert alert-warning" role="alert">
+    <i class="bi bi-info-circle"></i> DCC Notes:  {{ project.notes }}
+  </div>
 
-  <h2>Metadata Files Detected:</h2>
-  <table class="pure-table pure-table-horizontal">
+  {% if project.meta_list|length > 0 %} 
+  <div class="w-50 p-3" style="background-color: #eee;">
+  <h3>Metadata Files Detected</h3>
+  <table class="table table-striped">
     <thead>
         <tr>
             <th>Synapse ID</th>
@@ -41,9 +64,14 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
+  {% else %}
+    No metadata detected.
+  {% endif %}
 
-  <h2>Metadata Validation:</h2>  
-  <table class="pure-table pure-table-horizontal">
+  {% if project.meta_list|length > 0 %} 
+  <h3>Metadata Validation</h3>  
+  <table class="table table-striped">
     <thead>
         <tr>
             <th>Code</th>
@@ -72,7 +100,10 @@
       {% endfor %}
     </tbody>
   </table>
-  <h2>Cytoscape Graph:</h2>
+  {% endif %}
+
+  {% if project.meta_list|length > 0 %} 
+  <h3>Cytoscape Graph</h3>
   <ul>
     <li><a href="{{ project.id }}_cytoscape.html">Cytoscape Graph of all Data Nodes</a></li>
     <li>To download data for the Cytoscape Desktop Application, use these two files:
@@ -81,6 +112,7 @@
         <li><a href="{{ project.id }}_nodes.txt">Node Attributes</a></li></li>
       </ul>
   </ul>
+  {% endif %}
   <br/>
   <br/>
   <br/>

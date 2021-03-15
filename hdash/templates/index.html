@@ -1,10 +1,14 @@
 <html>
 <head>
-  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     body {
       margin-left: 20px;
+      margin-right:10px;
+      margin-top:10px;
+      margin-bottom:10px;
     }
     .footer {
       margin: 10px;
@@ -12,8 +16,18 @@
   </style>
 </head>
 <body>
-  <h1>HTAN Dashboard</h1>
-  <table class="pure-table pure-table-horizontal">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">HTAN Dashboard</span>
+    </div>
+  </nav>
+  <br/>
+  <div class="alert alert-warning" role="alert">
+    <i class="bi bi-check-circle"></i> The HTAN Dashboard now includes additional validation checks.  Click the project
+    for details.
+  </div>
+  <table class="table table-success table-striped">
     <thead>
       <tr>
         <th>Timestamp</th>
@@ -28,10 +42,11 @@
     </tbody>
   </table>  
   <br/>
-  <table class="pure-table pure-table-horizontal">
+  <table class="table table-striped">
     <thead>
         <tr>
             <th>Project</th>
+            <th>Synapse Link</th>
             <th>Atlas ID</th>
             <th>Total File Size</th>
             <th>FASTQ</th>
@@ -42,13 +57,13 @@
             <th>Metadata</th>
             <th>Num Errors</th>
             <th>Liaison</th>
-            <th>Notes</th>
         </tr>
     </thead>
     <tbody>
       {% for project in p_list %}
         <tr>
-          <td><nobr><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.name }}</nobr></a></td>
+          <td><nobr><a href="{{ project.id }}.html">{{ project.name }}</a></nobr></td>
+          <td><nobr><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.id }}</nobr></a></td>
           <td>{{ project.atlas_id }} </td>
           <td><nobr>{{ project.get_total_fize_size_human_readable() }}</nobr></td>
           <td>{{ project.num_fastq }}</td>
@@ -58,19 +73,18 @@
           <td>{{ project.num_other }}</td>
           <td>
             {% if project.num_meta > 0 %}
-              <a href="{{ project.id }}.html">Yes</a>
+              <i class="bi bi-check-circle"></i> Yes</a>
             {% else %}
               No
             {% endif %}
           </td>
           <td>{{ project.num_errors }}</td>
           <td>{{ project.liaison }}</td>
-          <td>{{ project.notes }}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
-  <div class='footer'>HTAN Data Coordinating Center (DCC).</div>
+  <div class='footer'>Auto-generated via the HTAN Data Coordinating Center (DCC).</div>
   <br/>
 </body>
 

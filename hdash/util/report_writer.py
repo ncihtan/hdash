@@ -51,10 +51,9 @@ class ReportWriter:
     def _generate_atlas_pages(self):
         self.atlas_html_map = {}
         for project in self.p_list:
-            if len(project.meta_list) > 0:
-                template = self.env.get_template("atlas.html")
-                html = template.render(now=self.dt, project=project)
-                self.atlas_html_map[project.id] = html
+            template = self.env.get_template("atlas.html")
+            html = template.render(now=self.dt, project=project)
+            self.atlas_html_map[project.id] = html
 
     def _generate_atlas_cytoscape_pages(self):
         self.atlas_cytoscape_html_map = {}
