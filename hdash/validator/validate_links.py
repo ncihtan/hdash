@@ -78,6 +78,9 @@ class ValidateLinks(ValidationRule):
                     parent_id,
                 )
                 error_list.append(m)
+            elif id == parent_id:
+                m = "%s references itself: %s as parent." % (category, id)
+                error_list.append(m)
             else:
                 edge = Edge()
                 edge.source_id = parent_id
