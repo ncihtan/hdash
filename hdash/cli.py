@@ -17,6 +17,7 @@ from hdash.synapse.table_util import TableUtil
 from hdash.validator.htan_validator import HtanValidator
 from synapseclient.core.exceptions import SynapseHTTPError
 
+# Local Project Table, Used when google option is not enabled.
 MASTER_PROJECT_TABLE = "config/htan_projects.csv"
 SLEEP_INTERVAL = 7200  # 2 hours
 
@@ -65,6 +66,8 @@ def _create_dashboard(use_cache, surge, google):
     if google:
         project_df = gsheet_util.project_df
     p_list = table_util.get_project_list(project_df)
+
+    # Annotate all HTAN projects with files obtained from Synapse.
     table_util.annotate_project_list(p_list, SynapseUtil.MASTER_HTAN_TABLE)
 
     if not use_cache:

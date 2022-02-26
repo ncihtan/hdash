@@ -48,6 +48,15 @@ To run the tool, run:
 hdash
 ```
 
+## Developer Notes
+
+The Makefile includes a number of useful targets for developing new code.
+
+    make test:  runs Pytests
+    make format:  runs black
+    make lint:  runs Flake8
+    make check:  runs all of the above
+
 ## LicenseMIT License
 
 Copyright (c) ecerami

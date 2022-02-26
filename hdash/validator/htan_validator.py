@@ -19,7 +19,7 @@ class HtanValidator:
         self.validation_list = []
         self.node_map = {}
 
-        # First step is to read in all the metadata files and caterogize them
+        # First step is to read in all the metadata files and categorize them
         self.meta_map = {}
         for path in meta_data_file_list:
             current_df = pd.read_csv(path)

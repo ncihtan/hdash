@@ -22,7 +22,7 @@ class TableUtil:
         return project_list
 
     def annotate_project_list(self, project_list, master_table_file):
-        """Annotate the project list file types and metadata info."""
+        """Annotate the project list with file types and metadata info."""
         df = pd.read_csv(master_table_file)
         for project in project_list:
             self._count_files(df, project)
