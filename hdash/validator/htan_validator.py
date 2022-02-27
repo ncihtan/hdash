@@ -8,6 +8,7 @@ from hdash.validator.validate_primary_ids import ValidatePrimaryIds
 from hdash.validator.validate_entity_ids import ValidateEntityIds
 from hdash.validator.validate_non_demographics import ValidateNonDemographics
 from hdash.validator.validate_links import ValidateLinks
+from hdash.validator.validate_categories import ValidateCategories
 
 
 class HtanValidator:
@@ -28,7 +29,13 @@ class HtanValidator:
                 component = component_list[0]
             except IndexError:
                 component = "Empty"
-            self.meta_map[component] = current_df
+
+            # We can have metadata files of the same component type
+            if component in self.meta_map:
+                meta_list = self.meta_map[component]
+                meta_list.append(current_df)
+            else:
+                self.meta_map[component] = [current_df]
 
         # Then validate
         self.__validate()
@@ -46,6 +53,10 @@ class HtanValidator:
         return self.links1.edge_list
 
     def __validate(self):
+
+        # Categories Validation
+        c0 = ValidateCategories(self.meta_map)
+        self.validation_list.append(c0)
 
         # Clinical Validation
         c1 = ValidateDemographics(self.meta_map)

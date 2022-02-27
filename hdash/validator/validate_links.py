@@ -28,25 +28,25 @@ class ValidateLinks(ValidationRule):
             self.__gather_nodes_by_category(category)
 
     def __gather_nodes_by_category(self, category):
-        df = self.meta_map.get(category)
-        if df is not None:
+        df_list = self.meta_map.get(category, [])
+        for df in df_list:
             primary_id = self.id_util.get_primary_id_column(category)
             id_list = df[primary_id].to_list()
-            for id in id_list:
-                id = str(id)
+            for current_id in id_list:
+                current_id = str(current_id)
                 node = Node()
-                node.id = id
-                node.label = id
+                node.id = current_id
+                node.label = current_id
                 node.category = category
-                self.node_map[id] = node
+                self.node_map[current_id] = node
 
     def __gather_edges(self, error_list):
         for category in self.category_list:
             self.__gather_edges_by_category(category, error_list)
 
     def __gather_edges_by_category(self, category, e_list):
-        df = self.meta_map.get(category)
-        if df is not None:
+        df_list = self.meta_map.get(category, [])
+        for df in df_list:
             primary_id_col = self.id_util.get_primary_id_column(category)
             parent_id_col = self.id_util.get_parent_id_column(category)
             adj_id_col = self.id_util.get_adjacent_id_column(category)

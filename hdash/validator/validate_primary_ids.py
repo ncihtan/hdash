@@ -25,15 +25,18 @@ class ValidatePrimaryIds(ValidationRule):
 
     def __validate_ids(self, atlas_id, category, e_list):
         if category in self.meta_file_map:
-            df = self.meta_file_map[category]
-            primary_id_col = self.id_util.get_primary_id_column(category)
-            id_list = df[primary_id_col].to_list()
-            for id in id_list:
-                id = str(id)
-                if primary_id_col == IdUtil.HTAN_PARTICIPANT_ID:
-                    self.__check_participant_id(category, id, atlas_id, e_list)
-                else:
-                    self.__check_primary_id(category, id, atlas_id, e_list)
+            df_list = self.meta_file_map[category]
+            for df in df_list:
+                primary_id_col = self.id_util.get_primary_id_column(category)
+                id_list = df[primary_id_col].to_list()
+                for current_id in id_list:
+                    current_id = str(current_id)
+                    if primary_id_col == IdUtil.HTAN_PARTICIPANT_ID:
+                        self.__check_participant_id(
+                            category, current_id, atlas_id, e_list
+                        )
+                    else:
+                        self.__check_primary_id(category, current_id, atlas_id, e_list)
 
     def __check_participant_id(self, category, id, atlas_id, error_list):
         parts = id.split("_")

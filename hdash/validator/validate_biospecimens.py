@@ -8,6 +8,6 @@ class ValidateBiospecimens(ValidationRule):
 
     def __init__(self, meta_file_map):
         """Construct new Validation Rule."""
-        super().__init__("H_BIOSPEC", "Biospecimen file is present.")
+        super().__init__("H_BIOSPEC", "At least one Biospecimen file is present.")
         validation_passed = "Biospecimen" in meta_file_map
         self.set_status(validation_passed)

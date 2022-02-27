@@ -13,16 +13,17 @@ class ValidateEntityIds(ValidationRule):
         super().__init__("H_ENTITY_ID", "Synapse Entity IDs are Specified.")
         error_list = []
         for key in meta_file_map:
-            df = meta_file_map[key]
-            try:
-                synapse_ids = df[ValidateEntityIds.ENTITY_ID_COL].to_list()
-                self.__check_synapse_ids(key, synapse_ids, error_list)
-            except KeyError:
-                msg = "%s does not have %s column." % (
-                    key,
-                    ValidateEntityIds.ENTITY_ID_COL,
-                )
-                error_list.append(msg)
+            df_list = meta_file_map[key]
+            for df in df_list:
+                try:
+                    synapse_ids = df[ValidateEntityIds.ENTITY_ID_COL].to_list()
+                    self.__check_synapse_ids(key, synapse_ids, error_list)
+                except KeyError:
+                    msg = "%s does not have %s column." % (
+                        key,
+                        ValidateEntityIds.ENTITY_ID_COL,
+                    )
+                    error_list.append(msg)
         self.set_error_list(error_list)
 
     def __check_synapse_ids(self, key, synapse_ids, error_list):

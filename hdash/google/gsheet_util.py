@@ -15,7 +15,7 @@ class GoogleSheetUtil:
         "BAM",
         "IMAGE",
         "MATRIX",
-        "OTHER",
+        "OTHER_ASSAY",
         "META",
     ]
 

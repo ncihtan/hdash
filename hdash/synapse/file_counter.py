@@ -12,7 +12,7 @@ class FileCounter:
     IMAGE = "IMAGE"
     MATRIX = "MATRIX"
     METADATA = "METADATA"
-    OTHER = "OTHER"
+    OTHER = "OTHER_ASSAY"
     EXCLUDE = "EXCLUDE"
 
     def __init__(self, synapse_df):
