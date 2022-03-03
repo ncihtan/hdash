@@ -23,19 +23,3 @@ def test_stats_clinical():
     value = participant_map.get("HTA3_8004:Demographics")
     assert value == "38%"
 
-
-# def test_graph():
-#     """Test Links and Graph Creation."""
-#     file_list = [
-#         "tests/data/demographics.csv",
-#         "tests/data/biospecimens.csv",
-#         "tests/data/single_cell_level1.csv",
-#         "tests/data/single_cell_level2.csv",
-#         "tests/data/single_cell_level3.csv",
-#         "tests/data/single_cell_level4.csv",
-#     ]
-#     validator = htan_validator.HtanValidator("HTA3", file_list)
-#     node_map = validator.get_node_map()
-#     edge_list = validator.get_edge_list()
-#     assert len(node_map) == 213
-#     assert len(edge_list) == 170

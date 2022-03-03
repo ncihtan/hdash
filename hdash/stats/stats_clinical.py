@@ -22,6 +22,8 @@ class StatsClinical:
         self.participant_id_set = set()
         self.participant_map = {}
         self.categories = Categories()
+        self.participant_num_fields = {}
+        self.participant_num_completed_fields = {}
         self.__walk_clinical_data_categories()
         self.participant_id_set = natsorted(self.participant_id_set)
 
@@ -37,20 +39,37 @@ class StatsClinical:
     def inspect_clinical_df(self, clinical_category, df):
         """Inspect Clinical Data Data Frame."""
         for index, row in df.iterrows():
-            num_fields = 0
-            num_completed_fields = 0
             participant_id = row[IdUtil.HTAN_PARTICIPANT_ID]
             self.participant_id_set.add(participant_id)
 
             # Iterate through all the fields
             # and count number of fields, and number of completed fields
-            for key, value in row.items():
-                if key not in StatsClinical.IGNORED_FIELDS:
-                    num_fields += 1
-                    value = str(value).lower()
-                    if value not in StatsClinical.NA_VALUES:
-                        num_completed_fields += 1
-
             key = participant_id + ":" + clinical_category
-            percent_complete = num_completed_fields / num_fields
+            for field_name, field_value in row.items():
+                if field_name not in StatsClinical.IGNORED_FIELDS:
+                    self.__increment_num_fields(key)
+                    field_value = str(field_value).lower()
+                    if field_value not in StatsClinical.NA_VALUES:
+                        self.__increment_num_completed_fields(key)
+
+            percent_complete = self.__calculate_percent_complete_fields(key)
             self.participant_map[key] = f"{percent_complete:.0%}"
+
+    def __increment_num_fields(self, key):
+        if key in self.participant_num_fields:
+            self.participant_num_fields[key] = self.participant_num_fields[key] + 1
+        else:
+            self.participant_num_fields[key] = 1
+
+    def __increment_num_completed_fields(self, key):
+        if key in self.participant_num_completed_fields:
+            self.participant_num_completed_fields[key] = (
+                self.participant_num_completed_fields[key] + 1
+            )
+        else:
+            self.participant_num_completed_fields[key] = 1
+
+    def __calculate_percent_complete_fields(self, key):
+        num_complete_fields = self.participant_num_completed_fields.get(key, 0)
+        num_fields = self.participant_num_fields.get(key, 1)
+        return num_complete_fields / num_fields
