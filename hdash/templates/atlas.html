@@ -119,10 +119,10 @@
         </tr>
     </thead>
     <tbody>
-      {% for participant_id in project.participant_id_list %}
+      {% for participant_id in project.participant_id_set %}
       <tr valign="top">
           <td>{{ participant_id }}</td>
-          {% for clinical_category in clinical_categories %}
+          {% for clinical_category in clinical_tier1_2 %}
             {% set key = participant_id + ":" + clinical_category %}
             <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
           {% endfor %}
@@ -147,7 +147,7 @@
         </tr>
     </thead>
     <tbody>
-      {% for participant_id in project.participant_id_list %}
+      {% for participant_id in project.participant_id_set %}
       <tr valign="top">
           <td>{{ participant_id }}</td>
           {% for clinical_category in clinical_tier3 %}
