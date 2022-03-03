@@ -3,6 +3,8 @@ from datetime import datetime
 import humanize
 from jinja2 import Environment, PackageLoader, select_autoescape
 
+from hdash.validator.validate_non_demographics import ValidateNonDemographics
+
 
 class ReportWriter:
     """Report Writer."""
@@ -52,7 +54,11 @@ class ReportWriter:
         self.atlas_html_map = {}
         for project in self.p_list:
             template = self.env.get_template("atlas.html")
-            html = template.render(now=self.dt, project=project)
+            html = template.render(
+                now=self.dt,
+                project=project,
+                clinical_categories=ValidateNonDemographics.clinical_list,
+            )
             self.atlas_html_map[project.id] = html
 
     def _generate_atlas_cytoscape_pages(self):

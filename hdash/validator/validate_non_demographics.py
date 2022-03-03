@@ -10,6 +10,7 @@ class ValidateNonDemographics(ValidationRule):
 
     # This list will need to be expanded in the future...
     clinical_list = [
+        "Demographics",
         "Exposure",
         "FamilyHistory",
         "FollowUp",
@@ -17,9 +18,16 @@ class ValidateNonDemographics(ValidationRule):
         "Therapy",
         "MolecularTest",
         "ClinicalDataTier2",
-        "LungCancerTier3",
-        "BreastCancerTier3",
+        "AcuteLymphoblasticLeukemiaTier3",
         "BrainCancerTier3",
+        "BreastCancerTier3",
+        "ColorectalCancerTier3",
+        "LungCancerTier3",
+        "MelanomaTier3",
+        "OvarianCancerTier3",
+        "PancreaticCancerTier3",
+        "ProstateCancerTier3",
+        "SarcomaTier3"
     ]
 
     def __init__(self, meta_map):

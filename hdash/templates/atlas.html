@@ -44,9 +44,9 @@
   </div>
 
   {% if project.meta_list|length > 0 %} 
-  <div class="w-50 p-3" style="background-color: #eee;">
+  <div class="w-95 p-3 m-1" style="background-color: #eee;">
   <h3>Metadata Files Detected</h3>
-  <table class="table table-striped">
+  <table class="table table-striped ">
     <thead>
         <tr>
             <th>Synapse ID</th>
@@ -69,7 +69,8 @@
     No metadata detected.
   {% endif %}
 
-  {% if project.meta_list|length > 0 %} 
+  {% if project.meta_list|length > 0 %}
+  <div class="w-95 p-3 m-1" style="background-color: #eee;">
   <h3>Metadata Validation</h3>  
   <table class="table table-striped">
     <thead>
@@ -91,7 +92,7 @@
           <td>{{ validation.validation_code }}</td>
           <td>{{ validation.validation_text }}</td>
           <td class={{trClass}}>{{ passed }}</td>
-          <td width=60%>
+          <td width=40%>
             {% for error in validation.error_list %}
               - {{ error }}<br/>
             {% endfor %}
@@ -100,9 +101,75 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
   {% endif %}
 
-  {% if project.meta_list|length > 0 %} 
+  <div class="w-95 p-3 m-1" style="background-color: #fce1e9;">
+  <h3>Clinical Data Matrix:  Tiers 1 and 2</h3>
+    Values indicate fraction of fields that have data.
+    <br/>
+    <br/>
+    <table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>ID</th>
+            {% for clinical_category in clinical_categories %}
+              {% if "Tier3" not in clinical_category %}
+                <th>{{ clinical_category }}</th>
+              {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+      {% for participant_id in project.participant_id_list %}
+      <tr valign="top">
+          <td>{{ participant_id }}</td>
+          {% for clinical_category in clinical_categories %}
+            {% set key = participant_id + ":" + clinical_category %}
+            {% if "Tier3" not in clinical_category %}
+              <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
+            {% endif %}
+          {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+   <div class="w-95 p-3 m-1" style="background-color: #fce1e9;">
+  <h3>Clinical Data Matrix:  Tier 3</h3>
+    Values indicate fraction of fields that have data.
+    <br/>
+    <br/>
+    <table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>ID</th>
+            {% for clinical_category in clinical_categories %}
+              {% if "Tier3" in clinical_category %}
+                <th>{{ clinical_category|truncate(12, True)}}</th>
+              {% endif %}
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+      {% for participant_id in project.participant_id_list %}
+      <tr valign="top">
+          <td>{{ participant_id }}</td>
+          {% for clinical_category in clinical_categories %}
+            {% set key = participant_id + ":" + clinical_category %}
+            {% if "Tier3" in clinical_category %}
+              <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
+            {% endif %}
+          {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+  {% if project.meta_list|length > 0 %}
+  <div class="w-95 p-3 m-1" style="background-color: #eee;">
   <h3>Cytoscape Graph</h3>
   <ul>
     <li><a href="{{ project.id }}_cytoscape.html">Cytoscape Graph of all Data Nodes</a></li>
@@ -112,6 +179,7 @@
         <li><a href="{{ project.id }}_nodes.txt">Node Attributes</a></li></li>
       </ul>
   </ul>
+  </div>
   {% endif %}
   <br/>
   <br/>

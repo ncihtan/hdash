@@ -1,0 +1,34 @@
+"""Test HTAN Validator class."""
+from hdash.validator import htan_validator
+from hdash.stats import stats_clinical
+import pytest
+
+
+def test_stats_clinical():
+    """Test Clinical Data Stats."""
+    file_list = ["tests/data/demographics.csv", "tests/data/biospecimens.csv"]
+    validator = htan_validator.HtanValidator("HTA3", file_list)
+    meta_map = validator.meta_map
+    stats = stats_clinical.StatsClinical("HTA3", meta_map)
+    participant_id_list = stats.participant_id_list
+    participant_map = stats.participant_map
+    assert "HTA3_8001" in participant_id_list
+    assert "HTA3_8001:Demographics" in participant_map
+    value = participant_map.get("HTA3_8001:Demographics")
+    assert value == "61%"
+
+# def test_graph():
+#     """Test Links and Graph Creation."""
+#     file_list = [
+#         "tests/data/demographics.csv",
+#         "tests/data/biospecimens.csv",
+#         "tests/data/single_cell_level1.csv",
+#         "tests/data/single_cell_level2.csv",
+#         "tests/data/single_cell_level3.csv",
+#         "tests/data/single_cell_level4.csv",
+#     ]
+#     validator = htan_validator.HtanValidator("HTA3", file_list)
+#     node_map = validator.get_node_map()
+#     edge_list = validator.get_edge_list()
+#     assert len(node_map) == 213
+#     assert len(edge_list) == 170
