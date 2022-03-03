@@ -2,7 +2,6 @@
 
 from hdash.validator.validation_rule import ValidationRule
 from hdash.validator.categories import Categories
-from hdash.validator.validate_non_demographics import ValidateNonDemographics
 
 
 class ValidateCategories(ValidationRule):
@@ -12,16 +11,13 @@ class ValidateCategories(ValidationRule):
         """Construct new Validation Rule."""
         super().__init__(
             "H_CATEGORIES",
-            "Verify that all Categories are supported by the Dashboard.",
+            "Check that all Atlas Categories are supported by the Dashboard.",
         )
 
         categories = Categories()
         error_list = []
         for key in meta_file_map.keys():
-            if (
-                key not in categories.get_primary_category_list()
-                and key not in ValidateNonDemographics.clinical_list
-            ):
+            if key not in categories.all_categories:
                 error_list.append(
                     f"{key} is not yet supported by the Dashboard.  "
                     "Please notify Ethan to update the code!"

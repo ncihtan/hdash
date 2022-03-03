@@ -1,12 +1,10 @@
 """Validation Rule."""
-
+from hdash.validator.categories import Categories
 from hdash.validator.validation_rule import ValidationRule
 
 
 class ValidateEntityIds(ValidationRule):
     """Verify that Entity Ids are Specified."""
-
-    ENTITY_ID_COL = "entityId"
 
     def __init__(self, meta_file_map):
         """Construct new Validation Rule."""
@@ -16,12 +14,12 @@ class ValidateEntityIds(ValidationRule):
             df_list = meta_file_map[key]
             for df in df_list:
                 try:
-                    synapse_ids = df[ValidateEntityIds.ENTITY_ID_COL].to_list()
+                    synapse_ids = df[Categories.ENTITY_ID_COL].to_list()
                     self.__check_synapse_ids(key, synapse_ids, error_list)
                 except KeyError:
                     msg = "%s does not have %s column." % (
                         key,
-                        ValidateEntityIds.ENTITY_ID_COL,
+                        HtanValidator.ENTITY_ID_COL,
                     )
                     error_list.append(msg)
         self.set_error_list(error_list)

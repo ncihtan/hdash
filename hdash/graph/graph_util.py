@@ -17,22 +17,22 @@ class GraphUtil:
         for node_id in node_map:
             node = node_map[node_id]
             node.sif_id = abbrev_map[node.category] + "_" + node.label
-            dict = {}
-            dict["id"] = node.id
-            dict["label"] = node.sif_id
-            dict["category"] = node.category
-            node_dict = {}
-            node_dict["data"] = dict
+            current_node = {
+                "id": node.id,
+                "label": node.sif_id,
+                "category": node.category,
+            }
+            node_dict = {"data": current_node}
             self.data_list.append(node_dict)
 
         edge_id = 0
         for edge in edge_list:
-            dict = {}
-            dict["id"] = "e" + str(edge_id)
-            dict["source"] = edge.source_id
-            dict["target"] = edge.target_id
-            node_dict = {}
-            node_dict["data"] = dict
+            current_edge = {
+                "id": "e" + str(edge_id),
+                "source": edge.source_id,
+                "target": edge.target_id,
+            }
+            node_dict = {"data": current_edge}
             self.data_list.append(node_dict)
 
             s_node = self.node_map[edge.source_id]

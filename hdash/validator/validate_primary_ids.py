@@ -17,9 +17,8 @@ class ValidatePrimaryIds(ValidationRule):
         self.meta_file_map = meta_file_map
         self.categories = Categories()
         self.id_util = IdUtil()
-        self.category_list = self.categories.get_primary_category_list()
         error_list = []
-        for category in self.category_list:
+        for category in self.categories.all_assays:
             self.__validate_ids(atlas_id, category, error_list)
         self.set_error_list(error_list)
 

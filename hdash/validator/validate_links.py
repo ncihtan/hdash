@@ -17,14 +17,13 @@ class ValidateLinks(ValidationRule):
         self.node_map = {}
         self.edge_list = []
         self.categories = Categories()
-        self.category_list = self.categories.get_primary_category_list()
         error_list = []
         self.__gather_nodes()
         self.__gather_edges(error_list)
         self.set_error_list(error_list)
 
     def __gather_nodes(self):
-        for category in self.category_list:
+        for category in self.categories.all_categories:
             self.__gather_nodes_by_category(category)
 
     def __gather_nodes_by_category(self, category):
@@ -41,7 +40,7 @@ class ValidateLinks(ValidationRule):
                 self.node_map[current_id] = node
 
     def __gather_edges(self, error_list):
-        for category in self.category_list:
+        for category in self.categories.all_categories:
             self.__gather_edges_by_category(category, error_list)
 
     def __gather_edges_by_category(self, category, e_list):

@@ -113,10 +113,8 @@
     <thead>
         <tr>
             <th>ID</th>
-            {% for clinical_category in clinical_categories %}
-              {% if "Tier3" not in clinical_category %}
+            {% for clinical_category in clinical_tier1_2 %}
                 <th>{{ clinical_category }}</th>
-              {% endif %}
             {% endfor %}
         </tr>
     </thead>
@@ -126,9 +124,7 @@
           <td>{{ participant_id }}</td>
           {% for clinical_category in clinical_categories %}
             {% set key = participant_id + ":" + clinical_category %}
-            {% if "Tier3" not in clinical_category %}
-              <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
-            {% endif %}
+            <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
           {% endfor %}
       </tr>
       {% endfor %}
@@ -145,10 +141,8 @@
     <thead>
         <tr>
             <th>ID</th>
-            {% for clinical_category in clinical_categories %}
-              {% if "Tier3" in clinical_category %}
+            {% for clinical_category in clinical_tier3 %}
                 <th>{{ clinical_category|truncate(12, True)}}</th>
-              {% endif %}
             {% endfor %}
         </tr>
     </thead>
@@ -156,11 +150,9 @@
       {% for participant_id in project.participant_id_list %}
       <tr valign="top">
           <td>{{ participant_id }}</td>
-          {% for clinical_category in clinical_categories %}
+          {% for clinical_category in clinical_tier3 %}
             {% set key = participant_id + ":" + clinical_category %}
-            {% if "Tier3" in clinical_category %}
-              <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
-            {% endif %}
+            <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
           {% endfor %}
       </tr>
       {% endfor %}

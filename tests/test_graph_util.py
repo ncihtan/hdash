@@ -20,11 +20,8 @@ def test_graph_util():
     edge.source_id = node1.id
     edge.target_id = node2.id
 
-    node_map = {}
-    node_map[node1.id] = node1
-    node_map[node2.id] = node2
-    edge_list = []
-    edge_list.append(edge)
+    node_map = {node1.id: node1, node2.id: node2}
+    edge_list = [edge]
 
     graph_util = GraphUtil(node_map, edge_list)
     data_list = graph_util.data_list
@@ -33,13 +30,14 @@ def test_graph_util():
 
 def test_real_graph():
     """Test Real Graph."""
-    file_list = []
-    file_list.append("tests/data/demographics.csv")
-    file_list.append("tests/data/biospecimens.csv")
-    file_list.append("tests/data/single_cell_level1.csv")
-    file_list.append("tests/data/single_cell_level2.csv")
-    file_list.append("tests/data/single_cell_level3.csv")
-    file_list.append("tests/data/single_cell_level4.csv")
+    file_list = [
+        "tests/data/demographics.csv",
+        "tests/data/biospecimens.csv",
+        "tests/data/single_cell_level1.csv",
+        "tests/data/single_cell_level2.csv",
+        "tests/data/single_cell_level3.csv",
+        "tests/data/single_cell_level4.csv",
+    ]
     validator = htan_validator.HtanValidator("HTA3", file_list)
     graph_util = GraphUtil(validator.get_node_map(), validator.get_edge_list())
     data_list = graph_util.data_list

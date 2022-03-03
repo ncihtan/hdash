@@ -95,7 +95,7 @@ def _create_dashboard(use_cache, surge, google):
         project.node_map = validator.get_node_map()
         project.sif_list = graph_util.sif_list
         stats = stats_clinical.StatsClinical(project.atlas_id, validator.meta_map)
-        project.participant_id_list = stats.participant_id_list
+        project.participant_id_set = stats.participant_id_set
         project.participant_clinical_map = stats.participant_map
 
     _write_html(p_list)

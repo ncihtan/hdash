@@ -3,7 +3,7 @@ from datetime import datetime
 import humanize
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from hdash.validator.validate_non_demographics import ValidateNonDemographics
+from hdash.validator.categories import Categories
 
 
 class ReportWriter:
@@ -11,8 +11,8 @@ class ReportWriter:
 
     def __init__(self, project_list):
         """Create new Report Writer."""
+        self.categories = Categories()
         self.p_list = project_list
-
         self.total_storage = 0
         for project in self.p_list:
             num_errors = 0
@@ -57,7 +57,8 @@ class ReportWriter:
             html = template.render(
                 now=self.dt,
                 project=project,
-                clinical_categories=ValidateNonDemographics.clinical_list,
+                clinical_tier1_2=self.categories.clinical_tier1_2_list,
+                clinical_tier3=self.categories.clinical_tier3_list,
             )
             self.atlas_html_map[project.id] = html
 

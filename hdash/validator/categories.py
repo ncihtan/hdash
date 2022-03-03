@@ -1,12 +1,17 @@
-"""Meta Data Categories."""
+"""HTAN Data Categories."""
 
 
 class Categories:
-    """Meta Data Categories."""
+    """HTAN Data Categories."""
 
-    OTHER_ASSAY = "OtherAssay"
+    # Synape Fields
+    COMPONENT_COL = "Component"
+    ENTITY_ID_COL = "entityId"
+
+    # Biospecimen Categories
     BIOSPECIMEN = "Biospecimen"
-    DEMOGRAPHICS = "Demographics"
+
+    # Assay Categories
     SC_RNA_SEQ_LEVEL_1 = "ScRNA-seqLevel1"
     SC_RNA_SEQ_LEVEL_2 = "ScRNA-seqLevel2"
     SC_RNA_SEQ_LEVEL_3 = "ScRNA-seqLevel3"
@@ -27,34 +32,93 @@ class Categories:
     IMAGING_LEVEL_2 = "ImagingLevel2"
     IMAGING_LEVEL_3 = "ImagingLevel3"
     IMAGING_LEVEL_4 = "ImagingLevel3"
+    OTHER_ASSAY = "OtherAssay"
+
+    # Clinical Data Categories
+    DEMOGRAPHICS = "Demographics"
+    EXPOSURE = "Exposure"
+    FAMILY_HISTORY = "FamilyHistory"
+    FOLLOW_UP = "FollowUp"
+    DIAGNOSIS = "Diagnosis"
+    THERAPY = "Therapy"
+    MOLECULAR_TEST = "MolecularTest"
+    CLINICAL_TIER2 = "ClinicalDataTier2"
+    ALL_TIER3 = "AcuteLymphoblasticLeukemiaTier3"
+    BRAIN_TIER3 = "BrainCancerTier3"
+    BREAST_TIER3 = "BreastCancerTier3"
+    CRC_TIER3 = "ColorectalCancerTier3"
+    LUNG_TIER3 = "LungCancerTier3"
+    MELANOMA_TIER3 = "MelanomaTier3"
+    OVARIAN_TIER3 = "OvarianCancerTier3"
+    PANCREATIC_TIER3 = "PancreaticCancerTier3"
+    PROSTATE_TIER3 = "ProstateCancerTier3"
+    SARCOMA_TIER3 = "SarcomaTier3"
 
     def __init__(self):
-        """Construct a new Categories Object."""
-        self.category_list = [
-            Categories.OTHER_ASSAY,
-            Categories.BIOSPECIMEN,
-            Categories.DEMOGRAPHICS,
+        """Construct all new category lists."""
+        self.biospecimen_list = [Categories.BIOSPECIMEN]
+
+        self.sc_rna_list = [
             Categories.SC_RNA_SEQ_LEVEL_1,
             Categories.SC_RNA_SEQ_LEVEL_2,
             Categories.SC_RNA_SEQ_LEVEL_3,
             Categories.SC_RNA_SEQ_LEVEL_4,
+        ]
+
+        self.bulk_wes_list = [
             Categories.BULK_WES_LEVEL_1,
             Categories.BULK_WES_LEVEL_2,
             Categories.BULK_WES_LEVEL_3,
             Categories.BULK_WES_LEVEL_4,
+        ]
+
+        self.bulk_rna_list = [
             Categories.BULK_RNA_SEQ_LEVEL_1,
             Categories.BULK_RNA_SEQ_LEVEL_2,
             Categories.BULK_RNA_SEQ_LEVEL_3,
             Categories.BULK_RNA_SEQ_LEVEL_4,
+        ]
+
+        self.image_list = [
             Categories.IMAGING_LEVEL_1,
             Categories.IMAGING_LEVEL_2,
             Categories.IMAGING_LEVEL_3,
             Categories.IMAGING_LEVEL_4,
+        ]
+
+        self.sc_atac_list = [
             Categories.SC_ATAC_SEQ_LEVEL_1,
             Categories.SC_ATAC_SEQ_LEVEL_2,
             Categories.SC_ATAC_SEQ_LEVEL_3,
             Categories.SC_ATAC_SEQ_LEVEL_4,
         ]
+
+        self.other_assay_list = [Categories.OTHER_ASSAY]
+
+        self.clinical_tier1_2_list = [
+            Categories.DEMOGRAPHICS,
+            Categories.EXPOSURE,
+            Categories.FAMILY_HISTORY,
+            Categories.FOLLOW_UP,
+            Categories.DIAGNOSIS,
+            Categories.THERAPY,
+            Categories.MOLECULAR_TEST,
+            Categories.CLINICAL_TIER2,
+        ]
+
+        self.clinical_tier3_list = [
+            Categories.ALL_TIER3,
+            Categories.BRAIN_TIER3,
+            Categories.BREAST_TIER3,
+            Categories.CRC_TIER3,
+            Categories.LUNG_TIER3,
+            Categories.MELANOMA_TIER3,
+            Categories.OVARIAN_TIER3,
+            Categories.PANCREATIC_TIER3,
+            Categories.PROSTATE_TIER3,
+            Categories.SARCOMA_TIER3,
+        ]
+
         self.abbrev_category_map = {
             Categories.OTHER_ASSAY: "O",
             Categories.BIOSPECIMEN: "B",
@@ -81,6 +145,19 @@ class Categories:
             Categories.SC_ATAC_SEQ_LEVEL_4: "SCATAC4",
         }
 
-    def get_primary_category_list(self):
-        """Get Primary Category List."""
-        return self.category_list
+        self.all_assays = []
+        self.all_assays.extend(self.sc_rna_list)
+        self.all_assays.extend(self.sc_atac_list)
+        self.all_assays.extend(self.bulk_wes_list)
+        self.all_assays.extend(self.bulk_rna_list)
+        self.all_assays.extend(self.image_list)
+        self.all_assays.extend(self.other_assay_list)
+
+        self.all_clinical = []
+        self.all_clinical.extend(self.clinical_tier1_2_list)
+        self.all_clinical.extend(self.clinical_tier3_list)
+
+        self.all_categories = []
+        self.all_categories.extend(self.all_clinical)
+        self.all_categories.extend(self.biospecimen_list)
+        self.all_categories.extend(self.all_assays)
