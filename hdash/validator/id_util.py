@@ -15,10 +15,15 @@ class IdUtil:
 
     def __init__(self):
         """Init ID Maps."""
+        self.categories = Categories()
         self.primary_id_map = {
             Categories.BIOSPECIMEN: IdUtil.HTAN_BIOSPECIMEN_ID,
-            Categories.DEMOGRAPHICS: IdUtil.HTAN_PARTICIPANT_ID,
         }
+
+        #  All Clinical Categories have the Same Primary ID
+        for clinical_category in self.categories.all_clinical:
+            self.primary_id_map[clinical_category] = IdUtil.HTAN_PARTICIPANT_ID
+
         self.parent_id_map = {
             Categories.BIOSPECIMEN: IdUtil.HTAN_PARENT_ID,
             Categories.SC_RNA_SEQ_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
@@ -35,7 +40,7 @@ class IdUtil:
 
     def get_parent_id_column(self, category):
         """Get Parent ID Column for the specified category of data."""
-        if category == Categories.DEMOGRAPHICS:
+        if category in self.categories.all_clinical:
             return None
         else:
             return self.parent_id_map.get(category, IdUtil.HTAN_PARENT_FILE_ID)
