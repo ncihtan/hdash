@@ -59,7 +59,7 @@ class StatsSummary:
             if primary_id_column == IdUtil.HTAN_PARTICIPANT_ID:
                 self.participant_id_set.add(primary_id)
             elif primary_id_column == IdUtil.HTAN_DATA_FILE_ID:
-                primary_id = self.assays_2_biospecimens[primary_id]
+                primary_id = self.assays_2_biospecimens.get(primary_id, "NA")
 
             # Iterate through all the fields
             # and count number of fields, and number of completed fields

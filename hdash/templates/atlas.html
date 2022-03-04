@@ -124,7 +124,7 @@
           <td>{{ participant_id }}</td>
           {% for clinical_category in clinical_tier1_2 %}
             {% set key = participant_id + ":" + clinical_category %}
-            <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
+            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
           {% endfor %}
       </tr>
       {% endfor %}
@@ -132,9 +132,9 @@
     </table>
   </div>
 
-   <div class="w-95 p-3 m-1" style="background-color: #fce1e9;">
-  <h3>Clinical Data Matrix:  Tier 3</h3>
-    Values indicate fraction of fields that have data.
+    <div class="w-95 p-3 m-1" style="background-color: #fce1e9;">
+    <h3>Clinical Data Matrix:  Tier 3</h3>
+    Values indicate fraction of meta-data fields that have data.
     <br/>
     <br/>
     <table class="table table-striped table-sm">
@@ -152,7 +152,7 @@
           <td>{{ participant_id }}</td>
           {% for clinical_category in clinical_tier3 %}
             {% set key = participant_id + ":" + clinical_category %}
-            <td>{{ project.participant_clinical_map.get(key, "NA") }}</td>
+            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
           {% endfor %}
       </tr>
       {% endfor %}
@@ -160,19 +160,116 @@
     </table>
   </div>
 
-  {% if project.meta_list|length > 0 %}
-  <div class="w-95 p-3 m-1" style="background-color: #eee;">
-  <h3>Cytoscape Graph</h3>
-  <ul>
-    <li><a href="{{ project.id }}_cytoscape.html">Cytoscape Graph of all Data Nodes</a></li>
-    <li>To download data for the Cytoscape Desktop Application, use these two files:
-      <ul>
-        <li><a href="{{ project.id }}_network.sif">Network SIF</a></li></li>
-        <li><a href="{{ project.id }}_nodes.txt">Node Attributes</a></li></li>
-      </ul>
-  </ul>
+  <div class="w-95 p-3 m-1" style="background-color: #e3eeff;">
+    <h3>Assay Matrix: Single Cell Data</h3>
+    Values indicate fraction of meta-data fields that have data.
+    <br/>
+    <br/>
+    <table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>Participant</th>
+            <th>Biospecimen</th>
+            {% for category in single_cell_assay_list %}
+                <th>{{ category}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+      {% for participant_id in project.participant_id_set %}
+      {% for biospecimen_id in project.participant_2_biopsecimens.get(participant_id, []) %}
+      <tr valign="top">
+        <td>{{ participant_id }}</td>
+        <td>{{ biospecimen_id }}</td>
+        {% for category in single_cell_assay_list %}
+            {% set key = biospecimen_id + ":" + category %}
+            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
+        {% endfor %}
+      {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
   </div>
-  {% endif %}
+
+  <div class="w-95 p-3 m-1" style="background-color: #e3eeff;">
+    <h3>Assay Matrix: Bulk Data</h3>
+    Values indicate fraction of meta-data fields that have data.
+    <br/>
+    <br/>
+    <table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>Participant</th>
+            <th>Biospecimen</th>
+            {% for category in bulk_assay_list %}
+                <th>{{ category}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+      {% for participant_id in project.participant_id_set %}
+      {% for biospecimen_id in project.participant_2_biopsecimens.get(participant_id, []) %}
+      <tr valign="top">
+        <td>{{ participant_id }}</td>
+        <td>{{ biospecimen_id }}</td>
+        {% for category in bulk_assay_list %}
+            {% set key = biospecimen_id + ":" + category %}
+            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
+        {% endfor %}
+      {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+  <div class="w-95 p-3 m-1" style="background-color: #e3eeff;">
+    <h3>Assay Matrix: Imaging and Other</h3>
+    Values indicate fraction of meta-data fields that have data.
+    <br/>
+    <br/>
+    <table class="table table-striped table-sm">
+    <thead>
+        <tr>
+            <th>Participant</th>
+            <th>Biospecimen</th>
+            {% for category in image_assay_list %}
+                <th>{{ category}}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+      {% for participant_id in project.participant_id_set %}
+      {% for biospecimen_id in project.participant_2_biopsecimens.get(participant_id, []) %}
+      <tr valign="top">
+        <td>{{ participant_id }}</td>
+        <td>{{ biospecimen_id }}</td>
+        {% for category in image_assay_list %}
+            {% set key = biospecimen_id + ":" + category %}
+            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
+        {% endfor %}
+      {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+<!--  Commenting out the Cytoscape Graphs for now;  we can also re-enable in future. -->
+<!--  {% if project.meta_list|length > 0 %}-->
+<!--  <div class="w-95 p-3 m-1" style="background-color: #eee;">-->
+<!--  <h3>Cytoscape Graph</h3>-->
+<!--  <ul>-->
+<!--    <li><a href="{{ project.id }}_cytoscape.html">Cytoscape Graph of all Data Nodes</a></li>-->
+<!--    <li>To download data for the Cytoscape Desktop Application, use these two files:-->
+<!--      <ul>-->
+<!--        <li><a href="{{ project.id }}_network.sif">Network SIF</a></li></li>-->
+<!--        <li><a href="{{ project.id }}_nodes.txt">Node Attributes</a></li></li>-->
+<!--      </ul>-->
+<!--  </ul>-->
+<!--  </div>-->
+<!--  {% endif %}-->
   <br/>
   <br/>
   <br/>

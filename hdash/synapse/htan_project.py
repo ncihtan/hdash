@@ -30,7 +30,9 @@ class HTANProject:
         self.node_map = []
         self.sif_list = []
         self.participant_id_set = []
-        self.participant_clinical_map = {}
+        self.participant_2_biopsecimens = {}
+        self.assays_2_biospecimens = {}
+        self.df_stats_map = {}
 
     def get_total_file_size(self):
         """Get total file size."""

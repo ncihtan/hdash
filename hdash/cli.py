@@ -99,7 +99,9 @@ def _create_dashboard(use_cache, surge, google):
             project.atlas_id, validator.meta_map, assays_2_biospecimens
         )
         project.participant_id_set = stats.participant_id_set
-        project.participant_clinical_map = stats.df_stats_map
+        project.df_stats_map = stats.df_stats_map
+        project.participant_2_biopsecimens = graph_util.participant_2_biopsecimens
+        project.assays_2_biospecimens = graph_util.assays_2_biospecimens
 
     _write_html(p_list)
 
