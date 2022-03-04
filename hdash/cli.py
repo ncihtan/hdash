@@ -11,7 +11,7 @@ import pandas as pd
 from shutil import copyfile
 from datetime import datetime
 
-from hdash.stats import stats_clinical
+from hdash.stats import stats_summary
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.google.gsheet_util import GoogleSheetUtil
 from hdash.util.report_writer import ReportWriter
@@ -94,9 +94,12 @@ def _create_dashboard(use_cache, surge, google):
         project.data_list = graph_util.data_list
         project.node_map = validator.get_node_map()
         project.sif_list = graph_util.sif_list
-        stats = stats_clinical.StatsClinical(project.atlas_id, validator.meta_map)
+        assays_2_biospecimens = graph_util.assays_2_biospecimens
+        stats = stats_summary.StatsSummary(
+            project.atlas_id, validator.meta_map, assays_2_biospecimens
+        )
         project.participant_id_set = stats.participant_id_set
-        project.participant_clinical_map = stats.participant_map
+        project.participant_clinical_map = stats.df_stats_map
 
     _write_html(p_list)
 

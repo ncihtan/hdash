@@ -51,18 +51,17 @@ def test_real_graph():
     assert sif_list[0][0] == "D_HTA3_8001"
     assert sif_list[0][1] == "B_HTA3_8001_001"
 
-    participant_ids = graph_util.participant_ids
+    # Verify Participant Set
+    participant_ids = graph_util.participant_id_set
     assert len(participant_ids) == 6
 
+    # Verify Biospecimen Set
     biospecimen_ids = graph_util.participant_2_biopsecimens["HTA3_8001"]
     assert len(biospecimen_ids) == 2
     assert biospecimen_ids[0] == "HTA3_8001_001"
     assert biospecimen_ids[1] == "HTA3_8001_002"
 
-    biospecimens_2_assays = graph_util.biospecimens_2_assays
-    category_map = biospecimens_2_assays["HTA3_8001_001"]
-    assert len(category_map) == 4
-    assert categories.BIOSPECIMEN in category_map
-    assert categories.SC_RNA_SEQ_LEVEL_1 in category_map
-    assert categories.SC_RNA_SEQ_LEVEL_2 in category_map
-    assert categories.SC_RNA_SEQ_LEVEL_3 in category_map
+    # Verify Downstream Assays are Linked to Parent Biospecimens
+    biospecimens_2_assays = graph_util.assays_2_biospecimens
+    assert biospecimens_2_assays["HTA3_8001_4651918348"] == "HTA3_8001_002"
+    assert biospecimens_2_assays["HTA3_8001_3257504874"] == "HTA3_8001_002"

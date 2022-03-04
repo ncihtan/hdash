@@ -12,6 +12,10 @@ class GraphUtil:
         self.edge_list = edge_list
         self.sif_list = []
         self.categories = Categories()
+        self.participant_id_set = set()
+        self.biospecimen_id_set = set()
+        self.participant_2_biopsecimens = {}
+        self.assays_2_biospecimens = {}
         abbrev_map = self.categories.abbrev_category_map
 
         self.data_list = []
@@ -41,8 +45,8 @@ class GraphUtil:
             self.sif_list.append([s_node.sif_id, t_node.sif_id])
             edge_id += 1
         self.__init_networkx()
-        self.__init_participants_to_biospecimens()
-        self.__init_biospecimens_to_assays()
+        self.__gather_participants_biospecimens()
+        self.__gather_downstream_assays()
 
     def __init_networkx(self):
         self.graph = nx.DiGraph()
@@ -52,34 +56,29 @@ class GraphUtil:
         for edge in self.edge_list:
             self.graph.add_edge(edge.source_id, edge.target_id)
 
-    def __init_participants_to_biospecimens(self):
-        """Determine Participant IDs and all Downstream Biospecimen IDs."""
-        self.participant_ids = []
-        self.biospecimen_ids = []
-        self.participant_2_biopsecimens = {}
+    def __gather_participants_biospecimens(self):
+        """Gather Participant IDs and all Downstream Biospecimen IDs."""
         for node_id, node in self.node_map.items():
             if node.category == self.categories.DEMOGRAPHICS:
-                self.participant_ids.append(node_id)
-        for participant_id in self.participant_ids:
+                self.participant_id_set.add(node_id)
+        for participant_id in self.participant_id_set:
             current_biospecimen_ids = list(self.graph.successors(participant_id))
-            self.biospecimen_ids.extend(current_biospecimen_ids)
+            for biospecimen_id in current_biospecimen_ids:
+                self.biospecimen_id_set.add(biospecimen_id)
             self.participant_2_biopsecimens[participant_id] = current_biospecimen_ids
 
-    def __init_biospecimens_to_assays(self):
-        """For each biospecimen, identify all downstream assays."""
-        self.biospecimens_2_assays = {}
-        for biospecimen_id in self.biospecimen_ids:
+    def __gather_downstream_assays(self):
+        """For each biospecimen, gather all downstream assays."""
+        for biospecimen_id in self.biospecimen_id_set:
             self.__downstream_nodes = []
             self.__walk_node(self.graph, biospecimen_id)
-            category_map = {}
-            for downstream_node in self.__downstream_nodes:
-                category = self.node_map[downstream_node].category
-                category_map[category] = 1
-            self.biospecimens_2_assays[biospecimen_id] = category_map
+            for downstream_id in self.__downstream_nodes:
+                assay_id = self.node_map[downstream_id].id
+                self.assays_2_biospecimens[assay_id] = biospecimen_id
 
     def __walk_node(self, graph, node_id):
         """Walk the graph and gather all downstream nodes."""
         successors = graph.successors(node_id)
-        for successor in successors:
-            self.__downstream_nodes.append(node_id)
-            self.__walk_node(graph, successor)
+        for successor_id in successors:
+            self.__downstream_nodes.append(successor_id)
+            self.__walk_node(graph, successor_id)

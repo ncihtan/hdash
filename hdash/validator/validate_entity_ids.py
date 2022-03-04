@@ -19,7 +19,7 @@ class ValidateEntityIds(ValidationRule):
                 except KeyError:
                     msg = "%s does not have %s column." % (
                         key,
-                        HtanValidator.ENTITY_ID_COL,
+                        Categories.ENTITY_ID_COL,
                     )
                     error_list.append(msg)
         self.set_error_list(error_list)
