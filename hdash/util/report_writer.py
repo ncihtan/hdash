@@ -62,8 +62,10 @@ class ReportWriter:
         image_assay_list = [self.categories.BIOSPECIMEN]
         image_assay_list.extend(self.categories.image_list)
         image_assay_list.extend(self.categories.other_assay_list)
+
         self.atlas_html_map = {}
         for project in self.p_list:
+            project.meta_list = sorted(project.meta_list, key=lambda d: d.category)
             template = self.env.get_template("atlas.html")
             html = template.render(
                 now=self.dt,
