@@ -22,4 +22,3 @@ def test_stats_clinical():
     # 38% is based on manual inspection of HTA3_8004
     value = participant_map.get("HTA3_8004:Demographics")
     assert value == "38%"
-

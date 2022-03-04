@@ -23,7 +23,9 @@ class ValidateLinks(ValidationRule):
         self.set_error_list(error_list)
 
     def __gather_nodes(self):
-        for category in self.categories.all_categories:
+        self.__gather_nodes_by_category(self.categories.DEMOGRAPHICS)
+        self.__gather_nodes_by_category(self.categories.BIOSPECIMEN)
+        for category in self.categories.all_assays:
             self.__gather_nodes_by_category(category)
 
     def __gather_nodes_by_category(self, category):

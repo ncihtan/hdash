@@ -1,5 +1,4 @@
 """Summary Clinical Data Stats."""
-from hdash.validator.htan_validator import HtanValidator
 from hdash.validator.id_util import IdUtil
 from hdash.validator.categories import Categories
 from natsort import natsorted

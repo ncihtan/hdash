@@ -36,4 +36,4 @@ def test_graph():
     node_map = validator.get_node_map()
     edge_list = validator.get_edge_list()
     assert len(node_map) == 213
-    assert len(edge_list) == 170
+    assert len(edge_list) == 270
