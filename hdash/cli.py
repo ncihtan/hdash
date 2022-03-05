@@ -104,7 +104,7 @@ def _create_dashboard(use_cache, surge, google):
         project.participant_2_biopsecimens = graph_util.participant_2_biopsecimens
         project.assays_2_biospecimens = graph_util.assays_2_biospecimens
         heatmap_util = HeatMapUtil(project)
-        project.heatmaps = heatmap_util.heatmaps
+        project.heatmap_list = heatmap_util.heatmaps
 
     _write_html(p_list)
 

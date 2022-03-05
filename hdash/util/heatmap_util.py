@@ -64,7 +64,11 @@ class HeatMapUtil:
         headers = ["Participant"]
         data = []
         for category in category_list:
-            headers.append(category)
+            if "Tier3" in category:
+                shorter = category[:8] + ".."
+                headers.append(shorter)
+            else:
+                headers.append(category)
         for participant_id in self.project.participant_id_set:
             current_row = [participant_id]
             for category in category_list:
@@ -94,7 +98,8 @@ class HeatMapUtil:
     def __create_heatmap(self, data, headers, label, bg_color):
         """Create Heatmap Object."""
         df = pd.DataFrame(data, columns=headers)
-        df_html = df.to_html(classes="table table-stripped")
+        df_html = df.to_html(index=False, justify="left",
+             classes="table table-striped table-sm")
         caption = HeatMapUtil.CAPTION
         heatmap = HeatMap(label, caption, data, df, df_html, bg_color)
         self.heatmaps.append(heatmap)

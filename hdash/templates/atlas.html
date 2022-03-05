@@ -88,7 +88,7 @@
         {% if (validation.validation_passed) %}
           {% set passed = "Passed" %}
         {% endif %}
-        <tr valign= "top">
+        <tr valign="top">
           <td>{{ validation.validation_code }}</td>
           <td>{{ validation.validation_text }}</td>
           <td class={{trClass}}>{{ passed }}</td>
@@ -104,157 +104,16 @@
   </div>
   {% endif %}
 
-  <div class="w-95 p-3 m-1" style="background-color: #fce1e9;">
-  <h3>Clinical Data Matrix:  Tiers 1 and 2</h3>
-    Values indicate fraction of fields that have data.
+  {% for heatmap in project.heatmap_list %}
+    {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}
+    <div class="w-95 p-3 m-1" style="{{ bg_color }}">
+    <h3>{{ heatmap.label }} </h3>
+    {{ heatmap.caption }}
     <br/>
     <br/>
-    <table class="table table-striped table-sm">
-    <thead>
-        <tr>
-            <th>ID</th>
-            {% for clinical_category in clinical_tier1_2 %}
-                <th>{{ clinical_category }}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-      {% for participant_id in project.participant_id_set %}
-      <tr valign="top">
-          <td>{{ participant_id }}</td>
-          {% for clinical_category in clinical_tier1_2 %}
-            {% set key = participant_id + ":" + clinical_category %}
-            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
-          {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
-
-    <div class="w-95 p-3 m-1" style="background-color: #fce1e9;">
-    <h3>Clinical Data Matrix:  Tier 3</h3>
-    Values indicate fraction of meta-data fields that have data.
-    <br/>
-    <br/>
-    <table class="table table-striped table-sm">
-    <thead>
-        <tr>
-            <th>ID</th>
-            {% for clinical_category in clinical_tier3 %}
-                <th>{{ clinical_category|truncate(12, True)}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-      {% for participant_id in project.participant_id_set %}
-      <tr valign="top">
-          <td>{{ participant_id }}</td>
-          {% for clinical_category in clinical_tier3 %}
-            {% set key = participant_id + ":" + clinical_category %}
-            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
-          {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
-
-  <div class="w-95 p-3 m-1" style="background-color: #e3eeff;">
-    <h3>Assay Matrix: Single Cell Data</h3>
-    Values indicate fraction of meta-data fields that have data.
-    <br/>
-    <br/>
-    <table class="table table-striped table-sm">
-    <thead>
-        <tr>
-            <th>Participant</th>
-            <th>Biospecimen</th>
-            {% for category in single_cell_assay_list %}
-                <th>{{ category}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-      {% for participant_id in project.participant_id_set %}
-      {% for biospecimen_id in project.participant_2_biopsecimens.get(participant_id, []) %}
-      <tr valign="top">
-        <td>{{ participant_id }}</td>
-        <td>{{ biospecimen_id }}</td>
-        {% for category in single_cell_assay_list %}
-            {% set key = biospecimen_id + ":" + category %}
-            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
-        {% endfor %}
-      {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
-
-  <div class="w-95 p-3 m-1" style="background-color: #e3eeff;">
-    <h3>Assay Matrix: Bulk Data</h3>
-    Values indicate fraction of meta-data fields that have data.
-    <br/>
-    <br/>
-    <table class="table table-striped table-sm">
-    <thead>
-        <tr>
-            <th>Participant</th>
-            <th>Biospecimen</th>
-            {% for category in bulk_assay_list %}
-                <th>{{ category}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-      {% for participant_id in project.participant_id_set %}
-      {% for biospecimen_id in project.participant_2_biopsecimens.get(participant_id, []) %}
-      <tr valign="top">
-        <td>{{ participant_id }}</td>
-        <td>{{ biospecimen_id }}</td>
-        {% for category in bulk_assay_list %}
-            {% set key = biospecimen_id + ":" + category %}
-            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
-        {% endfor %}
-      {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
-
-  <div class="w-95 p-3 m-1" style="background-color: #e3eeff;">
-    <h3>Assay Matrix: Imaging and Other</h3>
-    Values indicate fraction of meta-data fields that have data.
-    <br/>
-    <br/>
-    <table class="table table-striped table-sm">
-    <thead>
-        <tr>
-            <th>Participant</th>
-            <th>Biospecimen</th>
-            {% for category in image_assay_list %}
-                <th>{{ category}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-      {% for participant_id in project.participant_id_set %}
-      {% for biospecimen_id in project.participant_2_biopsecimens.get(participant_id, []) %}
-      <tr valign="top">
-        <td>{{ participant_id }}</td>
-        <td>{{ biospecimen_id }}</td>
-        {% for category in image_assay_list %}
-            {% set key = biospecimen_id + ":" + category %}
-            <td>{{ project.df_stats_map.get(key, "NA") }}</td>
-        {% endfor %}
-      {% endfor %}
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  </div>
+    {{ heatmap.df_html | safe}}
+    </div>
+  {% endfor %}
 
 <!--  Commenting out the Cytoscape Graphs for now;  we can also re-enable in future. -->
 <!--  {% if project.meta_list|length > 0 %}-->

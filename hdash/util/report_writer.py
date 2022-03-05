@@ -51,30 +51,13 @@ class ReportWriter:
         )
 
     def _generate_atlas_pages(self):
-        single_cell_assay_list = [self.categories.BIOSPECIMEN]
-        single_cell_assay_list.extend(self.categories.sc_rna_list)
-        single_cell_assay_list.extend(self.categories.sc_atac_list)
-
-        bulk_assay_list = [self.categories.BIOSPECIMEN]
-        bulk_assay_list.extend(self.categories.bulk_rna_list)
-        bulk_assay_list.extend(self.categories.bulk_wes_list)
-
-        image_assay_list = [self.categories.BIOSPECIMEN]
-        image_assay_list.extend(self.categories.image_list)
-        image_assay_list.extend(self.categories.other_assay_list)
-
         self.atlas_html_map = {}
         for project in self.p_list:
             project.meta_list = sorted(project.meta_list, key=lambda d: d.category)
             template = self.env.get_template("atlas.html")
             html = template.render(
                 now=self.dt,
-                project=project,
-                clinical_tier1_2=self.categories.clinical_tier1_2_list,
-                clinical_tier3=self.categories.clinical_tier3_list,
-                single_cell_assay_list=single_cell_assay_list,
-                bulk_assay_list=bulk_assay_list,
-                image_assay_list=image_assay_list,
+                project=project
             )
             self.atlas_html_map[project.id] = html
 
