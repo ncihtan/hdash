@@ -62,7 +62,7 @@
     <tbody>
       {% for project in p_list %}
         <tr>
-          <td><nobr><a href="{{ project.id }}.html">{{ project.name }}</a></nobr></td>
+          <td><nobr><a href="{{ project.atlas_id }}.html">{{ project.name }}</a></nobr></td>
           <td><nobr><a href="https://www.synapse.org/#!Synapse:{{ project.id }}/files/">{{ project.id }}</nobr></a></td>
           <td>{{ project.atlas_id }} </td>
           <td><nobr>{{ project.get_total_fize_size_human_readable() }}</nobr></td>

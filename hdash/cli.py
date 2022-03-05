@@ -129,26 +129,38 @@ def _write_html(project_list):
     report_writer = ReportWriter(project_list)
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
+    _write_matrix_html(report_writer)
 
 
 def _write_index_html(report_writer):
     out_name = "deploy/index.html"
     output_message("Writing to:  %s." % out_name)
     fd = open(out_name, "w")
-    fd.write(report_writer.get_index_html())
+    fd.write(report_writer.index_html)
     fd.close()
     return report_writer
 
 
 def _write_atlas_html(report_writer):
-    atlas_html_map = report_writer.get_atlas_html_map()
-    for id in atlas_html_map:
-        html = atlas_html_map[id]
-        out_name = "deploy/%s.html" % id
+    atlas_html_map = report_writer.atlas_html_map
+    for atlas_id in atlas_html_map:
+        html = atlas_html_map[atlas_id]
+        out_name = "deploy/%s.html" % atlas_id
         output_message("Writing to:  %s." % out_name)
         fd = open(out_name, "w")
         fd.write(html)
         fd.close()
+
+
+def _write_matrix_html(report_writer):
+    matrix_html_map = report_writer.matrix_html_map
+    for atlas_id in matrix_html_map:
+        for heatmap_id, html in matrix_html_map[atlas_id].items():
+            out_name = "deploy/%s.html" % heatmap_id
+            output_message("Writing to:  %s." % out_name)
+            fd = open(out_name, "w")
+            fd.write(html)
+            fd.close()
 
 
 def output_header(msg):

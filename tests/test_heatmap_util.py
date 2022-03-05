@@ -49,4 +49,3 @@ def test_heatmap_util():
     assert data2[0][0] == "HTA3_8001"
     assert data2[0][1] == "HTA3_8001_001"
     assert data2[0][2] == pytest.approx(0.63, 0.01)
-

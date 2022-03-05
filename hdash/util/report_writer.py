@@ -11,6 +11,9 @@ class ReportWriter:
 
     def __init__(self, project_list):
         """Create new Report Writer."""
+        self.atlas_html_map = {}
+        self.index_html = None
+        self.matrix_html_map = {}
         self.categories = Categories()
         self.p_list = project_list
         self.total_storage = 0
@@ -27,19 +30,7 @@ class ReportWriter:
         self.dt = self.now.strftime("%m/%d/%Y %H:%M:%S")
         self._generate_index_html()
         self._generate_atlas_pages()
-        self._generate_atlas_cytoscape_pages()
-
-    def get_index_html(self):
-        """Get Index HTML."""
-        return self.index_html
-
-    def get_atlas_html_map(self):
-        """Get HTML for Atlases."""
-        return self.atlas_html_map
-
-    def get_atlas_cytoscape_html_map(self):
-        """Get Cytoscape HTML for Atlases."""
-        return self.atlas_cytoscape_html_map
+        self._generate_matrix_pages()
 
     def _generate_index_html(self):
         template = self.env.get_template("index.html")
@@ -51,20 +42,23 @@ class ReportWriter:
         )
 
     def _generate_atlas_pages(self):
-        self.atlas_html_map = {}
         for project in self.p_list:
             project.meta_list = sorted(project.meta_list, key=lambda d: d.category)
             template = self.env.get_template("atlas.html")
             html = template.render(now=self.dt, project=project)
-            self.atlas_html_map[project.id] = html
+            self.atlas_html_map[project.atlas_id] = html
 
-    def _generate_atlas_cytoscape_pages(self):
-        self.atlas_cytoscape_html_map = {}
+    def _generate_matrix_pages(self):
         for project in self.p_list:
+            current_map = {}
             if len(project.meta_list) > 0:
-                template = self.env.get_template("atlas_cytoscape.html")
-                html = template.render(now=self.dt, project=project)
-                self.atlas_cytoscape_html_map[project.id] = html
+                for heatmap in project.heatmap_list:
+                    template = self.env.get_template("matrix.html")
+                    html = template.render(
+                        now=self.dt, project=project, heatmap=heatmap
+                    )
+                    current_map[heatmap.id] = html
+            self.matrix_html_map[project.id] = current_map
 
     def _get_template_env(self):
         return Environment(

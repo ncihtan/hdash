@@ -31,7 +31,7 @@
     <div class="container-fluid">
       <span class="navbar-brand mb-0 h1">HTAN Dashboard</span>
     </div>
-  </nav> 
+  </nav>
   <br/>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -43,9 +43,9 @@
     <i class="bi bi-info-circle"></i> DCC Notes:  {{ project.notes }}
   </div>
 
-  {% if project.meta_list|length > 0 %} 
   <div class="w-95 p-3 m-1" style="background-color: #eee;">
-  <h3>Metadata Files Detected</h3>
+  <h3>Metadata Files</h3>
+  {% if project.meta_list|length > 0 %}
   <table class="table table-striped ">
     <thead>
         <tr>
@@ -64,14 +64,14 @@
       {% endfor %}
     </tbody>
   </table>
-  </div>
   {% else %}
     No metadata detected.
   {% endif %}
+</div>
 
   {% if project.meta_list|length > 0 %}
   <div class="w-95 p-3 m-1" style="background-color: #eee;">
-  <h3>Metadata Validation</h3>  
+  <h3>Metadata Validation</h3>
   <table class="table table-striped">
     <thead>
         <tr>
@@ -108,15 +108,16 @@
     {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}
     <div class="w-95 p-3 m-1" style="{{ bg_color }}">
     <h3>{{ heatmap.label }} </h3>
-    {{ heatmap.caption }}
     <br/>
     <br/>
     {% if heatmap.data | length > 0 %}
+      {{ heatmap.caption }}
+      See <a href="{{ heatmap.id }}.html">Complete Matrix Details</a>.
+      <br><br>
       <img src="images/{{ heatmap.id }}.png" class="img-thumbnail">
       <br/>
       <br/>
     {% endif %}
-    {{ heatmap.df_html | safe}}
     </div>
   {% endfor %}
   <br/>

@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 
 class HeatMapUtil:
     """HeatMap Utility Class."""
+
     CLINICAL_TIER_1_2 = "clinical_tier1_2"
     CLINICAL_TIER_3 = "clinical_tier3"
     SINGLE_CELL = "single_cell"
@@ -27,7 +28,7 @@ class HeatMapUtil:
             HeatMapUtil.CLINICAL_TIER_1_2,
             self.categories.clinical_tier1_2_list,
             "Clinical Data Matrix: Tiers 1 and 2",
-            "#fce1e9"
+            "#fce1e9",
         )
 
         # Heatmap 2
@@ -131,8 +132,15 @@ class HeatMapUtil:
                 else:
                     df.index = df["ParticipantID"]
                     df = df.drop(["ParticipantID"], axis=1)
-                ax = sns.heatmap(df, vmin=0, vmax=1, annot=False, linewidths=0.0,
-                    yticklabels=False, cmap="Blues")
+                ax = sns.heatmap(
+                    df,
+                    vmin=0,
+                    vmax=1,
+                    annot=False,
+                    linewidths=0.0,
+                    yticklabels=False,
+                    cmap="Blues",
+                )
                 ax.xaxis.tick_top()
                 plt.xticks(rotation=90)
                 ax.set_ylabel("")
