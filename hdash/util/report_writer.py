@@ -74,7 +74,7 @@ class ReportWriter:
                 clinical_tier3=self.categories.clinical_tier3_list,
                 single_cell_assay_list=single_cell_assay_list,
                 bulk_assay_list=bulk_assay_list,
-                image_assay_list=image_assay_list
+                image_assay_list=image_assay_list,
             )
             self.atlas_html_map[project.id] = html
 

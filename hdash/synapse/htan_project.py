@@ -33,6 +33,7 @@ class HTANProject:
         self.participant_2_biopsecimens = {}
         self.assays_2_biospecimens = {}
         self.df_stats_map = {}
+        self.heatmap_list = []
 
     def get_total_file_size(self):
         """Get total file size."""

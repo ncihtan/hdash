@@ -14,6 +14,7 @@ from datetime import datetime
 from hdash.stats import stats_summary
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.google.gsheet_util import GoogleSheetUtil
+from hdash.util.heatmap_util import HeatMapUtil
 from hdash.util.report_writer import ReportWriter
 from hdash.synapse.table_util import TableUtil
 from hdash.validator.htan_validator import HtanValidator
@@ -102,6 +103,8 @@ def _create_dashboard(use_cache, surge, google):
         project.df_stats_map = stats.df_stats_map
         project.participant_2_biopsecimens = graph_util.participant_2_biopsecimens
         project.assays_2_biospecimens = graph_util.assays_2_biospecimens
+        heatmap_util = HeatMapUtil(project)
+        project.heatmaps = heatmap_util.heatmaps
 
     _write_html(p_list)
 
