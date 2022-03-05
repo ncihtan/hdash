@@ -78,13 +78,13 @@
             <th>Code</th>
             <th>Text</th>
             <th>Passed/Failed</th>
-            <th>Notes</th>
+            <th>Notes:  Only the first 50 errors are shown.</th>
         </tr>
     </thead>
     <tbody>
       {% for validation in project.validation_list %}
         {% set trClass = "validation_%s" % validation.validation_passed %}
-        {% set passed = "Failed" %}
+        {% set passed = "Failed:  %d Errors." % validation.error_list|length %}
         {% if (validation.validation_passed) %}
           {% set passed = "Passed" %}
         {% endif %}
@@ -93,7 +93,7 @@
           <td>{{ validation.validation_text }}</td>
           <td class={{trClass}}>{{ passed }}</td>
           <td width=40%>
-            {% for error in validation.error_list %}
+            {% for error in validation.error_list[0:50] %}
               - {{ error }}<br/>
             {% endfor %}
           </td>
@@ -111,6 +111,11 @@
     {{ heatmap.caption }}
     <br/>
     <br/>
+    {% if heatmap.data | length > 0 %}
+      <img src="images/{{ heatmap.id }}.png" class="img-thumbnail">
+      <br/>
+      <br/>
+    {% endif %}
     {{ heatmap.df_html | safe}}
     </div>
   {% endfor %}
