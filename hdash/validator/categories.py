@@ -31,7 +31,7 @@ class Categories:
     IMAGING_LEVEL_1 = "ImagingLevel1"
     IMAGING_LEVEL_2 = "ImagingLevel2"
     IMAGING_LEVEL_3 = "ImagingLevel3"
-    IMAGING_LEVEL_4 = "ImagingLevel3"
+    IMAGING_LEVEL_4 = "ImagingLevel4"
     OTHER_ASSAY = "OtherAssay"
 
     # Clinical Data Categories
