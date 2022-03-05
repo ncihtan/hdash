@@ -122,19 +122,21 @@ class HeatMapUtil:
     def __create_seaborn_heatmaps(self):
         """Create Seaborn HeatMaps."""
         for heatmap in self.heatmaps:
-            df = heatmap.df
-            columns = list(df.columns)
-            if "BiospecimenID" in columns:
-                df.index = df["BiospecimenID"]
-                df = df.drop(["ParticipantID", "BiospecimenID"], axis=1)
-            else:
-                df.index = df["ParticipantID"]
-                df = df.drop(["ParticipantID"], axis=1)
-            ax = sns.heatmap(df, vmin=0, vmax=1, annot=True, linewidths=0.5, cmap="Blues")
-            ax.xaxis.tick_top()
-            plt.xticks(rotation=90)
-            ax.set_ylabel("")
-            ax.figure.tight_layout()
-            fig_name = "deploy/" + heatmap.id + ".png"
-            plt.savefig(fig_name)
-            plt.figure()
+            if len(heatmap.data) > 0:
+                df = heatmap.df
+                columns = list(df.columns)
+                if "BiospecimenID" in columns:
+                    df.index = df["BiospecimenID"]
+                    df = df.drop(["ParticipantID", "BiospecimenID"], axis=1)
+                else:
+                    df.index = df["ParticipantID"]
+                    df = df.drop(["ParticipantID"], axis=1)
+                ax = sns.heatmap(df, vmin=0, vmax=1, annot=False, linewidths=0.0,
+                    yticklabels=False, cmap="Blues")
+                ax.xaxis.tick_top()
+                plt.xticks(rotation=90)
+                ax.set_ylabel("")
+                ax.figure.tight_layout()
+                fig_name = "deploy/images/" + heatmap.id + ".png"
+                plt.savefig(fig_name)
+                plt.figure()

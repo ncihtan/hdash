@@ -54,6 +54,12 @@ def _create_dashboard(use_cache, surge, google):
     now = datetime.now()
     dt = now.strftime("%m/%d/%Y %H:%M:%S")
     output_header("Creating HTAN Dashboard:  %s" % dt)
+
+    if not os.path.exists("deploy"):
+        os.makedirs("deploy")
+    if not os.path.exists("deploy/images"):
+        os.makedirs("deploy/images")
+
     if not use_cache:
         output_message("Connecting to Synapse...")
         synapse_util = SynapseUtil(use_cache)
@@ -120,8 +126,6 @@ def _create_dashboard(use_cache, surge, google):
 
 
 def _write_html(project_list):
-    if not os.path.exists("deploy"):
-        os.makedirs("deploy")
     report_writer = ReportWriter(project_list)
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
