@@ -4,6 +4,9 @@ from hdash.synapse.htan_project import HTANProject
 from hdash.util.heatmap_util import HeatMapUtil
 from hdash.validator import htan_validator
 from hdash.stats import stats_summary
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pytest
 
 
 def test_heatmap_util():
@@ -28,6 +31,7 @@ def test_heatmap_util():
 
     # Run HeatMap Util
     project = HTANProject()
+    project.atlas_id = "HTA3"
     project.participant_id_set = stats.participant_id_set
     project.df_stats_map = stats.df_stats_map
     project.assays_2_biospecimens = assays_2_biospecimens
@@ -39,9 +43,10 @@ def test_heatmap_util():
     data1 = heatmaps[1].data
     data2 = heatmaps[2].data
     assert data0[0][0] == "HTA3_8001"
-    assert data0[0][1] == "44%"
+    assert data0[0][1] == 0.4375
     assert data1[0][0] == "HTA3_8001"
-    assert data1[0][1] == "NA"
+    assert data1[0][1] == 0.0
     assert data2[0][0] == "HTA3_8001"
     assert data2[0][1] == "HTA3_8001_001"
-    assert data2[0][2] == "63%"
+    assert data2[0][2] == pytest.approx(0.63, 0.01)
+

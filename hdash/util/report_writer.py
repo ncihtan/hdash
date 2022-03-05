@@ -55,10 +55,7 @@ class ReportWriter:
         for project in self.p_list:
             project.meta_list = sorted(project.meta_list, key=lambda d: d.category)
             template = self.env.get_template("atlas.html")
-            html = template.render(
-                now=self.dt,
-                project=project
-            )
+            html = template.render(now=self.dt, project=project)
             self.atlas_html_map[project.id] = html
 
     def _generate_atlas_cytoscape_pages(self):

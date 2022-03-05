@@ -2,6 +2,7 @@
 from hdash.graph.graph_util import GraphUtil
 from hdash.validator import htan_validator
 from hdash.stats import stats_summary
+import pytest
 
 
 def test_stats_summary():
@@ -32,17 +33,17 @@ def test_stats_summary():
 
     # Verify Completeness of HTA3_8001:Demographics
     # 44% is based on manual inspection of HTA3_8001
-    assert stats_map.get("HTA3_8001:Demographics") == "44%"
+    assert stats_map.get("HTA3_8001:Demographics") == 0.4375
 
     # Verify Completeness of HTA3_8004:Demographics
     # 38% is based on manual inspection of HTA3_8004
-    assert stats_map.get("HTA3_8004:Demographics") == "38%"
+    assert stats_map.get("HTA3_8004:Demographics") == 0.375
 
     # Verify Completeness of HTA3_8001_001:Biospecimen
-    assert stats_map.get("HTA3_8001_001:Biospecimen") == "63%"
+    assert stats_map.get("HTA3_8001_001:Biospecimen") == pytest.approx(0.63, 0.01)
 
     # Verify Completeness of Downstream Assays
-    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel1") == "82%"
-    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel2") == "67%"
-    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel3") == "79%"
-    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel4") == "80%"
+    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel1") == pytest.approx(0.82, 0.01)
+    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel2") == pytest.approx(0.67, 0.01)
+    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel3") == pytest.approx(0.79, 0.01)
+    assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel4") == pytest.approx(0.80, 0.01)
