@@ -129,8 +129,6 @@ def _write_html(project_list):
     report_writer = ReportWriter(project_list)
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
-    _write_atlas_cytoscape_html(report_writer)
-    _write_atlas_cytoscape_json_sif(project_list)
 
 
 def _write_index_html(report_writer):
@@ -150,45 +148,6 @@ def _write_atlas_html(report_writer):
         output_message("Writing to:  %s." % out_name)
         fd = open(out_name, "w")
         fd.write(html)
-        fd.close()
-
-
-def _write_atlas_cytoscape_html(report_writer):
-    copyfile("static/cy-style.json", "deploy/cy-style.json")
-    atlas_html_map = report_writer.get_atlas_cytoscape_html_map()
-    for id in atlas_html_map:
-        html = atlas_html_map[id]
-        out_name = "deploy/%s_cytoscape.html" % id
-        output_message("Writing to:  %s." % out_name)
-        fd = open(out_name, "w")
-        fd.write(html)
-        fd.close()
-
-
-def _write_atlas_cytoscape_json_sif(project_list):
-    for project in project_list:
-        out_name = "deploy/%s_data.json" % project.id
-        output_message("Writing to:  %s." % out_name)
-        json_dump_str = json.dumps(project.data_list, indent=4)
-        fd = open(out_name, "w")
-        fd.write(json_dump_str)
-        fd.close()
-
-        out_name = "deploy/%s_network.sif" % project.id
-        output_message("Writing to:  %s." % out_name)
-        sif_list = project.sif_list
-        fd = open(out_name, "w")
-        for edge in sif_list:
-            fd.write("%s\tconnect\t%s\n" % (edge[0], edge[1]))
-        fd.close()
-
-        out_name = "deploy/%s_nodes.txt" % project.id
-        output_message("Writing to:  %s." % out_name)
-        fd = open(out_name, "w")
-        fd.write("ID\tCATEGORY\n")
-        for key in project.node_map:
-            node = project.node_map[key]
-            fd.write("%s\t%s\n" % (node.sif_id, node.category))
         fd.close()
 
 
