@@ -108,8 +108,6 @@
     {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}
     <div class="w-95 p-3 m-1" style="{{ bg_color }}">
     <h3>{{ heatmap.label }} </h3>
-    <br/>
-    <br/>
     {% if heatmap.data | length > 0 %}
       {{ heatmap.caption }}
       See <a href="{{ heatmap.id }}.html">Complete Matrix Details</a>.
