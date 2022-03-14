@@ -69,41 +69,6 @@
   {% endif %}
 </div>
 
-  {% if project.meta_list|length > 0 %}
-  <div class="w-95 p-3 m-1" style="background-color: #eee;">
-  <h3>Metadata Validation</h3>
-  <table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Code</th>
-            <th>Text</th>
-            <th>Passed/Failed</th>
-            <th>Notes:  Only the first 50 errors are shown.</th>
-        </tr>
-    </thead>
-    <tbody>
-      {% for validation in project.validation_list %}
-        {% set trClass = "validation_%s" % validation.validation_passed %}
-        {% set passed = "Failed:  %d Errors." % validation.error_list|length %}
-        {% if (validation.validation_passed) %}
-          {% set passed = "Passed" %}
-        {% endif %}
-        <tr valign="top">
-          <td>{{ validation.validation_code }}</td>
-          <td>{{ validation.validation_text }}</td>
-          <td class={{trClass}}>{{ passed }}</td>
-          <td width=40%>
-            {% for error in validation.error_list[0:50] %}
-              - {{ error }}<br/>
-            {% endfor %}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  </div>
-  {% endif %}
-
   {% for heatmap in project.heatmap_list %}
     {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}
     <div class="w-95 p-3 m-1" style="{{ bg_color }}">
@@ -119,8 +84,41 @@
     </div>
   {% endfor %}
   <br/>
-  <br/>
-  <br/>
+
+  {% if project.meta_list|length > 0 %}
+  <div class="w-95 p-3 m-1" style="background-color: #eee;">
+  <h3>Metadata Validation</h3>
+  <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Text</th>
+            <th>Passed/Failed</th>
+            <th>Error List</th>
+        </tr>
+    </thead>
+    <tbody>
+      {% for validation in project.validation_list %}
+        {% set trClass = "validation_%s" % validation.validation_passed %}
+        {% set passed = "Failed:  %d Errors." % validation.error_list|length %}
+        {% if (validation.validation_passed) %}
+          {% set passed = "Passed" %}
+        {% endif %}
+        <tr valign="top">
+          <td>{{ validation.validation_code }}</td>
+          <td>{{ validation.validation_text }}</td>
+          <td class={{trClass}}>{{ passed }}</td>
+          <td width=50%>
+            {% for error in validation.error_list %}
+              - {{ error }}<br/>
+            {% endfor %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% endif %}
 </body>
 
 </html>
