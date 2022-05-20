@@ -26,6 +26,6 @@ class ValidateEntityIds(ValidationRule):
 
     def __check_synapse_ids(self, key, synapse_ids, error_list):
         for synapse_id in synapse_ids:
-            if not synapse_id.startswith("syn"):
+            if not str(synapse_id).startswith("syn"):
                 msg = "%s has invalid Synapse ID: %s." % (key, synapse_id)
                 error_list.append(msg)
