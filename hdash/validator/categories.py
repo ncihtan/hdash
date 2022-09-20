@@ -10,6 +10,7 @@ class Categories:
 
     # Biospecimen Categories
     BIOSPECIMEN = "Biospecimen"
+    SRRS_BIOSPECIMEN = "SRRSBiospecimen"
 
     # Assay Categories
     SC_RNA_SEQ_LEVEL_1 = "ScRNA-seqLevel1"
@@ -33,6 +34,7 @@ class Categories:
     IMAGING_LEVEL_3 = "ImagingLevel3"
     IMAGING_LEVEL_4 = "ImagingLevel4"
     OTHER_ASSAY = "OtherAssay"
+    SRRS_IMAGING_LEVEL2 = "SRRSImagingLevel2"
 
     # Clinical Data Categories
     DEMOGRAPHICS = "Demographics"
@@ -53,10 +55,14 @@ class Categories:
     PANCREATIC_TIER3 = "PancreaticCancerTier3"
     PROSTATE_TIER3 = "ProstateCancerTier3"
     SARCOMA_TIER3 = "SarcomaTier3"
+    SRRS_TIER2 = "SRRSClinicalDataTier2"
 
     def __init__(self):
         """Construct all new category lists."""
-        self.biospecimen_list = [Categories.BIOSPECIMEN]
+        self.biospecimen_list = [
+            Categories.BIOSPECIMEN,
+            Categories.SRRS_BIOSPECIMEN
+        ]
 
         self.sc_rna_list = [
             Categories.SC_RNA_SEQ_LEVEL_1,
@@ -84,6 +90,7 @@ class Categories:
             Categories.IMAGING_LEVEL_2,
             Categories.IMAGING_LEVEL_3,
             Categories.IMAGING_LEVEL_4,
+            Categories.SRRS_IMAGING_LEVEL2
         ]
 
         self.sc_atac_list = [
@@ -104,6 +111,7 @@ class Categories:
             Categories.THERAPY,
             Categories.MOLECULAR_TEST,
             Categories.CLINICAL_TIER2,
+            Categories.SRRS_TIER2
         ]
 
         self.clinical_tier3_list = [
@@ -122,6 +130,7 @@ class Categories:
         self.abbrev_category_map = {
             Categories.OTHER_ASSAY: "OA",
             Categories.BIOSPECIMEN: "B",
+            Categories.SRRS_BIOSPECIMEN: "B_SRRS",
             Categories.DEMOGRAPHICS: "D",
             Categories.EXPOSURE: "EXP",
             Categories.FAMILY_HISTORY: "FAM",
@@ -140,6 +149,7 @@ class Categories:
             Categories.PANCREATIC_TIER3: "PANC_3",
             Categories.PROSTATE_TIER3: "PR_3",
             Categories.SARCOMA_TIER3: "SARC_3",
+            Categories.SRRS_TIER2: "SRRS_TIER2",
             Categories.SC_RNA_SEQ_LEVEL_1: "SC1",
             Categories.SC_RNA_SEQ_LEVEL_2: "SC2",
             Categories.SC_RNA_SEQ_LEVEL_3: "SC3",
@@ -156,6 +166,7 @@ class Categories:
             Categories.IMAGING_LEVEL_2: "I2",
             Categories.IMAGING_LEVEL_3: "I3",
             Categories.IMAGING_LEVEL_4: "I4",
+            Categories.SRRS_IMAGING_LEVEL2: "SRRS_IMAGE_2",
             Categories.SC_ATAC_SEQ_LEVEL_1: "SCATAC1",
             Categories.SC_ATAC_SEQ_LEVEL_2: "SCATAC2",
             Categories.SC_ATAC_SEQ_LEVEL_3: "SCATAC3",

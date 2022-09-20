@@ -25,6 +25,7 @@ class ValidateLinks(ValidationRule):
     def __gather_nodes(self):
         self.__gather_nodes_by_category(self.categories.DEMOGRAPHICS)
         self.__gather_nodes_by_category(self.categories.BIOSPECIMEN)
+        self.__gather_nodes_by_category(self.categories.SRRS_BIOSPECIMEN)
         for category in self.categories.all_assays:
             self.__gather_nodes_by_category(category)
 

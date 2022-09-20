@@ -76,6 +76,7 @@ class HtanValidator:
         self.validation_list.append(id1)
 
         # Link Integrity
+        print("Validating:  " + self.atlas_id)
         self.links1 = ValidateLinks(self.meta_map)
         self.validation_list.append(self.links1)
 

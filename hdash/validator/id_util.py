@@ -18,6 +18,7 @@ class IdUtil:
         self.categories = Categories()
         self.primary_id_map = {
             Categories.BIOSPECIMEN: IdUtil.HTAN_BIOSPECIMEN_ID,
+            Categories.SRRS_BIOSPECIMEN: IdUtil.HTAN_BIOSPECIMEN_ID
         }
 
         #  All Clinical Categories have the Same Primary ID
@@ -26,10 +27,12 @@ class IdUtil:
 
         self.parent_id_map = {
             Categories.BIOSPECIMEN: IdUtil.HTAN_PARENT_ID,
+            Categories.SRRS_BIOSPECIMEN: IdUtil.HTAN_PARENT_ID,
             Categories.SC_RNA_SEQ_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.BULK_RNA_SEQ_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.BULK_WES_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.IMAGING_LEVEL_2: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
+            Categories.SRRS_IMAGING_LEVEL2: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.SC_ATAC_SEQ_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.OTHER_ASSAY: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
         }
