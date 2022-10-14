@@ -130,6 +130,7 @@ def _write_html(project_list):
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
     _write_matrix_html(report_writer)
+    _write_atlas_cytoscape_json_sif(project_list)
 
 
 def _write_index_html(report_writer):
@@ -175,3 +176,23 @@ def output_message(msg):
 
 def _deploy_with_surge():
     subprocess.run(["surge", "deploy", "http://htan_dashboard.surge.sh/"])
+
+
+def _write_atlas_cytoscape_json_sif(project_list):
+    for project in project_list:
+        out_name = "deploy/%s_network.sif" % project.atlas_id
+        output_message("Writing to:  %s." % out_name)
+        sif_list = project.sif_list
+        fd = open(out_name, "w")
+        for edge in sif_list:
+            fd.write("%s\tconnect\t%s\n" % (edge[0], edge[1]))
+        fd.close()
+
+        out_name = "deploy/%s_nodes.txt" % project.atlas_id
+        output_message("Writing to:  %s." % out_name)
+        fd = open(out_name, "w")
+        fd.write("ID\tCATEGORY\n")
+        for key in project.node_map:
+            node = project.node_map[key]
+            fd.write("%s\t%s\n" % (node.sif_id, node.category))
+        fd.close()
