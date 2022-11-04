@@ -57,8 +57,8 @@ class HTANProject:
 
 class MetaFile:
     """Metadata File."""
-
-    META_FILE_NAME = "synapse_storage_manifest.csv"
+    LEGACY_META_FILE_NAME = "synapse_storage_manifest.csv"
+    META_FILE_PREFIX = "synapse_storage_manifest_"
 
     def __init__(self):
         """Construct new Metadata File."""

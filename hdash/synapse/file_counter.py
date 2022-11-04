@@ -47,7 +47,9 @@ class FileCounter:
             path = Path(name)
             if parent_id in self.archive_folder_set:
                 file_type = FileCounter.EXCLUDE
-            elif name == MetaFile.META_FILE_NAME:
+            elif name == MetaFile.LEGACY_META_FILE_NAME:
+                file_type = FileCounter.EXCLUDE
+            elif name.startswith(MetaFile.META_FILE_PREFIX):
                 file_type = FileCounter.METADATA
             else:
                 if path.suffix == ".gz":

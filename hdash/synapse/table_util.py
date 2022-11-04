@@ -56,7 +56,8 @@ class TableUtil:
 
     def _extract_meta(self, df, project):
         target_df = df[
-            (df.projectId == project.id) & (df.name == MetaFile.META_FILE_NAME)
+            (df.projectId == project.id)
+            & (df.name.str.startswith(MetaFile.META_FILE_PREFIX))
         ]
         for row in target_df.itertuples():
             meta_file = MetaFile()
