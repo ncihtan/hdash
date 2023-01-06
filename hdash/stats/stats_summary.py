@@ -7,7 +7,7 @@ from natsort import natsorted
 class StatsSummary:
     """Summary Stats across all data categories."""
 
-    NA_VALUES = ["na", "nan", "unknown", "not applicable"]
+    NA_VALUES = ["na", "nan", "unknown", "not applicable", "not reported"]
     IGNORED_FIELDS = [
         IdUtil.HTAN_PARTICIPANT_ID,
         IdUtil.HTAN_PARENT_ID,
