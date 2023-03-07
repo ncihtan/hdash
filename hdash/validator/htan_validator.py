@@ -54,7 +54,6 @@ class HtanValidator:
         return self.links1.edge_list
 
     def __validate(self):
-
         # Categories Validation
         c0 = ValidateCategories(self.meta_map)
         self.validation_list.append(c0)

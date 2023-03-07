@@ -18,7 +18,7 @@ class IdUtil:
         self.categories = Categories()
         self.primary_id_map = {
             Categories.BIOSPECIMEN: IdUtil.HTAN_BIOSPECIMEN_ID,
-            Categories.SRRS_BIOSPECIMEN: IdUtil.HTAN_BIOSPECIMEN_ID
+            Categories.SRRS_BIOSPECIMEN: IdUtil.HTAN_BIOSPECIMEN_ID,
         }
 
         #  All Clinical Categories have the Same Primary ID

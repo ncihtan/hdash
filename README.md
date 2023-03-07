@@ -26,6 +26,7 @@ source .venv/bin/activate
 You are now ready to install the package:
 
 ```
+pip install -r requirements.txt
 pip install -e .
 ```
 

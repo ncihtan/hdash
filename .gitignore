@@ -9,3 +9,4 @@ build
 deploy
 htmlcov
 .DS_Store
+.idea

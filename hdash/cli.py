@@ -5,10 +5,8 @@ import emoji
 import click
 import os.path
 import time
-import json
 import subprocess
 import pandas as pd
-from shutil import copyfile
 from datetime import datetime
 
 from hdash.stats import stats_summary

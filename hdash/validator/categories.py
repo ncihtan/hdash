@@ -59,10 +59,7 @@ class Categories:
 
     def __init__(self):
         """Construct all new category lists."""
-        self.biospecimen_list = [
-            Categories.BIOSPECIMEN,
-            Categories.SRRS_BIOSPECIMEN
-        ]
+        self.biospecimen_list = [Categories.BIOSPECIMEN, Categories.SRRS_BIOSPECIMEN]
 
         self.sc_rna_list = [
             Categories.SC_RNA_SEQ_LEVEL_1,
@@ -90,7 +87,7 @@ class Categories:
             Categories.IMAGING_LEVEL_2,
             Categories.IMAGING_LEVEL_3,
             Categories.IMAGING_LEVEL_4,
-            Categories.SRRS_IMAGING_LEVEL2
+            Categories.SRRS_IMAGING_LEVEL2,
         ]
 
         self.sc_atac_list = [
@@ -111,7 +108,7 @@ class Categories:
             Categories.THERAPY,
             Categories.MOLECULAR_TEST,
             Categories.CLINICAL_TIER2,
-            Categories.SRRS_TIER2
+            Categories.SRRS_TIER2,
         ]
 
         self.clinical_tier3_list = [
