@@ -7,8 +7,8 @@ FORMATTER = black
 check: format lint test
 
 prepare:
-	mkdir deploy
-	mkdir deploy/images
+	mkdir -p deploy
+	mkdir -p deploy/images
 
 freeze:
 	pip freeze > requirements.txt
