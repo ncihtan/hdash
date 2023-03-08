@@ -6,6 +6,10 @@ FORMATTER = black
 
 check: format lint test
 
+prepare:
+	mkdir deploy
+	mkdir deploy/images
+
 freeze:
 	pip freeze > requirements.txt
 
@@ -17,17 +21,15 @@ format:
 	$(FORMATTER) $(PROJ_SLUG)
 	$(FORMATTER) tests
 
-qtest:
+qtest:  prepare
 	py.test -s tests/
 
-test:
+test:   prepare
 	py.test -s --cov-report term --cov=$(PROJ_SLUG) tests/
 
 coverage:
 	py.test --cov-report html --cov=$(PROJ_SLUG) tests/
 
 clean:
-	rm -rf dist \
-	rm -rf docs/build \
+	rm -rf deploy
 	rm -rf *.egg-info
-	coverage erase
