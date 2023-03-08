@@ -40,7 +40,7 @@ def test_stats_summary():
     assert stats_map.get("HTA3_8004:Demographics") == 0.375
 
     # Verify Completeness of HTA3_8001_001:Biospecimen
-    assert stats_map.get("HTA3_8001_001:Biospecimen") == pytest.approx(0.63, 0.01)
+    assert stats_map.get("HTA3_8001_001:Biospecimen") == pytest.approx(0.51, 0.01)
 
     # Verify Completeness of Downstream Assays
     assert stats_map.get("HTA3_8001_001:ScRNA-seqLevel1") == pytest.approx(0.82, 0.01)

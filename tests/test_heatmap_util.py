@@ -42,10 +42,21 @@ def test_heatmap_util():
     data0 = heatmaps[0].data
     data1 = heatmaps[1].data
     data2 = heatmaps[2].data
+
+    # Test Clinical Tiers 1,2
     assert data0[0][0] == "HTA3_8001"
     assert data0[0][1] == 0.4375
+
+    # Test Clinical Tier 3
     assert data1[0][0] == "HTA3_8001"
     assert data1[0][1] == 0.0
+
+    # Test Single Cell Assay, Levels 1
     assert data2[0][0] == "HTA3_8001"
     assert data2[0][1] == "HTA3_8001_001"
-    assert data2[0][2] == pytest.approx(0.63, 0.01)
+
+    # Completeness of Biospecimen Data
+    assert data2[0][2] == pytest.approx(0.51, 0.01)
+
+    # Completeness of Single Cell Level 1 Data
+    assert data2[0][3] == pytest.approx(0.82, 0.01)
