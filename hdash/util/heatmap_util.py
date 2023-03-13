@@ -14,6 +14,7 @@ class HeatMapUtil:
     SINGLE_CELL = "single_cell"
     BULK = "bulk"
     IMAGE_OTHER = "image_other"
+    VISIUM = "visium"
 
     CAPTION = "Values indicate fraction of meta-data fields that have data."
 
@@ -69,6 +70,16 @@ class HeatMapUtil:
             HeatMapUtil.IMAGE_OTHER,
             self.image_assay_list,
             "Assay Matrix: Imaging and Other",
+            "#e3eeff",
+        )
+
+        # Heatmap 5
+        self.visium_assay_list = [self.categories.BIOSPECIMEN]
+        self.visium_assay_list.extend(self.categories.visium_list)
+        self.__build_assay_heatmap(
+            HeatMapUtil.VISIUM,
+            self.visium_assay_list,
+            "Assay Matrix: Visium",
             "#e3eeff",
         )
         self.__create_seaborn_heatmaps()

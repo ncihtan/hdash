@@ -35,6 +35,9 @@ class IdUtil:
             Categories.SRRS_IMAGING_LEVEL2: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.SC_ATAC_SEQ_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
             Categories.OTHER_ASSAY: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
+            Categories.VISIUM_LEVEL_1: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
+            Categories.VISIUM_LEVEL_2: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
+            Categories.VISIUM_AUX_LEVEL_2: IdUtil.HTAN_PARENT_BIOSPECIMEN_ID,
         }
 
     def get_primary_id_column(self, category):

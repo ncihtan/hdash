@@ -35,6 +35,10 @@ class Categories:
     IMAGING_LEVEL_4 = "ImagingLevel4"
     OTHER_ASSAY = "OtherAssay"
     SRRS_IMAGING_LEVEL2 = "SRRSImagingLevel2"
+    VISIUM_LEVEL_1 = "10xVisiumSpatialTranscriptomics-RNA-seqLevel1"
+    VISIUM_LEVEL_2 = "10xVisiumSpatialTranscriptomics-Level2"
+    VISIUM_AUX_LEVEL_2 = "10xVisiumSpatialTranscriptomics-AuxiliaryFilesLevel2"
+    VISIUM_LEVEL_3 = "10xVisiumSpatialTranscriptomics-RNA-seqLevel3"
 
     # Clinical Data Categories
     DEMOGRAPHICS = "Demographics"
@@ -95,6 +99,13 @@ class Categories:
             Categories.SC_ATAC_SEQ_LEVEL_2,
             Categories.SC_ATAC_SEQ_LEVEL_3,
             Categories.SC_ATAC_SEQ_LEVEL_4,
+        ]
+
+        self.visium_list = [
+            Categories.VISIUM_LEVEL_1,
+            Categories.VISIUM_LEVEL_2,
+            Categories.VISIUM_AUX_LEVEL_2,
+            Categories.VISIUM_LEVEL_3,
         ]
 
         self.other_assay_list = [Categories.OTHER_ASSAY]
@@ -168,6 +179,10 @@ class Categories:
             Categories.SC_ATAC_SEQ_LEVEL_2: "SCATAC2",
             Categories.SC_ATAC_SEQ_LEVEL_3: "SCATAC3",
             Categories.SC_ATAC_SEQ_LEVEL_4: "SCATAC4",
+            Categories.VISIUM_LEVEL_1: "VS1",
+            Categories.VISIUM_LEVEL_2: "VS2",
+            Categories.VISIUM_AUX_LEVEL_2: "VS2_A",
+            Categories.VISIUM_LEVEL_3: "VS3"
         }
 
         self.all_assays = []
@@ -177,6 +192,7 @@ class Categories:
         self.all_assays.extend(self.bulk_rna_list)
         self.all_assays.extend(self.image_list)
         self.all_assays.extend(self.other_assay_list)
+        self.all_assays.extend(self.visium_list)
 
         self.all_clinical = []
         self.all_clinical.extend(self.clinical_tier1_2_list)
