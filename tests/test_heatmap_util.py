@@ -38,7 +38,7 @@ def test_heatmap_util():
     project.participant_2_biopsecimens = graph_util.participant_2_biopsecimens
     heatmap_util = HeatMapUtil(project)
     heatmaps = heatmap_util.heatmaps
-    assert len(heatmaps) == 5
+    assert len(heatmaps) == 6
     data0 = heatmaps[0].data
     data1 = heatmaps[1].data
     data2 = heatmaps[2].data
