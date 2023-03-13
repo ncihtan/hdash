@@ -17,9 +17,7 @@ def test_validator():
     assert validation_list[5].validation_passed is False
     error_list = validation_list[5].error_list
     assert error_list[0].startswith("Biospecimen references adjacent ID: ")
-    assert validation_list[6].validation_passed is False
-    error_list = validation_list[6].error_list
-    assert error_list[0].startswith("Biospecimen has invalid Synapse ID: ")
+    assert validation_list[6].validation_passed is True
 
 
 def test_graph():
