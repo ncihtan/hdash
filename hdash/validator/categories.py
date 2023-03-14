@@ -31,7 +31,9 @@ class Categories:
     SC_ATAC_SEQ_LEVEL_4 = "ScATAC-seqLevel4"
     IMAGING_LEVEL_1 = "ImagingLevel1"
     IMAGING_LEVEL_2 = "ImagingLevel2"
-    IMAGING_LEVEL_3 = "ImagingLevel3"
+    IMAGING_LEVEL_3_IMAGE = "ImagingLevel3Image"
+    IMAGING_LEVEL_3_CHANNELS = "ImagingLevel3Channels"
+    IMAGING_LEVEL_3_SEGMENTATION = "ImagingLevel3Segmentation"
     IMAGING_LEVEL_4 = "ImagingLevel4"
     OTHER_ASSAY = "OtherAssay"
     SRRS_IMAGING_LEVEL2 = "SRRSImagingLevel2"
@@ -89,7 +91,9 @@ class Categories:
         self.image_list = [
             Categories.IMAGING_LEVEL_1,
             Categories.IMAGING_LEVEL_2,
-            Categories.IMAGING_LEVEL_3,
+            Categories.IMAGING_LEVEL_3_IMAGE,
+            Categories.IMAGING_LEVEL_3_CHANNELS,
+            Categories.IMAGING_LEVEL_3_SEGMENTATION,
             Categories.IMAGING_LEVEL_4,
             Categories.SRRS_IMAGING_LEVEL2,
         ]
@@ -172,7 +176,9 @@ class Categories:
             Categories.BULK_RNA_SEQ_LEVEL_4: "RNA4",
             Categories.IMAGING_LEVEL_1: "I1",
             Categories.IMAGING_LEVEL_2: "I2",
-            Categories.IMAGING_LEVEL_3: "I3",
+            Categories.IMAGING_LEVEL_3_IMAGE: "I3-I",
+            Categories.IMAGING_LEVEL_3_CHANNELS: "I3-C",
+            Categories.IMAGING_LEVEL_3_SEGMENTATION: "I3-S",
             Categories.IMAGING_LEVEL_4: "I4",
             Categories.SRRS_IMAGING_LEVEL2: "SRRS_IMAGE_2",
             Categories.SC_ATAC_SEQ_LEVEL_1: "SCATAC1",
