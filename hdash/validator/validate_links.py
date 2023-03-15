@@ -55,6 +55,11 @@ class ValidateLinks(ValidationRule):
             if parent_id_col is not None:
                 for index, row in df.iterrows():
                     chunk = str(row[parent_id_col])
+
+                    # Handle Special HTAPP Case
+                    if chunk.startswith("Not Applicable"):
+                        chunk = str(row[IdUtil.HTAN_PARENT_BIOSPECIMEN_ID])
+
                     id = str(row[primary_id_col])
                     self.__check_parents(id, chunk, category, e_list)
             if adj_id_col is not None:
