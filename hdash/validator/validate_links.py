@@ -56,9 +56,12 @@ class ValidateLinks(ValidationRule):
                 for index, row in df.iterrows():
                     chunk = str(row[parent_id_col])
 
-                    # Handle Special HTAPP Case
+                    # Handle Special HTAPP/DFCI Cases
                     if chunk.startswith("Not Applicable"):
-                        chunk = str(row[IdUtil.HTAN_PARENT_BIOSPECIMEN_ID])
+                        try:
+                            chunk = str(row[IdUtil.HTAN_PARENT_BIOSPECIMEN_ID])
+                        except KeyError:
+                            chunk = "NOT_APPLICABLE"
 
                     id = str(row[primary_id_col])
                     self.__check_parents(id, chunk, category, e_list)
