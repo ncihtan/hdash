@@ -39,8 +39,8 @@ class StatsSummary:
 
     def __walk_assay_categories(self):
         """Walk through all the assay categories."""
-        for clinical_category in self.categories.all_assays:
-            self.__walk_category(clinical_category)
+        for assay_category in self.categories.all_assays:
+            self.__walk_category(assay_category)
 
     def __walk_category(self, category):
         """Walk through specified data category."""
@@ -72,7 +72,6 @@ class StatsSummary:
                         self.__increment_num_completed_fields(key)
 
             percent_complete = self.__calculate_percent_complete_fields(key)
-            # self.df_stats_map[key] = f"{percent_complete:.0%}"
             self.df_stats_map[key] = percent_complete
 
     def __increment_num_fields(self, key):

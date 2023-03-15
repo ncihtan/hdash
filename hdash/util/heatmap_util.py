@@ -113,11 +113,16 @@ class HeatMapUtil:
         for participant_id in self.project.participant_id_set:
             b_ids = participant_2_bipspecimens.get(participant_id, [])
             for biospecimen_id in b_ids:
+                total_coverage = 0
                 current_row = [participant_id, biospecimen_id]
                 for category in category_list:
                     key = biospecimen_id + ":" + category
-                    current_row.append(df_stats_map.get(key, 0))
-                data.append(current_row)
+                    coverage = df_stats_map.get(key, 0)
+                    if category != Categories.BIOSPECIMEN:
+                        total_coverage += coverage
+                    current_row.append(coverage)
+                if total_coverage > 0:
+                    data.append(current_row)
         self.__create_heatmap(heatmap_type, data, headers, label, bg_color)
 
     def __create_heatmap(self, heatmap_type, data, headers, label, bg_color):

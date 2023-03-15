@@ -62,10 +62,16 @@ class GraphUtil:
             if node.category == self.categories.DEMOGRAPHICS:
                 self.participant_id_set.add(node_id)
         for participant_id in self.participant_id_set:
-            current_biospecimen_ids = list(self.graph.successors(participant_id))
-            for biospecimen_id in current_biospecimen_ids:
+            self.__downstream_nodes = []
+            self.__walk_non_assay_node(self.graph, participant_id)
+
+            downstream_biospecimens = []
+            for downstream_node in self.__downstream_nodes:
+                downstream_biospecimens.append(downstream_node)
+
+            for biospecimen_id in downstream_biospecimens:
                 self.biospecimen_id_set.add(biospecimen_id)
-            self.participant_2_biopsecimens[participant_id] = current_biospecimen_ids
+            self.participant_2_biopsecimens[participant_id] = downstream_biospecimens
 
     def __gather_downstream_assays(self):
         """For each biospecimen, gather all downstream assays."""
@@ -80,5 +86,18 @@ class GraphUtil:
         """Walk the graph and gather all downstream nodes."""
         successors = graph.successors(node_id)
         for successor_id in successors:
-            self.__downstream_nodes.append(successor_id)
-            self.__walk_node(graph, successor_id)
+            node = self.node_map[successor_id]
+            # if this is not a biospecimen, keeping walking
+            if not node.sif_id.startswith("B"):
+                self.__downstream_nodes.append(successor_id)
+                self.__walk_node(graph, successor_id)
+
+    def __walk_non_assay_node(self, graph, node_id):
+        """Walk the graph and gather all downstream biospecimens."""
+        successors = graph.successors(node_id)
+        for successor_id in successors:
+            node = self.node_map[successor_id]
+            # if this is a biospecimen, keeping walking
+            if node.sif_id.startswith("B"):
+                self.__downstream_nodes.append(successor_id)
+                self.__walk_non_assay_node(graph, successor_id)
