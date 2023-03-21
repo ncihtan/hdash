@@ -1,5 +1,6 @@
 """Table Utilities."""
-from hdash.synapse.htan_project import HTANProject, MetaFile
+from hdash.synapse.htan_project import HTANProject
+from hdash.synapse.meta_file import MetaFile
 from hdash.synapse.file_counter import FileCounter
 from hdash.synapse.synapse_util import SynapseUtil
 import pandas as pd
@@ -28,7 +29,7 @@ class TableUtil:
             self._count_files(df, project)
             self._extract_meta(df, project)
 
-    def annotate_meta_file(self, meta_file):
+    def annotate_meta_file(self, meta_file: MetaFile):
         """Annotate the specified meta_file with additional details."""
         df = pd.read_csv(meta_file.path)
         component_list = df.Component.dropna().unique()
@@ -36,6 +37,7 @@ class TableUtil:
             meta_file.category = component_list[0]
         except IndexError:
             meta_file.category = "Empty"
+        meta_file.df = df
         meta_file.num_items = len(df.index)
 
     def _count_files(self, df, project):

@@ -99,9 +99,9 @@
     </thead>
     <tbody>
       {% for validation in project.validation_list %}
-        {% set trClass = "validation_%s" % validation.validation_passed %}
+        {% set trClass = "validation_%s" % validation.validation_passed() %}
         {% set passed = "Failed:  %d Errors." % validation.error_list|length %}
-        {% if (validation.validation_passed) %}
+        {% if (validation.validation_passed()) %}
           {% set passed = "Passed" %}
         {% endif %}
         <tr valign="top">

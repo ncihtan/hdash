@@ -1,5 +1,5 @@
 """File Counter."""
-from hdash.synapse.htan_project import MetaFile
+from hdash.synapse.meta_file import MetaFile
 from pathlib import Path
 import logging
 
@@ -47,19 +47,21 @@ class FileCounter:
             path = Path(name)
             if parent_id in self.archive_folder_set:
                 file_type = FileCounter.EXCLUDE
+            elif name.startswith(".DS_Store"):
+                file_type = FileCounter.EXCLUDE
             elif name == MetaFile.LEGACY_META_FILE_NAME:
                 file_type = FileCounter.EXCLUDE
             elif name.startswith(MetaFile.META_FILE_PREFIX):
                 file_type = FileCounter.METADATA
             else:
                 if path.suffix == ".gz":
-                    file_extension = "".join(path.suffixes[0:2])
+                    file_extension = "".join(path.suffixes[-2])
                 else:
                     file_extension = path.suffix
                 try:
                     file_type = self.file_type_map[file_extension]
                 except KeyError:
-                    logging.warning("Unrecognized: %s" % file_extension)
+                    logging.warning("Unrecognized File Extension: %s [%s]" % (file_extension, path))
                     file_type = FileCounter.OTHER
             file_type_list.append(file_type)
 
@@ -74,21 +76,26 @@ class FileCounter:
         fm = {}
         fm[".bam"] = FileCounter.BAM
         fm[".fastq"] = FileCounter.FASTQ
-        fm[".fastq.gz"] = FileCounter.FASTQ
-        fm[".fq.gz"] = FileCounter.FASTQ
+        fm[".fasta"] = FileCounter.FASTQ
         fm[".fq"] = FileCounter.FASTQ
         fm[".tif"] = FileCounter.IMAGE
         fm[".tiff"] = FileCounter.IMAGE
         fm[".svs"] = FileCounter.IMAGE
         fm[".vsi"] = FileCounter.IMAGE
         fm[".png"] = FileCounter.IMAGE
+        fm[".raw"] = FileCounter.IMAGE
+        fm[".jpg"] = FileCounter.IMAGE
+        fm[".scn"] = FileCounter.IMAGE
+        fm[".s0001_e00"] = FileCounter.IMAGE
         fm[".csv"] = FileCounter.MATRIX
-        fm[".csv.gz"] = FileCounter.MATRIX
         fm[".tsv"] = FileCounter.MATRIX
-        fm[".tsv.gz"] = FileCounter.MATRIX
+        fm[".vcf"] = FileCounter.MATRIX
+        fm[".fcs"] = FileCounter.MATRIX
         fm[".mtx"] = FileCounter.MATRIX
         fm[".txt"] = FileCounter.MATRIX
         fm[".h5ad"] = FileCounter.MATRIX
+        fm[".h5"] = FileCounter.MATRIX
+        fm[".xlsx"] = FileCounter.MATRIX
         fm[".pdf"] = FileCounter.OTHER
         fm[".rnk"] = FileCounter.OTHER
         fm[".json"] = FileCounter.OTHER

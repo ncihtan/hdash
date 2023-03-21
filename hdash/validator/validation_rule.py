@@ -1,4 +1,5 @@
 """Base Validation Rule."""
+from hdash.synapse.meta_file import MetaFile
 
 
 class ValidationRule:
@@ -8,17 +9,21 @@ class ValidationRule:
         """Construct Base Validation Rule."""
         self.validation_code = validation_code
         self.validation_text = validation_text
-        self.validation_passed = False
         self.error_list = []
 
-    def set_status(self, validation_passed):
-        """Set pass/fail validation status."""
-        self.validation_passed = validation_passed
+    def validation_passed(self):
+        """Did the Validation pass?"""
+        return len(self.error_list) == 0
 
-    def set_error_list(self, error_list):
-        """Set the error list."""
-        self.error_list = error_list
-        if len(error_list) == 0:
-            self.set_status(True)
-        else:
-            self.set_status(False)
+    def add_error(self, msg, meta_file: MetaFile):
+        """Add Validation Error."""
+        msg = self._create_error_msg(msg, meta_file)
+        self.error_list.append(msg)
+
+    def add_error_message(self, msg):
+        """Add Validation Error."""
+        self.error_list.append(msg)
+
+    def _create_error_msg(self, msg, meta_file: MetaFile):
+        """Creates Error Message with Synapse ID."""
+        return f"{msg} [synapse id:  {meta_file.id}]"

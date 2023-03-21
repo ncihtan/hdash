@@ -30,7 +30,11 @@ def cli(verbose):
     log_level = logging.FATAL
     if verbose:
         log_level = logging.INFO
-    logging.basicConfig(level=log_level, format="%(levelname)s:%(message)s")
+        log_file_name = "hdash.log"
+        print(f"Logging to:  {log_file_name}.")
+        logging.basicConfig(filename=log_file_name, filemode='w', level=log_level, format="%(levelname)s:%(message)s")
+    else:
+        logging.basicConfig(level=log_level, format="%(levelname)s:%(message)s")
 
 
 @cli.command()
@@ -87,11 +91,9 @@ def _create_dashboard(use_cache, surge, google):
                     output_message("Could not retrieve:  %s" % meta_file.id)
 
     for project in p_list:
-        meta_file_list = []
         for meta_file in project.meta_list:
-            meta_file_list.append(meta_file.path)
             table_util.annotate_meta_file(meta_file)
-        validator = HtanValidator(project.atlas_id, meta_file_list)
+        validator = HtanValidator(project.atlas_id, project.meta_list)
         project.validation_list = validator.get_validation_list()
         node_map = validator.get_node_map()
         edge_list = validator.get_edge_list()

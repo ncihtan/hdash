@@ -1,6 +1,7 @@
 """Summary Stats Across all Data Categories."""
 from hdash.validator.id_util import IdUtil
 from hdash.validator.categories import Categories
+from hdash.synapse.meta_map import MetaMap
 from natsort import natsorted
 
 
@@ -16,7 +17,7 @@ class StatsSummary:
         Categories.ENTITY_ID_COL,
     ]
 
-    def __init__(self, atlas_id, meta_map, assays_2_biospecimens):
+    def __init__(self, atlas_id, meta_map: MetaMap, assays_2_biospecimens):
         """Init with Atlas ID and Map of all DataFrames."""
         self.atlas_id = atlas_id
         self.meta_map = meta_map
@@ -44,9 +45,9 @@ class StatsSummary:
 
     def __walk_category(self, category):
         """Walk through specified data category."""
-        df_list = self.meta_map.get(category, [])
-        for df in df_list:
-            self.inspect_df(category, df)
+        meta_file_list = self.meta_map.get_meta_file_list(category)
+        for meta_file in meta_file_list:
+            self.inspect_df(category, meta_file.df)
 
     def inspect_df(self, category, df):
         """Inspect Data Frame for completed/missing fields."""

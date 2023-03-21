@@ -1,6 +1,7 @@
 """PyTest Fixtures."""
 import pytest
-from hdash.synapse.htan_project import HTANProject, MetaFile
+from hdash.synapse.htan_project import HTANProject
+from hdash.synapse.meta_file import MetaFile
 
 
 @pytest.fixture

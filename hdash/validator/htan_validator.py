@@ -3,6 +3,7 @@
 import pandas as pd
 
 from hdash.validator.categories import Categories
+from hdash.validator.validation_rule import ValidationRule
 from hdash.validator.validate_demographics import ValidateDemographics
 from hdash.validator.validate_biospecimens import ValidateBiospecimens
 from hdash.validator.validate_primary_ids import ValidatePrimaryIds
@@ -10,38 +11,28 @@ from hdash.validator.validate_entity_ids import ValidateEntityIds
 from hdash.validator.validate_non_demographics import ValidateNonDemographics
 from hdash.validator.validate_links import ValidateLinks
 from hdash.validator.validate_categories import ValidateCategories
+from hdash.synapse.meta_map import MetaMap
+from hdash.synapse.meta_file import MetaFile
 
 
 class HtanValidator:
     """Core HTAN Validator."""
 
-    def __init__(self, atlas_id, meta_data_file_list):
+    def __init__(self, atlas_id, meta_data_file_list: list[MetaFile]):
         """Construct a new HTAN Validator for one atlas."""
         self.atlas_id = atlas_id
         self.validation_list = []
         self.node_map = {}
+        self.meta_map = MetaMap()
 
-        # First step is to read in all the metadata files and categorize them
-        self.meta_map = {}
-        for path in meta_data_file_list:
-            current_df = pd.read_csv(path)
-            component_list = current_df[Categories.COMPONENT_COL].to_list()
-            try:
-                component = component_list[0]
-            except IndexError:
-                component = "Empty"
-
-            # We can have metadata files of the same component type
-            if component in self.meta_map:
-                meta_list = self.meta_map[component]
-                meta_list.append(current_df)
-            else:
-                self.meta_map[component] = [current_df]
+        # Review all the metadata files and bin them within the MetaMap
+        for meta_file in meta_data_file_list:
+            self.meta_map.add_meta_file(meta_file)
 
         # Then validate
         self.__validate()
 
-    def get_validation_list(self):
+    def get_validation_list(self) -> list[ValidationRule]:
         """Get the list of validation rules applied."""
         return self.validation_list
 

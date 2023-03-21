@@ -1,6 +1,6 @@
 """Test Table Utilities."""
 import pandas as pd
-from hdash.synapse.htan_project import MetaFile
+from hdash.synapse.meta_file import MetaFile
 from hdash.synapse.table_util import TableUtil
 
 

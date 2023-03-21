@@ -4,14 +4,14 @@ from hdash.synapse.htan_project import HTANProject
 from hdash.util.heatmap_util import HeatMapUtil
 from hdash.validator import htan_validator
 from hdash.stats import stats_summary
-import seaborn as sns
-import matplotlib.pyplot as plt
+from hdash.synapse.meta_file import MetaFile
+from hdash.synapse.table_util import TableUtil
 import pytest
 
 
 def test_heatmap_util():
     """Test HeatMap Util."""
-    file_list = [
+    path_list = [
         "tests/data/demographics.csv",
         "tests/data/biospecimens.csv",
         "tests/data/single_cell_level1.csv",
@@ -19,9 +19,16 @@ def test_heatmap_util():
         "tests/data/single_cell_level3.csv",
         "tests/data/single_cell_level4.csv",
     ]
+    meta_file_list = []
+    tableUtil = TableUtil()
+    for path in path_list:
+        meta_file = MetaFile()
+        meta_file.path = path
+        tableUtil.annotate_meta_file(meta_file)
+        meta_file_list.append(meta_file)
 
     # Run Validator to Extract the Graph
-    validator = htan_validator.HtanValidator("HTA3", file_list)
+    validator = htan_validator.HtanValidator("HTA3", meta_file_list)
     meta_map = validator.meta_map
     graph_util = GraphUtil(validator.get_node_map(), validator.get_edge_list())
     assays_2_biospecimens = graph_util.assays_2_biospecimens

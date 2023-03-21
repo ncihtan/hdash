@@ -5,6 +5,8 @@ from hdash.validator import htan_validator
 from hdash.graph.graph_util import GraphUtil
 from hdash.graph.graph import Node, Edge
 from hdash.validator.categories import Categories
+from hdash.synapse.table_util import TableUtil
+from hdash.synapse.meta_file import MetaFile
 
 
 def test_graph_util():
@@ -33,8 +35,8 @@ def test_graph_util():
 
 def test_real_graph():
     """Test Real Graph."""
-    categories = Categories()
-    file_list = [
+
+    path_list = [
         "tests/data/demographics.csv",
         "tests/data/biospecimens.csv",
         "tests/data/single_cell_level1.csv",
@@ -42,7 +44,15 @@ def test_real_graph():
         "tests/data/single_cell_level3.csv",
         "tests/data/single_cell_level4.csv",
     ]
-    validator = htan_validator.HtanValidator("HTA3", file_list)
+    meta_file_list = []
+    tableUtil = TableUtil()
+    for path in path_list:
+        meta_file = MetaFile()
+        meta_file.path = path
+        tableUtil.annotate_meta_file(meta_file)
+        meta_file_list.append(meta_file)
+
+    validator = htan_validator.HtanValidator("HTA3", meta_file_list)
     graph_util = GraphUtil(validator.get_node_map(), validator.get_edge_list())
     data_list = graph_util.data_list
     assert len(data_list) == 483
