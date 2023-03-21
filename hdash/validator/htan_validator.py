@@ -2,6 +2,7 @@
 
 import pandas as pd
 
+from typing import List
 from hdash.validator.categories import Categories
 from hdash.validator.validation_rule import ValidationRule
 from hdash.validator.validate_demographics import ValidateDemographics
@@ -18,7 +19,7 @@ from hdash.synapse.meta_file import MetaFile
 class HtanValidator:
     """Core HTAN Validator."""
 
-    def __init__(self, atlas_id, meta_data_file_list: list[MetaFile]):
+    def __init__(self, atlas_id, meta_data_file_list: List[MetaFile]):
         """Construct a new HTAN Validator for one atlas."""
         self.atlas_id = atlas_id
         self.validation_list = []
@@ -32,7 +33,7 @@ class HtanValidator:
         # Then validate
         self.__validate()
 
-    def get_validation_list(self) -> list[ValidationRule]:
+    def get_validation_list(self) -> List[ValidationRule]:
         """Get the list of validation rules applied."""
         return self.validation_list
 

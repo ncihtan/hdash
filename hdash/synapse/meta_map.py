@@ -1,3 +1,4 @@
+from typing import List
 from hdash.synapse.meta_file import MetaFile
 
 
@@ -25,10 +26,10 @@ class MetaMap:
         """Determine if the MetaMap has data for the specified category."""
         return category in self.map
 
-    def get_meta_file_list(self, category: str) -> list[MetaFile]:
+    def get_meta_file_list(self, category: str) -> List[MetaFile]:
         """Get the List of Meta Files Associated with the Specified Category."""
         return self.map.get(category, [])
 
-    def get_categories(self) -> list[str]:
+    def get_categories(self) -> List[str]:
         """Get the list of all registered categories in the map."""
         return self.map.keys()
