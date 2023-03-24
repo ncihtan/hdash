@@ -26,13 +26,11 @@ class HTANProject:
         self.meta_list = []
         self.validation_list = []
         self.num_errors = 0
-        self.data_list = []
-        self.node_map = []
-        self.sif_list = []
-        self.participant_id_set = []
-        self.participant_2_biopsecimens = {}
-        self.assays_2_biospecimens = {}
-        self.df_stats_map = {}
+        self.meta_map = None
+        self.htan_graph = None
+        self.flat_graph = None
+        self.sif = None
+        self.completeness_stats = None
         self.heatmap_list = []
 
     def get_total_file_size(self):
@@ -53,6 +51,3 @@ class HTANProject:
     def __repr__(self):
         """Return summary of object."""
         return "%s: %s" % (self.id, self.name)
-
-
-

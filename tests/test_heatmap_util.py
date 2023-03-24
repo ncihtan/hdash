@@ -1,69 +1,42 @@
 """Test HTAN Validator class."""
-from hdash.graph.graph_util import GraphUtil
-from hdash.synapse.htan_project import HTANProject
-from hdash.util.heatmap_util import HeatMapUtil
-from hdash.validator import htan_validator
-from hdash.stats import stats_summary
+from hdash.graph.graph_flattener import GraphFlattener
+from hdash.stats.completeness_summary import CompletenessSummary
+from hdash.graph.graph_creator import GraphCreator
+from hdash.synapse.meta_map import MetaMap
 from hdash.synapse.meta_file import MetaFile
 from hdash.synapse.table_util import TableUtil
-import pytest
+from hdash.util.heatmap_util import HeatMapUtil
 
 
-def test_heatmap_util():
+def test_heatmap_util(sample_meta_map):
     """Test HeatMap Util."""
-    path_list = [
-        "tests/data/demographics.csv",
-        "tests/data/biospecimens.csv",
-        "tests/data/single_cell_level1.csv",
-        "tests/data/single_cell_level2.csv",
-        "tests/data/single_cell_level3.csv",
-        "tests/data/single_cell_level4.csv",
-    ]
-    meta_file_list = []
-    tableUtil = TableUtil()
-    for path in path_list:
-        meta_file = MetaFile()
-        meta_file.path = path
-        tableUtil.annotate_meta_file(meta_file)
-        meta_file_list.append(meta_file)
+    meta_map = sample_meta_map
+    graph_creator = GraphCreator("HTA1", meta_map)
+    graph_flat = GraphFlattener(graph_creator.htan_graph)
 
-    # Run Validator to Extract the Graph
-    validator = htan_validator.HtanValidator("HTA3", meta_file_list)
-    meta_map = validator.meta_map
-    graph_util = GraphUtil(validator.get_node_map(), validator.get_edge_list())
-    assays_2_biospecimens = graph_util.assays_2_biospecimens
-
-    # Run the Summary Stats
-    stats = stats_summary.StatsSummary("HTA3", meta_map, assays_2_biospecimens)
+    stats = CompletenessSummary("HTA1", meta_map, graph_flat)
 
     # Run HeatMap Util
-    project = HTANProject()
-    project.atlas_id = "HTA3"
-    project.participant_id_set = stats.participant_id_set
-    project.df_stats_map = stats.df_stats_map
-    project.assays_2_biospecimens = assays_2_biospecimens
-    project.participant_2_biopsecimens = graph_util.participant_2_biopsecimens
-    heatmap_util = HeatMapUtil(project)
+    heatmap_util = HeatMapUtil("HTA1", stats)
+
     heatmaps = heatmap_util.heatmaps
     assert len(heatmaps) == 6
     data0 = heatmaps[0].data
     data1 = heatmaps[1].data
     data2 = heatmaps[2].data
 
-    # Test Clinical Tiers 1,2
+    # Validate Clinical Tiers 1,2
     assert data0[0][0] == "HTA3_8001"
-    assert data0[0][1] == 0.4375
+    assert data0[0][1] == 1
 
-    # Test Clinical Tier 3
+    # Validate Clinical Tier 3
     assert data1[0][0] == "HTA3_8001"
-    assert data1[0][1] == 0.0
+    assert data1[0][1] == 0
 
-    # Test Single Cell Assay, Levels 1
+    # Validate Single Cell Data
     assert data2[0][0] == "HTA3_8001"
     assert data2[0][1] == "HTA3_8001_001"
-
-    # Completeness of Biospecimen Data
-    assert data2[0][2] == pytest.approx(0.51, 0.01)
-
-    # Completeness of Single Cell Level 1 Data
-    assert data2[0][3] == pytest.approx(0.82, 0.01)
+    assert data2[0][2] == 1
+    assert data2[0][3] == 1
+    assert data2[0][4] == 1
+    assert data2[0][5] == 1

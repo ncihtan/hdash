@@ -2,7 +2,7 @@
 
 from hdash.validator.categories import Categories
 from hdash.validator.validation_rule import ValidationRule
-from hdash.validator.id_util import IdUtil
+from hdash.util.id_util import IdUtil
 from hdash.synapse.meta_map import MetaMap
 
 

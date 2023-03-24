@@ -1,5 +1,5 @@
 """Command Line Interface (CLI) for generating HTAN Dashboard."""
-from hdash.graph.graph_util import GraphUtil
+from hdash.graph.graph_flattener import GraphFlattener
 import logging
 import emoji
 import click
@@ -9,7 +9,6 @@ import subprocess
 import pandas as pd
 from datetime import datetime
 
-from hdash.stats import stats_summary
 from hdash.synapse.synapse_util import SynapseUtil
 from hdash.google.gsheet_util import GoogleSheetUtil
 from hdash.util.heatmap_util import HeatMapUtil
@@ -17,6 +16,14 @@ from hdash.util.report_writer import ReportWriter
 from hdash.synapse.table_util import TableUtil
 from hdash.validator.htan_validator import HtanValidator
 from synapseclient.core.exceptions import SynapseHTTPError
+from hdash.synapse.meta_map import MetaMap
+from hdash.graph.graph_flattener import GraphFlattener
+from hdash.stats.completeness_summary import CompletenessSummary
+from hdash.graph.graph_creator import GraphCreator
+from hdash.graph.sif_writer import SifWriter
+from hdash.stats.meta_summary import MetaDataSummary
+
+
 
 # Local Project Table, Used when google option is not enabled.
 MASTER_PROJECT_TABLE = "config/htan_projects.csv"
@@ -32,7 +39,12 @@ def cli(verbose):
         log_level = logging.INFO
         log_file_name = "hdash.log"
         print(f"Logging to:  {log_file_name}.")
-        logging.basicConfig(filename=log_file_name, filemode='w', level=log_level, format="%(levelname)s:%(message)s")
+        logging.basicConfig(
+            filename=log_file_name,
+            filemode="w",
+            level=log_level,
+            format="%(levelname)s:%(message)s",
+        )
     else:
         logging.basicConfig(level=log_level, format="%(levelname)s:%(message)s")
 
@@ -91,25 +103,36 @@ def _create_dashboard(use_cache, surge, google):
                     output_message("Could not retrieve:  %s" % meta_file.id)
 
     for project in p_list:
+        # Create the Meta Map
         for meta_file in project.meta_list:
             table_util.annotate_meta_file(meta_file)
-        validator = HtanValidator(project.atlas_id, project.meta_list)
+        meta_map = MetaMap()
+        for meta_file in project.meta_list:
+            meta_map.add_meta_file(meta_file)
+
+        # Create the Graph and Completeness Stats
+        graph_creator = GraphCreator(project.atlas_id, meta_map)
+        flat_graph = GraphFlattener(graph_creator.htan_graph)
+        completeness_stats = CompletenessSummary(project.atlas_id, meta_map, flat_graph)
+
+        # Validate
+        validator = HtanValidator(project.atlas_id, meta_map, graph_creator.htan_graph)
+
+        # Create the Heat Maps
+        heatmap_util = HeatMapUtil(project.atlas_id, completeness_stats)
+
+        # Create the Network SIF
+        sif_writer = SifWriter(graph_creator.htan_graph.directed_graph)
+        project.sif = sif_writer.sif
+
+        # Assess Metadata Completeness
+        MetaDataSummary(meta_map.meta_list_sorted)
+
+        # Store for later reference
+        project.meta_map = meta_map
+        project.flat_graph = flat_graph
+        project.completeness_stats = completeness_stats
         project.validation_list = validator.get_validation_list()
-        node_map = validator.get_node_map()
-        edge_list = validator.get_edge_list()
-        graph_util = GraphUtil(node_map, edge_list)
-        project.data_list = graph_util.data_list
-        project.node_map = validator.get_node_map()
-        project.sif_list = graph_util.sif_list
-        assays_2_biospecimens = graph_util.assays_2_biospecimens
-        stats = stats_summary.StatsSummary(
-            project.atlas_id, validator.meta_map, assays_2_biospecimens
-        )
-        project.participant_id_set = stats.participant_id_set
-        project.df_stats_map = stats.df_stats_map
-        project.participant_2_biopsecimens = graph_util.participant_2_biopsecimens
-        project.assays_2_biospecimens = graph_util.assays_2_biospecimens
-        heatmap_util = HeatMapUtil(project)
         project.heatmap_list = heatmap_util.heatmaps
 
     _write_html(p_list)
@@ -130,7 +153,7 @@ def _write_html(project_list):
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
     _write_matrix_html(report_writer)
-    _write_atlas_cytoscape_json_sif(project_list)
+    _write_atlas_sif(project_list)
 
 
 def _write_index_html(report_writer):
@@ -178,21 +201,10 @@ def _deploy_with_surge():
     subprocess.run(["surge", "deploy", "http://htan_dashboard.surge.sh/"])
 
 
-def _write_atlas_cytoscape_json_sif(project_list):
+def _write_atlas_sif(project_list):
     for project in project_list:
         out_name = "deploy/%s_network.sif" % project.atlas_id
         output_message("Writing to:  %s." % out_name)
-        sif_list = project.sif_list
         fd = open(out_name, "w")
-        for edge in sif_list:
-            fd.write("%s\tconnect\t%s\n" % (edge[0], edge[1]))
-        fd.close()
-
-        out_name = "deploy/%s_nodes.txt" % project.atlas_id
-        output_message("Writing to:  %s." % out_name)
-        fd = open(out_name, "w")
-        fd.write("ID\tCATEGORY\n")
-        for key in project.node_map:
-            node = project.node_map[key]
-            fd.write("%s\t%s\n" % (node.sif_id, node.category))
+        fd.write(project.sif)
         fd.close()

@@ -33,14 +33,13 @@
     </div>
   </nav>
   <br/>
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">{{ project.atlas_id }}:  {{ project.name }}</li>
-    </ol>
-  </nav>
-  <div class="alert alert-warning" role="alert">
-    <i class="bi bi-info-circle"></i> DCC Notes:  {{ project.notes }}
+  <div class="w-95 p-1 m-1">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ project.atlas_id }}:  {{ project.name }}</li>
+      </ol>
+    </nav>
   </div>
 
   <div class="w-95 p-3 m-1" style="background-color: #eee;">
@@ -51,7 +50,8 @@
         <tr>
             <th>Synapse ID</th>
             <th>Category</th>
-            <th>Num Items</th>
+            <th>Num Records</th>
+            <th>Percent Complete Metadata</th>
         </tr>
     </thead>
     <tbody>
@@ -60,6 +60,7 @@
           <td><a href="https://www.synapse.org/#!Synapse:{{ meta_file.id }}/files/">{{ meta_file.id }}</a></td>
           <td>{{ meta_file.category }}</td>
           <td>{{ meta_file.num_items }}</td>
+          <td>{{ "%.2f"|format(100 * meta_file.percent_meta_data_complete) }}%</td>
         </tr>
       {% endfor %}
     </tbody>

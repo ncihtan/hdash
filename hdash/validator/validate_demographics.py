@@ -4,6 +4,7 @@ from hdash.validator.validation_rule import ValidationRule
 from hdash.validator.categories import Categories
 from hdash.synapse.meta_map import MetaMap
 
+
 class ValidateDemographics(ValidationRule):
     """Verify that Demographics File is Present."""
 

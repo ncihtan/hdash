@@ -21,11 +21,8 @@ format:
 	$(FORMATTER) $(PROJ_SLUG)
 	$(FORMATTER) tests
 
-qtest:  prepare
-	py.test -s tests/
-
 test:   prepare
-	py.test -s --cov-report term --cov=$(PROJ_SLUG) tests/
+	py.test -v tests/
 
 coverage:
 	py.test --cov-report html --cov=$(PROJ_SLUG) tests/

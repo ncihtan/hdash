@@ -1,6 +1,8 @@
 """HeatMap Utility."""
 import pandas as pd
+from natsort import natsorted
 from hdash.util.heatmap import HeatMap
+from hdash.stats.completeness_summary import CompletenessSummary
 from hdash.validator.categories import Categories
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -16,11 +18,12 @@ class HeatMapUtil:
     IMAGE_OTHER = "image_other"
     VISIUM = "visium"
 
-    CAPTION = "Values indicate fraction of meta-data fields that have data."
+    CAPTION = "Value of 1 Indicates that data is present."
 
-    def __init__(self, project):
-        """Initialize the specified HTAN Project."""
-        self.project = project
+    def __init__(self, atlas_id, completeness_summary: CompletenessSummary):
+        """Default Constructor."""
+        self.atlas_id = atlas_id
+        self.completeness_summary = completeness_summary
         self.heatmaps = []
         self.categories = Categories()
 
@@ -41,7 +44,7 @@ class HeatMapUtil:
         )
 
         # Heatmap 3
-        self.single_cell_assay_list = [self.categories.BIOSPECIMEN]
+        self.single_cell_assay_list = []
         self.single_cell_assay_list.extend(self.categories.sc_rna_list)
         self.single_cell_assay_list.extend(self.categories.sc_atac_list)
         self.__build_assay_heatmap(
@@ -52,7 +55,7 @@ class HeatMapUtil:
         )
 
         # Heatmap 4
-        self.bulk_assay_list = [self.categories.BIOSPECIMEN]
+        self.bulk_assay_list = []
         self.bulk_assay_list.extend(self.categories.bulk_rna_list)
         self.bulk_assay_list.extend(self.categories.bulk_wes_list)
         self.__build_assay_heatmap(
@@ -63,7 +66,7 @@ class HeatMapUtil:
         )
 
         # Heatmap 5
-        self.image_assay_list = [self.categories.BIOSPECIMEN]
+        self.image_assay_list = []
         self.image_assay_list.extend(self.categories.image_list)
         self.image_assay_list.extend(self.categories.other_assay_list)
         self.__build_assay_heatmap(
@@ -74,7 +77,7 @@ class HeatMapUtil:
         )
 
         # Heatmap 5
-        self.visium_assay_list = [self.categories.BIOSPECIMEN]
+        self.visium_assay_list = []
         self.visium_assay_list.extend(self.categories.visium_list)
         self.__build_assay_heatmap(
             HeatMapUtil.VISIUM,
@@ -94,35 +97,36 @@ class HeatMapUtil:
                 headers.append(shorter)
             else:
                 headers.append(category)
-        for participant_id in self.project.participant_id_set:
+        for participant_id in self.completeness_summary.graph_flat.participant_id_set:
             current_row = [participant_id]
             for category in category_list:
-                key = participant_id + ":" + category
-                current_row.append(self.project.df_stats_map.get(key, 0))
+                value = 0
+                if self.completeness_summary.has_data(participant_id, category):
+                    value = 1
+                current_row.append(value)
             data.append(current_row)
         self.__create_heatmap(heatmap_type, data, headers, label, bg_color)
 
     def __build_assay_heatmap(self, heatmap_type, category_list, label, bg_color):
         """Build Assay Data Heatmap."""
-        participant_2_bipspecimens = self.project.participant_2_biopsecimens
-        df_stats_map = self.project.df_stats_map
+        participant_2_bipspecimens = (
+            self.completeness_summary.graph_flat.participant_2_biopsecimens
+        )
         headers = ["ParticipantID", "BiospecimenID"]
         data = []
         for category in category_list:
             headers.append(category)
-        for participant_id in self.project.participant_id_set:
+        for participant_id in self.completeness_summary.graph_flat.participant_id_set:
             b_ids = participant_2_bipspecimens.get(participant_id, [])
+            b_ids = natsorted(b_ids)
             for biospecimen_id in b_ids:
-                total_coverage = 0
                 current_row = [participant_id, biospecimen_id]
                 for category in category_list:
-                    key = biospecimen_id + ":" + category
-                    coverage = df_stats_map.get(key, 0)
-                    if category != Categories.BIOSPECIMEN:
-                        total_coverage += coverage
-                    current_row.append(coverage)
-                if total_coverage > 0:
-                    data.append(current_row)
+                    value = 0
+                    if self.completeness_summary.has_data(biospecimen_id, category):
+                        value = 1
+                    current_row.append(value)
+                data.append(current_row)
         self.__create_heatmap(heatmap_type, data, headers, label, bg_color)
 
     def __create_heatmap(self, heatmap_type, data, headers, label, bg_color):
@@ -132,7 +136,7 @@ class HeatMapUtil:
             index=False, justify="left", classes="table table-striped table-sm"
         )
         caption = HeatMapUtil.CAPTION
-        heatmap_id = self.project.atlas_id + "_" + heatmap_type
+        heatmap_id = self.atlas_id + "_" + heatmap_type
         heatmap = HeatMap(heatmap_id, label, caption, data, df, df_html, bg_color)
         self.heatmaps.append(heatmap)
 

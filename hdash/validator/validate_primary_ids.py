@@ -1,6 +1,6 @@
 """Validation Rule."""
 
-from hdash.validator.id_util import IdUtil
+from hdash.util.id_util import IdUtil
 from hdash.validator.categories import Categories
 from hdash.validator.validation_rule import ValidationRule
 from hdash.synapse.meta_map import MetaMap
@@ -36,9 +36,11 @@ class ValidatePrimaryIds(ValidationRule):
                             meta_file, category, current_id, atlas_id
                         )
                     else:
-                        self.__check_primary_id(meta_file, category, current_id, atlas_id)
+                        self.__check_primary_id(
+                            meta_file, category, current_id, atlas_id
+                        )
 
-    def __check_participant_id(self, meta_file:  MetaFile, category, id, atlas_id):
+    def __check_participant_id(self, meta_file: MetaFile, category, id, atlas_id):
         parts = id.split("_")
         label = category + ": " + id
         if parts[0] != atlas_id:
@@ -54,7 +56,7 @@ class ValidatePrimaryIds(ValidationRule):
                 msg = label + " does not match HTAN spec."
                 self.add_error(msg, meta_file)
 
-    def __check_primary_id(self, meta_file:  MetaFile, category, id, atlas_id):
+    def __check_primary_id(self, meta_file: MetaFile, category, id, atlas_id):
         parts = id.split("_")
         label = category + ": " + id
         if parts[0] != atlas_id:

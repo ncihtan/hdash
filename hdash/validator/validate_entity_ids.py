@@ -30,7 +30,7 @@ class ValidateEntityIds(ValidationRule):
                         )
                         self.add_error(msg, meta_file)
 
-    def __check_synapse_ids(self, meta_file:  MetaFile, category, synapse_ids):
+    def __check_synapse_ids(self, meta_file: MetaFile, category, synapse_ids):
         for synapse_id in synapse_ids:
             if not str(synapse_id).startswith("syn"):
                 msg = "%s has invalid Synapse ID: %s." % (category, synapse_id)

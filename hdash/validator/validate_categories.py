@@ -8,7 +8,7 @@ from hdash.synapse.meta_map import MetaMap
 class ValidateCategories(ValidationRule):
     """Verify that Atlas is using Categories supported by the Dashhoard."""
 
-    def __init__(self, meta_file_map:  MetaMap):
+    def __init__(self, meta_file_map: MetaMap):
         """Construct new Validation Rule."""
         super().__init__(
             "H_CATEGORIES",

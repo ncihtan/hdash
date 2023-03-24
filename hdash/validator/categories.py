@@ -188,7 +188,7 @@ class Categories:
             Categories.VISIUM_LEVEL_1: "VS1",
             Categories.VISIUM_LEVEL_2: "VS2",
             Categories.VISIUM_AUX_LEVEL_2: "VS2_A",
-            Categories.VISIUM_LEVEL_3: "VS3"
+            Categories.VISIUM_LEVEL_3: "VS3",
         }
 
         self.all_assays = []

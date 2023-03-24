@@ -61,7 +61,9 @@ class FileCounter:
                 try:
                     file_type = self.file_type_map[file_extension]
                 except KeyError:
-                    logging.warning("Unrecognized File Extension: %s [%s]" % (file_extension, path))
+                    logging.warning(
+                        "Unrecognized File Extension: %s [%s]" % (file_extension, path)
+                    )
                     file_type = FileCounter.OTHER
             file_type_list.append(file_type)
 

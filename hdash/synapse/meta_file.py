@@ -11,6 +11,7 @@ class MetaFile:
         self.category = None
         self.num_items = 0
         self.df = None
+        self.percent_meta_data_complete = 0
 
     def __repr__(self):
         """Return summary of object."""

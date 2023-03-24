@@ -12,9 +12,11 @@ class MetaMap:
     def __init__(self):
         """Construct new MetaMap File."""
         self.map = {}
+        self.meta_list_sorted: List[MetaMap] = []
 
-    def add_meta_file(self, meta_file:  MetaFile):
+    def add_meta_file(self, meta_file: MetaFile):
         """Add new Meta File to the Map."""
+        self.meta_list_sorted.append(meta_file)
         category = meta_file.category
         if category in self.map:
             meta_list = self.map[category]
