@@ -8,6 +8,7 @@ def test_meta_summary(sample_meta_map: MetaMap):
     """Test Meta Summary."""
     meta_map = sample_meta_map
     meta_list = meta_map.meta_list_sorted
-    MetaDataSummary(meta_list)
+    meta_summary = MetaDataSummary(meta_list)
     assert meta_list[0].percent_meta_data_complete == pytest.approx(0.427, 0.01)
     assert meta_list[2].percent_meta_data_complete == pytest.approx(0.82, 0.01)
+    assert meta_summary.get_overall_percent_complete() == pytest.approx(0.76, 0.01)

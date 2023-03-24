@@ -17,12 +17,14 @@ from hdash.synapse.table_util import TableUtil
 from hdash.validator.htan_validator import HtanValidator
 from synapseclient.core.exceptions import SynapseHTTPError
 from hdash.synapse.meta_map import MetaMap
+from hdash.synapse.meta_file import MetaFile
 from hdash.graph.graph_flattener import GraphFlattener
 from hdash.stats.completeness_summary import CompletenessSummary
 from hdash.graph.graph_creator import GraphCreator
 from hdash.graph.sif_writer import SifWriter
 from hdash.stats.meta_summary import MetaDataSummary
-
+from hdash.synapse.htan_project import HTANProject
+from hdash.validator.htan_validator import ValidationRule
 
 
 # Local Project Table, Used when google option is not enabled.
@@ -63,6 +65,13 @@ def create(use_cache, repeat, surge, google):
     else:
         _create_dashboard(use_cache, surge, google)
 
+@cli.command()
+def mock():
+    """Create Mock HTML Reports."""
+    print("Creating Mock HTML Reports")
+    report_writer = ReportWriter(_create_mock_project_list())
+    _write_index_html(report_writer)
+    _write_atlas_html(report_writer)
 
 def _create_dashboard(use_cache, surge, google):
     now = datetime.now()
@@ -126,7 +135,7 @@ def _create_dashboard(use_cache, surge, google):
         project.sif = sif_writer.sif
 
         # Assess Metadata Completeness
-        MetaDataSummary(meta_map.meta_list_sorted)
+        meta_summary = MetaDataSummary(meta_map.meta_list_sorted)
 
         # Store for later reference
         project.meta_map = meta_map
@@ -134,6 +143,7 @@ def _create_dashboard(use_cache, surge, google):
         project.completeness_stats = completeness_stats
         project.validation_list = validator.get_validation_list()
         project.heatmap_list = heatmap_util.heatmaps
+        project.percent_meta_data_complete = meta_summary.get_overall_percent_complete()
 
     _write_html(p_list)
 
@@ -208,3 +218,45 @@ def _write_atlas_sif(project_list):
         fd = open(out_name, "w")
         fd.write(project.sif)
         fd.close()
+
+def _create_mock_project_list():
+    """Create mock project list."""
+    project_list = []
+
+    project_list.append(_create_mock_project("syn23448901", "HTA1", "HTAN MSKCC"))
+    project_list.append(_create_mock_project("syn22093319", "HTA2", "HTAN OHSU"))
+    project_list.append(
+        _create_mock_project(
+            "syn21050481",
+            "HTA3",
+            "HTAN Vanderbilt",
+            "Vesteinn",
+            "Vesteinn coordinating with XXX.",
+        )
+    )
+    return project_list
+
+def _create_mock_project(id, atlas_id, name, liaison="Ethan Cerami", notes=None):
+    project = HTANProject()
+    project.id = id
+    project.size_fastq = 100000000000
+    project.num_fastq = 10000
+    project.atlas_id = atlas_id
+    project.name = name
+    project.liaison = liaison
+    project.notes = notes
+
+    validation_rule = ValidationRule("MOCK", "MOCK_VALIDATION")
+    validation_rule.add_error_message("Error 1")
+    validation_rule.add_error_message("Error 2")
+    validation_rule.add_error_message("Error 3")
+    project.validation_list = [validation_rule]
+
+    meta_file = MetaFile()
+    meta_file.id = "synapse1"
+    meta_file.num_items = 4
+    meta_file.percent_meta_data_complete = .3
+    project.meta_list = [meta_file]
+    project.percent_meta_data_complete = 0.3
+
+    return project

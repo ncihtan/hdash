@@ -17,8 +17,18 @@ class MetaDataSummary:
         Categories.ENTITY_ID_COL,
     ]
 
+    def get_overall_percent_complete(self):
+        """Get overall metadata completeness metric."""
+        if self._total_num_complete_fields == 0:
+            return 0
+        else:
+            return self._total_num_complete_fields / self._total_num_fields
+
+
     def __init__(self, meta_list: List[MetaFile]):
         """Default Constructor."""
+        self._total_num_fields = 0
+        self._total_num_complete_fields = 0
         self.categories = Categories()
         for meta_file in meta_list:
             percent_complete = self._calculate_percent_complete(meta_file.df)
@@ -35,4 +45,6 @@ class MetaDataSummary:
                     field_value = str(field_value).lower()
                     if field_value not in self.NA_VALUES:
                         num_completed_fields += 1
+        self._total_num_fields += num_fields
+        self._total_num_complete_fields += num_completed_fields
         return num_completed_fields / num_fields

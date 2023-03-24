@@ -40,7 +40,47 @@
         <li class="breadcrumb-item active" aria-current="page">{{ project.atlas_id }}:  {{ project.name }}</li>
       </ol>
     </nav>
-  </div>
+    <h2 class="m-1 mb-2">{{ project.atlas_id }}:  {{ project.name }}</h2>
+    <div class="container w-95 p-0 m-1 mb-3">
+      <div class="row">
+        <div class="col-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Total File Size</h5>
+                <h6 class="card-subtitle mt-4 mb-4 text-success h2">{{ project.get_total_fize_size_human_readable()}}</h6>
+                <p class="card-text text-muted">Total size of all files submitted to the DCC.</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Total Number of Files</h5>
+                <h6 class="card-subtitle mt-4 mb-4 text-success h2">{{ "{:,d}".format(project.get_total_num_files())}}</h6>
+                <p class="card-text text-muted">Total number of files submitted to the DCC.</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Validation Errors</h5>
+                <h6 class="card-subtitle mt-4 mb-4 text-success h2">{{ "{:,d}".format(project.num_errors) }}</h6>
+                <p class="card-text text-muted">Total number of validation errors detected by the DCC dashboard.</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Percent Metadata Complete</h5>
+                <h6 class="card-subtitle mt-4 mb-4 text-success h2">{{ "%.1f"|format(100 * project.percent_meta_data_complete) }}%</h6>
+                <p class="card-text text-muted">Total percent of metadata fields completed.</p>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
 
   <div class="w-95 p-3 m-1" style="background-color: #eee;">
   <h3>Metadata Files</h3>
@@ -70,7 +110,6 @@
   {% endif %}
 </div>
 
-  {% if project.meta_list|length > 0 %}
   <div class="w-95 p-3 m-1" style="background-color: #eee;">
   <h3>Metadata Validation</h3>
   <table class="table table-striped">
@@ -103,7 +142,6 @@
     </tbody>
   </table>
   </div>
-  {% endif %}
 
   {% for heatmap in project.heatmap_list %}
     {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}

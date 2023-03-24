@@ -26,12 +26,17 @@ class HTANProject:
         self.meta_list = []
         self.validation_list = []
         self.num_errors = 0
+        self.percent_meta_data_complete = 0
         self.meta_map = None
         self.htan_graph = None
         self.flat_graph = None
         self.sif = None
         self.completeness_stats = None
         self.heatmap_list = []
+
+    def get_total_num_files(self):
+        """Get total number of files."""
+        return self.num_fastq + self.num_bam + self.num_image + self.num_matrix + self.num_other
 
     def get_total_file_size(self):
         """Get total file size."""
