@@ -18,7 +18,7 @@ class HeatMapUtil:
     IMAGE_OTHER = "image_other"
     VISIUM = "visium"
 
-    CAPTION = "Value of 1 Indicates that data is present."
+    CAPTION = "Value of 1 indicates presence of data."
 
     def __init__(self, atlas_id, completeness_summary: CompletenessSummary):
         """Default Constructor."""

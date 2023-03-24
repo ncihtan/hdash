@@ -70,22 +70,6 @@
   {% endif %}
 </div>
 
-  {% for heatmap in project.heatmap_list %}
-    {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}
-    <div class="w-95 p-3 m-1" style="{{ bg_color }}">
-    <h3>{{ heatmap.label }} </h3>
-    {% if heatmap.data | length > 0 %}
-      {{ heatmap.caption }}
-      See <a href="{{ heatmap.id }}.html">Complete Matrix Details</a>.
-      <br><br>
-      <img src="images/{{ heatmap.id }}.png" class="img-thumbnail">
-      <br/>
-      <br/>
-    {% endif %}
-    </div>
-  {% endfor %}
-  <br/>
-
   {% if project.meta_list|length > 0 %}
   <div class="w-95 p-3 m-1" style="background-color: #eee;">
   <h3>Metadata Validation</h3>
@@ -109,7 +93,7 @@
           <td>{{ validation.validation_code }}</td>
           <td>{{ validation.validation_text }}</td>
           <td class={{trClass}}>{{ passed }}</td>
-          <td width=50%>
+          <td width=70%>
             {% for error in validation.error_list %}
               - {{ error }}<br/>
             {% endfor %}
@@ -120,6 +104,29 @@
   </table>
   </div>
   {% endif %}
+
+  {% for heatmap in project.heatmap_list %}
+    {% set bg_color = "background-color: " + heatmap.bg_color + ";" %}
+    <div class="w-95 p-3 m-1" style="{{ bg_color }}">
+    <h3>{{ heatmap.label }} </h3>
+    {% if heatmap.data | length > 0 %}
+      {{ heatmap.caption }}
+      See <a href="{{ heatmap.id }}.html">Complete Matrix Details</a>.
+      <br><br>
+      <img src="images/{{ heatmap.id }}.png" class="img-thumbnail">
+      <br/>
+      <br/>
+    {% endif %}
+    </div>
+  {% endfor %}
+
+  <div class="w-95 p-3 m-1" style="background-color: #eee;">
+  <h3><i class="bi bi-bug"></i> DCC Debugging</h3>
+  <ul>
+    <li><a href="{{ project.atlas_id}}_network.sif">Cytoscape SIF Network</a></li>
+  </ul>
+  </div>
+
 </body>
 
 </html>
