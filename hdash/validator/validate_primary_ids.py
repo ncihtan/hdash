@@ -16,6 +16,12 @@ class ValidatePrimaryIds(ValidationRule):
             "H_ID_SPEC",
             "Verify that primary IDs follow HTAN ID Spec.",
         )
+
+        # List of Files to Exclude from Validation
+        self._exclude_list = [
+            "syn42292434"       # HTAP Ex-Seq Data Set
+        ]
+        
         self.meta_file_map = meta_file_map
         self.categories = Categories()
         self.id_util = IdUtil()
@@ -26,19 +32,20 @@ class ValidatePrimaryIds(ValidationRule):
         if self.meta_file_map.has_category(category):
             meta_file_list = self.meta_file_map.get_meta_file_list(category)
             for meta_file in meta_file_list:
-                df = meta_file.df
-                primary_id_col = self.id_util.get_primary_id_column(category)
-                id_list = df[primary_id_col].to_list()
-                for current_id in id_list:
-                    current_id = str(current_id)
-                    if primary_id_col == IdUtil.HTAN_PARTICIPANT_ID:
-                        self.__check_participant_id(
-                            meta_file, category, current_id, atlas_id
-                        )
-                    else:
-                        self.__check_primary_id(
-                            meta_file, category, current_id, atlas_id
-                        )
+                if meta_file.id not in self._exclude_list:
+                    df = meta_file.df
+                    primary_id_col = self.id_util.get_primary_id_column(category)
+                    id_list = df[primary_id_col].to_list()
+                    for current_id in id_list:
+                        current_id = str(current_id)
+                        if primary_id_col == IdUtil.HTAN_PARTICIPANT_ID:
+                            self.__check_participant_id(
+                                meta_file, category, current_id, atlas_id
+                            )
+                        else:
+                            self.__check_primary_id(
+                                meta_file, category, current_id, atlas_id
+                            )
 
     def __check_participant_id(self, meta_file: MetaFile, category, id, atlas_id):
         parts = id.split("_")
