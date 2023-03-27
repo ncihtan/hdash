@@ -36,7 +36,13 @@ class HTANProject:
 
     def get_total_num_files(self):
         """Get total number of files."""
-        return self.num_fastq + self.num_bam + self.num_image + self.num_matrix + self.num_other
+        return (
+            self.num_fastq
+            + self.num_bam
+            + self.num_image
+            + self.num_matrix
+            + self.num_other
+        )
 
     def get_total_file_size(self):
         """Get total file size."""

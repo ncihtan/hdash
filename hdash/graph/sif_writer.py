@@ -11,7 +11,6 @@ class SifWriter:
         self.sif = ""
         self._create_sif()
 
-
     def _create_sif(self):
         """Create the SIF Network."""
         edge_list = self.graph.edges

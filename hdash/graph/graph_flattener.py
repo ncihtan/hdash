@@ -56,16 +56,35 @@ class GraphFlattener:
             self.participant_2_biopsecimens[participant_id] = filtered_list
 
     def __gather_downstream_assays(self):
-        """Given a Biospecimen, find *all* Downstream Assays."""
+        """
+        Given a Biospecimen, find *all* direc downstream assays.
+        """
         for biospecimen_id in self.biospecimen_id_set:
-            nodes = nx.descendants(self.directed_graph, biospecimen_id)
 
-            # Filter Descendents for Assays Only
-            filtered_list = self.__filter_nodes(nodes, self.categories.all_assays)
-            self.biospecimen_2_assays[biospecimen_id] = filtered_list
+            # Get all child nodes
+            child_list = list(self.directed_graph.successors(biospecimen_id))
+
+            # Filter to only include assays
+            child_list = list(
+                filter(
+                    lambda node_id: self.directed_graph.nodes[node_id][
+                        HtanGraph.DATA_KEY
+                    ].meta_file.category
+                    in self.categories.all_assays,
+                    child_list,
+                )
+            )
+
+            # Traverse through all assay nodes
+            assay_list = []
+            for child in child_list:
+                assay_list.append(child)
+                node_list = nx.descendants(self.directed_graph, child)
+                assay_list.extend(node_list)
+            self.biospecimen_2_assays[biospecimen_id] = assay_list
 
             # Add to assay map for easy look-up
-            for node_id in filtered_list:
+            for node_id in assay_list:
                 data = self.directed_graph.nodes[node_id][HtanGraph.DATA_KEY]
                 key = KeyUtil.create_key(biospecimen_id, data.meta_file.category)
                 self.assay_map.add(key)

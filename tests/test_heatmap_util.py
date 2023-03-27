@@ -34,9 +34,8 @@ def test_heatmap_util(sample_meta_map):
     assert data1[0][1] == 0
 
     # Validate Single Cell Data
-    assert data2[0][0] == "HTA3_8001"
-    assert data2[0][1] == "HTA3_8001_001"
+    assert data2[0][0] == "HTA3_8001_001"
+    assert data2[0][1] == 1
     assert data2[0][2] == 1
     assert data2[0][3] == 1
     assert data2[0][4] == 1
-    assert data2[0][5] == 1

@@ -23,6 +23,7 @@ def init_annotated_project_list():
     project.meta_list.append(meta_file)
     return project_list
 
+
 @pytest.fixture
 def sample_meta_map():
     path_list = [
@@ -39,6 +40,7 @@ def sample_meta_map():
     for meta_file in meta_file_list:
         meta_map.add_meta_file(meta_file)
     return meta_map
+
 
 def _create_meta_file_list(path_list: list[str]):
     meta_file_list = []

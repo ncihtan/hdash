@@ -109,23 +109,22 @@ class HeatMapUtil:
 
     def __build_assay_heatmap(self, heatmap_type, category_list, label, bg_color):
         """Build Assay Data Heatmap."""
-        participant_2_bipspecimens = (
-            self.completeness_summary.graph_flat.participant_2_biopsecimens
-        )
-        headers = ["ParticipantID", "BiospecimenID"]
+        headers = ["BiospecimenID"]
         data = []
         for category in category_list:
             headers.append(category)
-        for participant_id in self.completeness_summary.graph_flat.participant_id_set:
-            b_ids = participant_2_bipspecimens.get(participant_id, [])
-            b_ids = natsorted(b_ids)
-            for biospecimen_id in b_ids:
-                current_row = [participant_id, biospecimen_id]
-                for category in category_list:
-                    value = 0
-                    if self.completeness_summary.has_data(biospecimen_id, category):
-                        value = 1
-                    current_row.append(value)
+        b_ids = self.completeness_summary.graph_flat.biospecimen_id_set
+        b_ids = natsorted(b_ids)
+        for biospecimen_id in b_ids:
+            sum = 0
+            current_row = [biospecimen_id]
+            for category in category_list:
+                value = 0
+                if self.completeness_summary.has_data(biospecimen_id, category):
+                    value = 1
+                current_row.append(value)
+                sum += value
+            if sum > -0:
                 data.append(current_row)
         self.__create_heatmap(heatmap_type, data, headers, label, bg_color)
 
@@ -141,14 +140,15 @@ class HeatMapUtil:
         revised_df = self._prepare_df(df)
         counts = revised_df.sum(axis=0)
         counts_df = counts.to_frame()
-        counts_df.index= list(counts.index)
+        counts_df.index = list(counts.index)
         counts_df.columns = ["Counts"]
         counts_html = counts_df.to_html(
             index=True, justify="left", classes="table table-striped table-sm"
         )
-        heatmap = HeatMap(heatmap_id, label, caption, data, df, df_html, counts_html, bg_color)
+        heatmap = HeatMap(
+            heatmap_id, label, caption, data, df, df_html, counts_html, bg_color
+        )
         self.heatmaps.append(heatmap)
-
 
     def _create_seaborn_heatmaps(self):
         """Create Seaborn HeatMaps."""
@@ -176,7 +176,7 @@ class HeatMapUtil:
         columns = list(df.columns)
         if "BiospecimenID" in columns:
             df.index = df["BiospecimenID"]
-            revised_df = df.drop(["ParticipantID", "BiospecimenID"], axis=1)
+            revised_df = df.drop(["BiospecimenID"], axis=1)
         else:
             df.index = df["ParticipantID"]
             revised_df = df.drop(["ParticipantID"], axis=1)

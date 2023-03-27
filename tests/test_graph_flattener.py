@@ -62,18 +62,16 @@ def test_graph_flattener():
     assert "b2" in biospecimen_list
     assert "b3" in biospecimen_list
 
-    # b1 should point to s1, s2 and s3
-    assay_list = graph_flat.biospecimen_2_assays["b1"]
-    assert len(assay_list) == 3
-    assert "s1" in assay_list
-    assert "s2" in assay_list
-    assert "s3" in assay_list
-
-    # b1 should have SCRNA-Seq Levels 1-3
+    # b1 should not have any assays
     categories = Categories()
-    assert graph_flat.biospecimen_has_assay("b1", categories.SC_RNA_SEQ_LEVEL_1)
-    assert graph_flat.biospecimen_has_assay("b1", categories.SC_RNA_SEQ_LEVEL_2)
-    assert graph_flat.biospecimen_has_assay("b1", categories.SC_RNA_SEQ_LEVEL_3)
+    assert not graph_flat.biospecimen_has_assay("b1", categories.SC_RNA_SEQ_LEVEL_1)
+    assert not graph_flat.biospecimen_has_assay("b1", categories.SC_RNA_SEQ_LEVEL_2)
+    assert not graph_flat.biospecimen_has_assay("b1", categories.SC_RNA_SEQ_LEVEL_3)
+
+    # b2 should have SCRNA-Seq Levels 1-3
+    assert graph_flat.biospecimen_has_assay("b2", categories.SC_RNA_SEQ_LEVEL_1)
+    assert graph_flat.biospecimen_has_assay("b2", categories.SC_RNA_SEQ_LEVEL_2)
+    assert graph_flat.biospecimen_has_assay("b2", categories.SC_RNA_SEQ_LEVEL_3)
 
 
 def __create_mock_meta_file(id, category):

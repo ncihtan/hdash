@@ -32,7 +32,6 @@ class ValidateLinks(ValidationRule):
                 m = f"{child_id} references itself as a parent."
                 self.add_error(m, child_node[HtanGraph.DATA_KEY].meta_file)
 
-
     def _validate_adjacent_edges(self):
         """Validate Adjacent Edges."""
         adjacent_edge_list = self._htan_graph.adjacent_list

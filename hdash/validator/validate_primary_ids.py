@@ -18,10 +18,8 @@ class ValidatePrimaryIds(ValidationRule):
         )
 
         # List of Files to Exclude from Validation
-        self._exclude_list = [
-            "syn42292434"       # HTAP Ex-Seq Data Set
-        ]
-        
+        self._exclude_list = ["syn42292434"]  # HTAP Ex-Seq Data Set
+
         self.meta_file_map = meta_file_map
         self.categories = Categories()
         self.id_util = IdUtil()

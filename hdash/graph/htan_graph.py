@@ -29,8 +29,10 @@ class HtanGraph:
     def add_edge(self, source_id, target_id):
         """Add edge to the graph."""
         # Only Add the Edge if both nodes exist
-        if target_id in self.directed_graph.nodes \
-            and source_id in self.directed_graph.nodes:
+        if (
+            target_id in self.directed_graph.nodes
+            and source_id in self.directed_graph.nodes
+        ):
             self.directed_graph.add_edge(source_id, target_id)
 
         # Store all the original edges for later validation

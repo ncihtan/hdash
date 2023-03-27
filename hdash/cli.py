@@ -65,6 +65,7 @@ def create(use_cache, repeat, surge, google):
     else:
         _create_dashboard(use_cache, surge, google)
 
+
 @cli.command()
 def mock():
     """Create Mock HTML Reports."""
@@ -72,6 +73,7 @@ def mock():
     report_writer = ReportWriter(_create_mock_project_list())
     _write_index_html(report_writer)
     _write_atlas_html(report_writer)
+
 
 def _create_dashboard(use_cache, surge, google):
     now = datetime.now()
@@ -219,6 +221,7 @@ def _write_atlas_sif(project_list):
         fd.write(project.sif)
         fd.close()
 
+
 def _create_mock_project_list():
     """Create mock project list."""
     project_list = []
@@ -235,6 +238,7 @@ def _create_mock_project_list():
         )
     )
     return project_list
+
 
 def _create_mock_project(id, atlas_id, name, liaison="Ethan Cerami", notes=None):
     project = HTANProject()
@@ -255,7 +259,7 @@ def _create_mock_project(id, atlas_id, name, liaison="Ethan Cerami", notes=None)
     meta_file = MetaFile()
     meta_file.id = "synapse1"
     meta_file.num_items = 4
-    meta_file.percent_meta_data_complete = .3
+    meta_file.percent_meta_data_complete = 0.3
     project.meta_list = [meta_file]
     project.percent_meta_data_complete = 0.3
 

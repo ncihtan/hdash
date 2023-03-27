@@ -4,7 +4,9 @@
 class HeatMap:
     """HeatMap Class."""
 
-    def __init__(self, heatmap_id, label, caption, data, df, df_html, counts_html, bg_color):
+    def __init__(
+        self, heatmap_id, label, caption, data, df, df_html, counts_html, bg_color
+    ):
         """Initialize HeatMap Object."""
         self.id = heatmap_id
         self.label = label

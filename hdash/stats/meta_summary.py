@@ -24,7 +24,6 @@ class MetaDataSummary:
         else:
             return self._total_num_complete_fields / self._total_num_fields
 
-
     def __init__(self, meta_list: List[MetaFile]):
         """Default Constructor."""
         self._total_num_fields = 0
