@@ -85,7 +85,7 @@ class HeatMapUtil:
             "Assay Matrix: Visium",
             "#e3eeff",
         )
-        self.__create_seaborn_heatmaps()
+        self._create_seaborn_heatmaps()
 
     def __build_clinical_heatmap(self, heatmap_type, category_list, label, bg_color):
         """Build Clinical Data Heatmap."""
@@ -137,23 +137,26 @@ class HeatMapUtil:
         )
         caption = HeatMapUtil.CAPTION
         heatmap_id = self.atlas_id + "_" + heatmap_type
-        heatmap = HeatMap(heatmap_id, label, caption, data, df, df_html, bg_color)
+
+        revised_df = self._prepare_df(df)
+        counts = revised_df.sum(axis=0)
+        counts_df = counts.to_frame()
+        counts_df.index= list(counts.index)
+        counts_df.columns = ["Counts"]
+        counts_html = counts_df.to_html(
+            index=True, justify="left", classes="table table-striped table-sm"
+        )
+        heatmap = HeatMap(heatmap_id, label, caption, data, df, df_html, counts_html, bg_color)
         self.heatmaps.append(heatmap)
 
-    def __create_seaborn_heatmaps(self):
+
+    def _create_seaborn_heatmaps(self):
         """Create Seaborn HeatMaps."""
         for heatmap in self.heatmaps:
             if len(heatmap.data) > 0:
-                df = heatmap.df
-                columns = list(df.columns)
-                if "BiospecimenID" in columns:
-                    df.index = df["BiospecimenID"]
-                    df = df.drop(["ParticipantID", "BiospecimenID"], axis=1)
-                else:
-                    df.index = df["ParticipantID"]
-                    df = df.drop(["ParticipantID"], axis=1)
+                revised_df = self._prepare_df(heatmap.df)
                 ax = sns.heatmap(
-                    df,
+                    revised_df,
                     vmin=0,
                     vmax=1,
                     annot=False,
@@ -168,3 +171,13 @@ class HeatMapUtil:
                 fig_name = "deploy/images/" + heatmap.id + ".png"
                 plt.savefig(fig_name)
                 plt.figure()
+
+    def _prepare_df(self, df):
+        columns = list(df.columns)
+        if "BiospecimenID" in columns:
+            df.index = df["BiospecimenID"]
+            revised_df = df.drop(["ParticipantID", "BiospecimenID"], axis=1)
+        else:
+            df.index = df["ParticipantID"]
+            revised_df = df.drop(["ParticipantID"], axis=1)
+        return revised_df
