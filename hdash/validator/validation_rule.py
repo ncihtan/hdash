@@ -26,4 +26,6 @@ class ValidationRule:
 
     def _create_error_msg(self, msg, meta_file: MetaFile):
         """Creates Error Message with Synapse ID."""
-        return f"{msg} [category:  {meta_file.category}, synapse_id:  {meta_file.id}]"
+        error_msg = f"{msg} [Error occurred while processing file:  "
+        error_msg += f"{meta_file.id} of type {meta_file.category}]"
+        return error_msg

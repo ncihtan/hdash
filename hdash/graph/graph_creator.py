@@ -47,9 +47,11 @@ class GraphCreator:
 
             # Each Primary ID Gets its Own Node
             for current_id in id_list:
+                # Check edge case that there is only one primary ID
                 current_id = str(current_id)
-                node_data = NodeData(current_id, meta_file)
-                self._graph.add_node(node_data)
+                if current_id != "nan" and "," not in current_id:
+                    node_data = NodeData(current_id, meta_file)
+                    self._graph.add_node(node_data)
 
     def __gather_edges(self):
         """Gather all the edges."""

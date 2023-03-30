@@ -10,6 +10,8 @@ class MetaFile:
         self.path = None
         self.category = None
         self.num_items = 0
+        self.parent_id = None
+        self.modified_on = None
         self.df = None
         self.percent_meta_data_complete = 0
 

@@ -61,8 +61,21 @@ class TableUtil:
             (df.projectId == project.id)
             & (df.name.str.startswith(MetaFile.META_FILE_PREFIX))
         ]
+
+        folder_map = {}
         for row in target_df.itertuples():
             meta_file = MetaFile()
             meta_file.id = row.id
+            meta_file.modified_on = row.modifiedOn
+            meta_file.parent_id = row.parentId
             meta_file.path = SynapseUtil.CACHE + "/" + row.id + ".csv"
-            project.meta_list.append(meta_file)
+
+            # A single folder may have two or more metadata files.
+            # If this occurs, we only want the most recently modified metadata file.
+            if meta_file.parent_id in folder_map:
+                map_file = folder_map[meta_file.parent_id]
+                if meta_file.modified_on > map_file.modified_on:
+                    folder_map[meta_file.parent_id] = meta_file
+            else:
+                folder_map[meta_file.parent_id] = meta_file
+        project.meta_list = list(folder_map.values())

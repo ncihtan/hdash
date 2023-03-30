@@ -21,16 +21,16 @@ class ValidateLinks(ValidationRule):
         for edge in edge_list:
             parent_id = edge[0]
             child_id = edge[1]
-            child_node = directed_graph.nodes[child_id]
+            if child_id in directed_graph.nodes:
+                child_node = directed_graph.nodes[child_id]
+                if parent_id not in directed_graph.nodes:
+                    m = f"{child_id} references parent ID="
+                    m += f"{parent_id}, but no such ID exists."
+                    self.add_error(m, child_node[HtanGraph.DATA_KEY].meta_file)
 
-            if parent_id not in directed_graph.nodes:
-                m = f"{child_id} references parent ID="
-                m += f"{parent_id}, but no such ID exists."
-                self.add_error(m, child_node[HtanGraph.DATA_KEY].meta_file)
-
-            if child_id == parent_id:
-                m = f"{child_id} references itself as a parent."
-                self.add_error(m, child_node[HtanGraph.DATA_KEY].meta_file)
+                if child_id == parent_id:
+                    m = f"{child_id} references itself as a parent."
+                    self.add_error(m, child_node[HtanGraph.DATA_KEY].meta_file)
 
     def _validate_adjacent_edges(self):
         """Validate Adjacent Edges."""
