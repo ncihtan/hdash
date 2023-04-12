@@ -1,5 +1,7 @@
 # hdash
 
+## Note:  this project is now deprecated.  Please use hdash_air instead.
+
 Command Line Interface (CLI) for generating a bare bones HTAN Dashboard.
 
 ## Installation

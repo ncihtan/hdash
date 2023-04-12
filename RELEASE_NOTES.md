@@ -1,5 +1,7 @@
 # Release Notes
 
+## Note:  this project is no deprecated.  Please use hdash_air instead.
+
 ## 2023-03-23
 
 * Fixed Discrepancies between HTAN Dashboard and BigQueries.  See:  https://github.com/ncihtan/hdash/issues/12
